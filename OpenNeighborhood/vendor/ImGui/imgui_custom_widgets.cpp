@@ -20,7 +20,12 @@ bool ImGui::ImageButtonWithText(ImTextureID userTextureID, const ImVec2& imageSi
         return false;
 
     bool hovered, held;
-    bool pressed = ButtonBehavior(totalRect, id, &hovered, &held, 0);
+    int flags = ImGuiButtonFlags_PressedOnClick |
+        ImGuiButtonFlags_PressedOnDoubleClick |
+        ImGuiButtonFlags_MouseButtonLeft |
+        ImGuiButtonFlags_MouseButtonRight;
+
+    bool pressed = ButtonBehavior(totalRect, id, &hovered, &held, flags);
 
     const ImU32 color = GetColorU32((held && hovered) ? ImGuiCol_ButtonActive : hovered ? ImGuiCol_ButtonHovered : ImGuiCol_Button);
     RenderFrame(totalRect.Min, totalRect.Max, color, true, ImClamp((float)ImMin(padding.x, padding.y), 0.0f, 0.0f));
