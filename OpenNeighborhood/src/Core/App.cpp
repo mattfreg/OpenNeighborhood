@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Core/App.h"
 
+#include "Xbox/XboxManager.h"
+
 App* App::s_Instance = nullptr;
 
 App::App(const std::string& name)
@@ -26,6 +28,10 @@ void App::PushLayer(Layer* layer)
 
 void App::Close()
 {
+	XBDM::Console& xbox = XboxManager::GetConsole();
+	if (xbox.IsConnected())
+		xbox.CloseConnection();
+
 	m_Running = false;
 }
 
