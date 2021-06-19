@@ -2,7 +2,8 @@
 
 using KeyCode = uint16_t;
 
-namespace Key {
+namespace Key
+{
 	enum : KeyCode
 	{
 		// From glfw3.h

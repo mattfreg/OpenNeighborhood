@@ -2,7 +2,8 @@
 
 using MouseCode = uint16_t;
 
-namespace Mouse {
+namespace Mouse
+{
 	enum : MouseCode
 	{
 		// From glfw3.h
