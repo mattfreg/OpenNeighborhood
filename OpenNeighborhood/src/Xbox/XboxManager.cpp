@@ -21,7 +21,7 @@ bool XboxManager::CreateConsole(const std::string& ipAddress, std::string& conso
 		return false;
 }
 
-std::string XboxManager::GoToDirectory(const std::string& directory)
+const std::string& XboxManager::GoToDirectory(const std::string& directory)
 {
 	if (directory.front() != '\\' && !s_CurrentLocation.empty())
 		s_CurrentLocation += '\\';
@@ -34,7 +34,7 @@ std::string XboxManager::GoToDirectory(const std::string& directory)
 	return s_CurrentLocation;
 }
 
-std::string XboxManager::GoToParent()
+const std::string& XboxManager::GoToParent()
 {
 	size_t lastSeparatorIndex = s_CurrentLocation.find_last_of('\\');
 	if (lastSeparatorIndex != std::string::npos)

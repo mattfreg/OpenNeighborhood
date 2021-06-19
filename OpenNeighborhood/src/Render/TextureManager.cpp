@@ -18,7 +18,7 @@ void TextureManager::AddTexture(const std::string& textureName, const std::strin
 
 Ref<Texture> TextureManager::GetTexture(const std::string& textureName)
 {
-	auto texture = s_Textures.find(textureName);
+	auto& texture = s_Textures.find(textureName);
 
 	ASSERT(texture != s_Textures.end(), "Couldn't find texture!");
 

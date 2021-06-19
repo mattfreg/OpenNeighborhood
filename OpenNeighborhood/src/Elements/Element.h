@@ -15,8 +15,8 @@ public:
 	virtual void OnRender();
 	virtual void OnClick() = 0;
 
-	inline std::string GetLabel() const { return m_Label; }
-	inline std::string GetTextureName() const { return m_TextureName; }
+	inline const std::string& GetLabel() const { return m_Label; }
+	inline const std::string& GetTextureName() const { return m_TextureName; }
 	inline uint32_t GetWidth() const { return m_Width; }
 	inline uint32_t GetHeight() const { return m_Height; }
 

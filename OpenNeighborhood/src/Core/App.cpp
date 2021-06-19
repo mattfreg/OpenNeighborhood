@@ -28,7 +28,7 @@ void App::PushLayer(Layer* layer)
 
 void App::Close()
 {
-	XBDM::Console& xbox = XboxManager::GetConsole();
+	XBDM::Console xbox = XboxManager::GetConsole();
 	if (xbox.IsConnected())
 		xbox.CloseConnection();
 
