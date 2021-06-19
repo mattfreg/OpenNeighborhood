@@ -9,7 +9,7 @@ public:
 	ContentsPanel();
 
 	virtual void OnRender() override;
-	virtual void OnEvent(Event& event);
+	virtual void OnEvent(Event& event) override;
 private:
 	std::vector<Ref<Element>> m_Elements;
 	std::queue<ContentsChangeEvent> m_ContentsChangeEventQueue;
