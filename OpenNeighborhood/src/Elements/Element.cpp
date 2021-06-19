@@ -31,7 +31,7 @@ void Element::OnRender()
 
 	if (ImGui::BeginPopupModal("Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 	{
-		ImGui::Text(m_ErrorMessage.c_str());
+		ImGui::Text("%s", m_ErrorMessage.c_str());
 
 		if (ImGui::Button("OK", ImVec2(120, 0)))
 		{
