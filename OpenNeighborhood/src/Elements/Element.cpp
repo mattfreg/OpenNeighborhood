@@ -23,13 +23,13 @@ void Element::OnRender()
 
 	if (!m_Success)
 	{
-		ImGui::OpenPopup("Connection failed!");
+		ImGui::OpenPopup("Error");
 
 		ImVec2 center(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
 		ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 	}
 
-	if (ImGui::BeginPopupModal("Connection failed!", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	if (ImGui::BeginPopupModal("Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 	{
 		ImGui::Text(m_ErrorMessage.c_str());
 
