@@ -15,3 +15,7 @@ Makefile
 
 # Visual Studio Code
 .vscode/
+
+# OpenNeighborhood generated files
+imgui.ini
+OpenNeighborhood.ini
