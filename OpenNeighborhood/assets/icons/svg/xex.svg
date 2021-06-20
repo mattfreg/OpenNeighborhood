@@ -1,43 +1,27 @@
-<?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" width="512" height="512" x="0" y="0" viewBox="0 0 477.867 477.867" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g>
-<g xmlns="http://www.w3.org/2000/svg">
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.3.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Calque_1" xmlns:svgjs="http://svgjs.com/svgjs"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512"
+	 style="enable-background:new 0 0 512 512;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#9BC848;}
+	.st1{fill:#FFFFFF;}
+	.st2{font-family:'Gotham-Black';}
+	.st3{font-size:114px;}
+	.st4{letter-spacing:11;}
+</style>
+<g>
 	<g>
-		<path d="M324.267,119.467c-9.426,0-17.067-7.641-17.067-17.067V0H102.4C74.123,0,51.2,22.923,51.2,51.2v375.467    c0,28.277,22.923,51.2,51.2,51.2h273.067c28.277,0,51.2-22.923,51.2-51.2v-307.2H324.267z" fill="#9bc848" data-original="#000000" style="" class=""/>
+		<g>
+			<path class="st0" d="M347.4,128c-10.1,0-18.3-8.2-18.3-18.3V0H109.7C79.4,0,54.9,24.6,54.9,54.9v402.3
+				c0,30.3,24.6,54.9,54.9,54.9h292.6c30.3,0,54.9-24.6,54.9-54.9V128C457.1,128,347.4,128,347.4,128z"/>
+		</g>
+	</g>
+	<g>
+		<g>
+			<polygon class="st0" points="365.7,10.7 365.7,91.4 446.4,91.4 			"/>
+		</g>
 	</g>
 </g>
-<g xmlns="http://www.w3.org/2000/svg">
-	<g>
-		<polygon points="341.333,10.001 341.333,85.333 416.666,85.333   " fill="#9bc848" data-original="#000000" style="" class=""/>
-	</g>
-</g>
-<g xmlns="http://www.w3.org/2000/svg">
-</g>
-<g xmlns="http://www.w3.org/2000/svg">
-</g>
-<g xmlns="http://www.w3.org/2000/svg">
-</g>
-<g xmlns="http://www.w3.org/2000/svg">
-</g>
-<g xmlns="http://www.w3.org/2000/svg">
-</g>
-<g xmlns="http://www.w3.org/2000/svg">
-</g>
-<g xmlns="http://www.w3.org/2000/svg">
-</g>
-<g xmlns="http://www.w3.org/2000/svg">
-</g>
-<g xmlns="http://www.w3.org/2000/svg">
-</g>
-<g xmlns="http://www.w3.org/2000/svg">
-</g>
-<g xmlns="http://www.w3.org/2000/svg">
-</g>
-<g xmlns="http://www.w3.org/2000/svg">
-</g>
-<g xmlns="http://www.w3.org/2000/svg">
-</g>
-<g xmlns="http://www.w3.org/2000/svg">
-</g>
-<g xmlns="http://www.w3.org/2000/svg">
-</g>
-</g></svg>
+<text transform="matrix(1 0 0 1 119.4516 295.6452)" class="st1 st2 st3 st4">XEX</text>
+</svg>
