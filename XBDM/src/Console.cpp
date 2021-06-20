@@ -155,6 +155,14 @@ namespace XBDM
 		return files;
 	}
 
+	void Console::LaunchXEX(const std::string& xexPath)
+	{
+		std::string directory = xexPath.substr(0, xexPath.find_last_of('\\') + 1);
+
+		SendCommand("magicboot title=\"" + xexPath + "\" directory=\"" + directory + "\"");
+		std::string response = Receive();
+	}
+
 	std::string Console::Receive()
 	{
 		std::string result;

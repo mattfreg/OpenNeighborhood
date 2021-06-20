@@ -17,6 +17,8 @@ namespace XBDM
 		std::vector<Drive> GetDrives();
 		std::vector<File> GetDirectoryContents(const std::string& directoryPath);
 
+		void LaunchXEX(const std::string& xexPath);
+
 		bool IsConnected() { return m_Connected; }
 	private:
 		bool m_Connected = false;

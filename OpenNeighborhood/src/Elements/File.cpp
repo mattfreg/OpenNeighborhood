@@ -11,6 +11,8 @@ void File::OnClick()
 {
 	if (m_Data.IsDirectory)
 		OpenDirectory();
+	else if (m_Data.IsXEX)
+		LaunchXEX();
 }
 
 void File::OpenDirectory()
@@ -39,4 +41,10 @@ void File::OpenDirectory()
 
 		XboxManager::GoToDirectory(m_Data.Name);
 	}
+}
+
+void File::LaunchXEX()
+{
+	XBDM::Console xbox = XboxManager::GetConsole();
+	xbox.LaunchXEX(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name);
 }
