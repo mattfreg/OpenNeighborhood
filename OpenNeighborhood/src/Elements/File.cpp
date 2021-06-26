@@ -36,8 +36,10 @@ void File::OpenDirectory()
 		for (auto& file : files)
 			fileElements->emplace_back(CreateRef<File>(file));
 
-		ContentsChangeEvent event(fileElements);
-		m_EventCallback(event);
+		ContentsChangeEvent contentsChangeEvent(fileElements);
+		DirectoryChangeEvent directoryChangeEvent;
+		m_EventCallback(contentsChangeEvent);
+		m_EventCallback(directoryChangeEvent);
 
 		XboxManager::GoToDirectory(m_Data.Name);
 	}

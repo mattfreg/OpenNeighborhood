@@ -22,4 +22,14 @@ void PathPanel::OnRender()
 void PathPanel::OnEvent(Event& event)
 {
 	Panel::OnEvent(event);
+
+	EventDispatcher dispatcher(event);
+	dispatcher.Dispatch<DirectoryChangeEvent>(BIND_EVENT_FN(PathPanel::OnCurrentXboxLocationChange));
+}
+
+bool PathPanel::OnCurrentXboxLocationChange(DirectoryChangeEvent& event)
+{
+	LOG_INFO(event.ToString());
+
+	return true;
 }
