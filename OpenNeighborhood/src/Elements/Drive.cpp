@@ -26,14 +26,16 @@ void Drive::OnClick()
 
 	if (m_Success)
 	{
+		XboxManager::GoToDirectory(m_Data.Name);
+
 		Ref<std::vector<Ref<Element>>> fileElements = CreateRef<std::vector<Ref<Element>>>();
 
 		for (auto& file : files)
 			fileElements->emplace_back(CreateRef<File>(file));
 
-		ContentsChangeEvent event(fileElements);
-		m_EventCallback(event);
-
-		XboxManager::GoToDirectory(m_Data.Name);
+		ContentsChangeEvent contentsChangeEvent(fileElements);
+		DirectoryChangeEvent directoryChangeEvent;
+		m_EventCallback(contentsChangeEvent);
+		m_EventCallback(directoryChangeEvent);
 	}
 }

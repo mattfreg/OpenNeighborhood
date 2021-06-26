@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Panels/PathPanel.h"
 
+#include "Xbox/XboxManager.h"
+
 void PathPanel::OnRender()
 {
 	ImGuiWindowFlags windowFlags =
@@ -29,7 +31,20 @@ void PathPanel::OnEvent(Event& event)
 
 bool PathPanel::OnCurrentXboxLocationChange(DirectoryChangeEvent& event)
 {
-	LOG_INFO(event.ToString());
+	m_Directories.clear();
+	std::string locationCopy = XboxManager::GetCurrentLocation() + '\\';
+	size_t pos = 0;
+
+	while ((pos = locationCopy.find('\\')) != std::string::npos)
+	{
+		std::string directory = locationCopy.substr(0, pos);
+		m_Directories.push_back(directory);
+
+		locationCopy.erase(0, pos + 1);
+	}
+
+	for (auto& directory : m_Directories)
+		LOG_INFO(directory);
 
 	return true;
 }

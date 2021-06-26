@@ -31,6 +31,8 @@ void File::OpenDirectory()
 
 	if (m_Success)
 	{
+		XboxManager::GoToDirectory(m_Data.Name);
+
 		Ref<std::vector<Ref<Element>>> fileElements = CreateRef<std::vector<Ref<Element>>>();
 
 		for (auto& file : files)
@@ -40,8 +42,6 @@ void File::OpenDirectory()
 		DirectoryChangeEvent directoryChangeEvent;
 		m_EventCallback(contentsChangeEvent);
 		m_EventCallback(directoryChangeEvent);
-
-		XboxManager::GoToDirectory(m_Data.Name);
 	}
 }
 
