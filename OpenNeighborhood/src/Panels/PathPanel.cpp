@@ -18,7 +18,24 @@ void PathPanel::OnRender()
 	ImGui::SetNextWindowSize(ImVec2((float)m_WindowWidth - m_Margin * 2.0f, m_Margin * 5.0f));
 
 	ImGui::Begin("Path Window", nullptr, windowFlags);
+
+	for (size_t i = 0; i < m_Directories.size(); i++)
+	{
+		if (ImGui::Button(m_Directories[i].c_str()))
+			LOG_INFO(m_Directories[i] + " clicked");
+
+		if (i + 1 < m_Directories.size())
+		{
+			ImGui::SameLine();
+			ImGui::Text("%s", ">");
+			ImGui::SameLine();
+		}
+	}
+
 	ImGui::End();
+
+	if (!m_DirectoryChangeEventQueue.empty())
+		UpdateDirectories();
 }
 
 void PathPanel::OnEvent(Event& event)
@@ -30,6 +47,13 @@ void PathPanel::OnEvent(Event& event)
 }
 
 bool PathPanel::OnCurrentXboxLocationChange(DirectoryChangeEvent& event)
+{
+	m_DirectoryChangeEventQueue.push(event);
+
+	return true;
+}
+
+void PathPanel::UpdateDirectories()
 {
 	m_Directories.clear();
 	std::string locationCopy = XboxManager::GetCurrentLocation() + '\\';
@@ -43,8 +67,5 @@ bool PathPanel::OnCurrentXboxLocationChange(DirectoryChangeEvent& event)
 		locationCopy.erase(0, pos + 1);
 	}
 
-	for (auto& directory : m_Directories)
-		LOG_INFO(directory);
-
-	return true;
+	m_DirectoryChangeEventQueue.pop();
 }

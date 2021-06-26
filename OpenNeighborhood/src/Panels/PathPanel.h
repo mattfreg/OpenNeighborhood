@@ -10,6 +10,8 @@ public:
 	virtual void OnEvent(Event& event) override;
 private:
 	std::vector<std::string> m_Directories;
+	std::queue<DirectoryChangeEvent> m_DirectoryChangeEventQueue;
 
 	bool OnCurrentXboxLocationChange(DirectoryChangeEvent& event);
+	void UpdateDirectories();
 };
