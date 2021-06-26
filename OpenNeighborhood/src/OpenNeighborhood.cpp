@@ -8,8 +8,14 @@
 
 #include "Events/AppEvent.h"
 
+OpenNeighborhood* OpenNeighborhood::s_Instance = nullptr;
+
 OpenNeighborhood::OpenNeighborhood()
-	: Layer("OpenNeighborhood") {}
+	: Layer("OpenNeighborhood")
+{
+	ASSERT(!s_Instance, "OpenNeighborhood layer already exists!");
+	s_Instance = this;
+}
 
 void OpenNeighborhood::OnAttach()
 {

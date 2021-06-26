@@ -18,3 +18,8 @@ void PathPanel::OnRender()
 	ImGui::Begin("Path Window", nullptr, windowFlags);
 	ImGui::End();
 }
+
+void PathPanel::OnEvent(Event& event)
+{
+	Panel::OnEvent(event);
+}

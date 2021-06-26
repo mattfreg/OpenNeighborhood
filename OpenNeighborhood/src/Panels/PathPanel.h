@@ -7,4 +7,5 @@ class PathPanel : public Panel
 {
 public:
 	virtual void OnRender() override;
+	virtual void OnEvent(Event& event) override;
 };

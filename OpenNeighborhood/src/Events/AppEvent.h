@@ -48,3 +48,12 @@ private:
 	Ref<std::vector<Ref<Element>>> m_Elements;
 	bool m_Append;
 };
+
+class DirectoryChangeEvent : public Event
+{
+public:
+	DirectoryChangeEvent() {}
+
+	EVENT_CLASS_TYPE(DirectoryChange)
+	EVENT_CLASS_CATEGORY(EventCategoryApp)
+};

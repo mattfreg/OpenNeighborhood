@@ -7,7 +7,7 @@ enum class EventType
 {
 	None = 0,
 	WindowClose, WindowResize,
-	ContentsChange,
+	ContentsChange, DirectoryChange,
 	KeyPressed, KeyReleased, KeyTyped,
 	MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 };

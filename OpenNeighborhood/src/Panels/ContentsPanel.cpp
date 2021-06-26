@@ -28,8 +28,6 @@ ContentsPanel::ContentsPanel()
 			}
 		}
 	}
-
-	UpdateEventCallbacks();
 }
 
 void ContentsPanel::OnRender()
@@ -84,12 +82,6 @@ bool ContentsPanel::OnContentsChange(ContentsChangeEvent& event)
 	return true;
 }
 
-void ContentsPanel::UpdateEventCallbacks()
-{
-	for (auto& element : m_Elements)
-		element->SetEventCallback(BIND_EVENT_FN(ContentsPanel::OnEvent));
-}
-
 void ContentsPanel::InjectNewElements()
 {
 	ContentsChangeEvent& event = m_ContentsChangeEventQueue.front();
@@ -101,6 +93,5 @@ void ContentsPanel::InjectNewElements()
 	else
 		m_Elements = *event.GetElements();
 
-	UpdateEventCallbacks();
 	m_ContentsChangeEventQueue.pop();
 }

@@ -2,6 +2,7 @@
 #include "Elements/Element.h"
 
 #include "Render/TextureManager.h"
+#include "OpenNeighborhood.h"
 
 Element::Element(const std::string& label, const std::string& textureName, const std::string& errorMessage)
 	: m_Label(label), m_TextureName(textureName), m_ErrorMessage(errorMessage)
@@ -12,6 +13,8 @@ Element::Element(const std::string& label, const std::string& textureName, const
 	auto texture = TextureManager::GetTexture(textureName);
 	m_Width = texture->GetWidth() * 3;
 	m_Height = texture->GetHeight();
+
+	m_EventCallback = BIND_EVENT_FN(Element::OnEvent);
 }
 
 void Element::OnRender()
@@ -46,4 +49,10 @@ void Element::OnRender()
 
 		ImGui::EndPopup();
 	}
+}
+
+void Element::OnEvent(Event& event)
+{
+	OpenNeighborhood& currentLayer = OpenNeighborhood::Get();
+	currentLayer.OnEvent(event);
 }
