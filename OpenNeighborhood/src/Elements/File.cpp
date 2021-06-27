@@ -24,7 +24,7 @@ void File::OpenDirectory()
 	{
 		files = xbox.GetDirectoryContents(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name);
 	}
-	catch (const std::invalid_argument& exception)
+	catch (const std::invalid_argument&)
 	{
 		m_Success = false;
 	}
