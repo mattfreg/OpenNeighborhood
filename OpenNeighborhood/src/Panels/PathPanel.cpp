@@ -2,6 +2,7 @@
 #include "Panels/PathPanel.h"
 
 #include "Xbox/XboxManager.h"
+#include "Render/UI.h"
 
 void PathPanel::OnRender()
 {
@@ -15,9 +16,10 @@ void PathPanel::OnRender()
 	;
 
 	ImGui::SetNextWindowPos(ImVec2(m_Margin, m_Margin));
-	ImGui::SetNextWindowSize(ImVec2((float)m_WindowWidth - m_Margin * 2.0f, m_Margin * 5.0f));
+	ImGui::SetNextWindowSize(ImVec2((float)m_WindowWidth - m_Margin * 2.0f, m_Margin * 2.4f));
 
 	ImGui::Begin("Path Window", nullptr, windowFlags);
+	ImGui::PushFont(UI::GetRegularBigFont());
 
 	for (size_t i = 0; i < m_Directories.size(); i++)
 	{
@@ -32,6 +34,7 @@ void PathPanel::OnRender()
 		}
 	}
 
+	ImGui::PopFont();
 	ImGui::End();
 
 	if (!m_DirectoryChangeEventQueue.empty())

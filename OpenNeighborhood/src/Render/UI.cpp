@@ -1,13 +1,16 @@
 #include "pch.h"
 #include "Render/UI.h"
 
-#include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_glfw.h>
 #include <ImGui/imgui_impl_opengl3.h>
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
 #include "Core/App.h"
+
+ImFont* UI::s_OpenSansBold = nullptr;
+ImFont* UI::s_OpenSansRegular = nullptr;
+ImFont* UI::s_OpenSansRegularBig = nullptr;
 
 void UI::Init()
 {
@@ -16,8 +19,10 @@ void UI::Init()
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
-	io.Fonts->AddFontFromFileTTF(WORKING_DIR"assets/fonts/opensans/OpenSans-Bold.ttf", 20.0f);
-	io.FontDefault = io.Fonts->AddFontFromFileTTF(WORKING_DIR"assets/fonts/opensans/OpenSans-Regular.ttf", 20.0f);
+	s_OpenSansBold = io.Fonts->AddFontFromFileTTF(WORKING_DIR"assets/fonts/opensans/OpenSans-Bold.ttf", 20.0f);
+	s_OpenSansRegular = io.Fonts->AddFontFromFileTTF(WORKING_DIR"assets/fonts/opensans/OpenSans-Regular.ttf", 20.0f);
+	s_OpenSansRegularBig = io.Fonts->AddFontFromFileTTF(WORKING_DIR"assets/fonts/opensans/OpenSans-Regular.ttf", 24.0f);
+	io.FontDefault = s_OpenSansRegular;
 
 	SetDarkThemeColors();
 

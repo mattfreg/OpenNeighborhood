@@ -32,7 +32,7 @@ ContentsPanel::ContentsPanel()
 
 void ContentsPanel::OnRender()
 {
-	float pathPanelSize = m_Margin * 5.0f;
+	float pathPanelSize = m_Margin * 2.4f;
 
 	ImGuiWindowFlags windowFlags =
 		  ImGuiWindowFlags_NoTitleBar
