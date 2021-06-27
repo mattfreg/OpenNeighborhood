@@ -12,7 +12,7 @@ void Drive::OnClick()
 {
 	std::transform(m_Data.Name.begin(), m_Data.Name.end(), m_Data.Name.begin(), [](unsigned char c) { return std::tolower(c); });
 
-	XBDM::Console xbox = XboxManager::GetConsole();
+	XBDM::Console& xbox = XboxManager::GetConsole();
 	std::vector<XBDM::File> files;
 
 	try

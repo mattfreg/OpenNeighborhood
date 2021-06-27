@@ -16,7 +16,7 @@ void Xbox::OnClick()
 	if (m_Success)
 	{
 		Ref<std::vector<Ref<Element>>> driveElements = CreateRef<std::vector<Ref<Element>>>();
-		XBDM::Console xbox = XboxManager::GetConsole();
+		XBDM::Console& xbox = XboxManager::GetConsole();
 
 		std::vector<XBDM::Drive> drives = xbox.GetDrives();
 

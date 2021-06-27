@@ -17,7 +17,7 @@ void File::OnClick()
 
 void File::OpenDirectory()
 {
-	XBDM::Console xbox = XboxManager::GetConsole();
+	XBDM::Console& xbox = XboxManager::GetConsole();
 	std::vector<XBDM::File> files;
 
 	try
@@ -47,6 +47,6 @@ void File::OpenDirectory()
 
 void File::LaunchXEX()
 {
-	XBDM::Console xbox = XboxManager::GetConsole();
+	XBDM::Console& xbox = XboxManager::GetConsole();
 	xbox.LaunchXEX(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name);
 }
