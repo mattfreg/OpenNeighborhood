@@ -42,7 +42,19 @@ void PathPanel::OnRender()
 	m_GoToParentButton.OnRender();
 
 	ImGui::SameLine();
-	ImGui::Text("%s", "|");
+	ImGui::Text("%s", "");
+
+	ImGuiStyle& style = ImGui::GetStyle();
+	ImVec4& borderColor = style.Colors[ImGuiCol_Border];
+	auto texture = TextureManager::GetTexture(m_GoToParentButton.GetTextureName());
+	float lineX = m_Margin + (float)texture->GetWidth() + style.ItemSpacing.x * 3.0f;
+	ImDrawList* drawList = ImGui::GetWindowDrawList();
+	drawList->AddLine(
+		ImVec2(lineX, m_Margin),
+		ImVec2(lineX, m_Margin + s_Height),
+		IM_COL32(borderColor.x * 255.0f, borderColor.y * 255.0f, borderColor.z * 255.0f, borderColor.w * 255.0f)
+	);
+
 	ImGui::SameLine();
 
 	for (size_t i = 0; i < m_Directories.size(); i++)
