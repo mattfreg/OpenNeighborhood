@@ -3,6 +3,9 @@
 
 #include "Render/TextureManager.h"
 #include "Events/AppEvent.h"
+#include "Xbox/XboxManager.h"
+#include "Elements/File.h"
+#include "Render/UI.h"
 
 GoToParentButton::GoToParentButton()
 	: Element("", "leftArrow", "Couldn't access directory")
@@ -29,6 +32,7 @@ void GoToParentButton::OnRender()
 
 	if (ImGui::BeginPopupModal("Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 	{
+		ImGui::PushFont(UI::GetRegularFont());
 		ImGui::Text("%s", m_ErrorMessage.c_str());
 
 		if (ImGui::Button("OK", ImVec2(120, 0)))
@@ -37,12 +41,44 @@ void GoToParentButton::OnRender()
 			ImGui::CloseCurrentPopup();
 		}
 
+		ImGui::PopFont();
 		ImGui::EndPopup();
 	}
 }
 
 void GoToParentButton::OnClick()
 {
-	DirectoryChangeEvent event;
-	m_EventCallback(event);
+	std::string currentLocation = XboxManager::GetCurrentLocation();
+	std::string parentLocation = XboxManager::GetParent();
+
+	if (currentLocation == parentLocation)
+		return;
+
+	if (parentLocation[parentLocation.length() - 1] == ':')
+		parentLocation += '\\';
+
+	XBDM::Console& xbox = XboxManager::GetConsole();
+	std::vector<XBDM::File> files;
+
+	try
+	{
+		files = xbox.GetDirectoryContents(parentLocation);
+	}
+	catch (const std::invalid_argument&)
+	{
+		m_Success = false;
+	}
+
+	if (m_Success)
+	{
+		XboxManager::GoToParent();
+
+		Ref<std::vector<Ref<Element>>> fileElements = CreateRef<std::vector<Ref<Element>>>();
+
+		for (auto& file : files)
+			fileElements->emplace_back(CreateRef<File>(file));
+
+		ContentsChangeEvent event(fileElements);
+		m_EventCallback(event);
+	}
 }

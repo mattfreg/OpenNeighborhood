@@ -65,7 +65,7 @@ void PathPanel::OnRender()
 	ImGui::PopFont();
 	ImGui::End();
 
-	if (!m_DirectoryChangeEventQueue.empty())
+	if (!m_ContentsChangeEventQueue.empty())
 		UpdateDirectories();
 }
 
@@ -74,12 +74,12 @@ void PathPanel::OnEvent(Event& event)
 	Panel::OnEvent(event);
 
 	EventDispatcher dispatcher(event);
-	dispatcher.Dispatch<DirectoryChangeEvent>(BIND_EVENT_FN(PathPanel::OnCurrentXboxLocationChange));
+	dispatcher.Dispatch<ContentsChangeEvent>(BIND_EVENT_FN(PathPanel::OnCurrentXboxLocationChange));
 }
 
-bool PathPanel::OnCurrentXboxLocationChange(DirectoryChangeEvent& event)
+bool PathPanel::OnCurrentXboxLocationChange(ContentsChangeEvent& event)
 {
-	m_DirectoryChangeEventQueue.push(event);
+	m_ContentsChangeEventQueue.push(event);
 
 	return true;
 }
@@ -98,5 +98,5 @@ void PathPanel::UpdateDirectories()
 		locationCopy.erase(0, pos + 1);
 	}
 
-	m_DirectoryChangeEventQueue.pop();
+	m_ContentsChangeEventQueue.pop();
 }

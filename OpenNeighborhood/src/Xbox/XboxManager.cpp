@@ -34,11 +34,20 @@ const std::string& XboxManager::GoToDirectory(const std::string& directory)
 	return s_CurrentLocation;
 }
 
+std::string XboxManager::GetParent()
+{
+	std::string path = s_CurrentLocation;
+	size_t lastSeparatorIndex = path.find_last_of('\\');
+
+	if (lastSeparatorIndex != std::string::npos)
+		path = path.substr(0, lastSeparatorIndex);
+
+	return path;
+}
+
 const std::string& XboxManager::GoToParent()
 {
-	size_t lastSeparatorIndex = s_CurrentLocation.find_last_of('\\');
-	if (lastSeparatorIndex != std::string::npos)
-		s_CurrentLocation = s_CurrentLocation.substr(0, lastSeparatorIndex);
+	s_CurrentLocation = GetParent();
 
 	return s_CurrentLocation;
 }

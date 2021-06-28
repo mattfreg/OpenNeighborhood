@@ -19,11 +19,11 @@ public:
 	static void SetHeight(float height) { s_Height = height; }
 private:
 	std::vector<std::string> m_Directories;
-	std::queue<DirectoryChangeEvent> m_DirectoryChangeEventQueue;
+	std::queue<ContentsChangeEvent> m_ContentsChangeEventQueue;
 	static float s_Width;
 	static float s_Height;
 	GoToParentButton m_GoToParentButton;
 
-	bool OnCurrentXboxLocationChange(DirectoryChangeEvent& event);
+	bool OnCurrentXboxLocationChange(ContentsChangeEvent& event);
 	void UpdateDirectories();
 };

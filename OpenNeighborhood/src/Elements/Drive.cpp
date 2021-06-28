@@ -33,9 +33,7 @@ void Drive::OnClick()
 		for (auto& file : files)
 			fileElements->emplace_back(CreateRef<File>(file));
 
-		ContentsChangeEvent contentsChangeEvent(fileElements);
-		DirectoryChangeEvent directoryChangeEvent;
-		m_EventCallback(contentsChangeEvent);
-		m_EventCallback(directoryChangeEvent);
+		ContentsChangeEvent event(fileElements);
+		m_EventCallback(event);
 	}
 }

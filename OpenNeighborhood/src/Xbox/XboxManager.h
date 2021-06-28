@@ -11,6 +11,7 @@ public:
 	inline static const std::string& GetCurrentLocation() { return s_CurrentLocation; }
 
 	static const std::string& GoToDirectory(const std::string& directory);
+	static std::string GetParent();
 	static const std::string& GoToParent();
 private:
 	static XBDM::Console s_Console;
