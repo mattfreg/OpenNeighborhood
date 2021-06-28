@@ -39,7 +39,8 @@ void PathPanel::OnRender()
 	ImGui::Begin("Path Window", nullptr, windowFlags);
 	ImGui::PushFont(UI::GetRegularBigFont());
 
-	RenderGoToParentButton();
+	m_GoToParentButton.OnRender();
+
 	ImGui::SameLine();
 	ImGui::Text("%s", "|");
 	ImGui::SameLine();
@@ -98,14 +99,4 @@ void PathPanel::UpdateDirectories()
 	}
 
 	m_DirectoryChangeEventQueue.pop();
-}
-
-void PathPanel::RenderGoToParentButton()
-{
-	auto texture = TextureManager::GetTexture("leftArrow");
-	uint32_t width = texture->GetWidth() * 3;
-	uint32_t height = texture->GetHeight();
-
-	if (ImGui::ImageButton((void*)(intptr_t)texture->GetTextureID(), ImVec2((float)texture->GetWidth(), (float)texture->GetHeight())))
-		LOG_INFO("GoToParent button clicked");
 }

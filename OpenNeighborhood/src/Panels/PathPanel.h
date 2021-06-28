@@ -2,6 +2,7 @@
 
 #include "Panels/Panel.h"
 #include "Events/AppEvent.h"
+#include "Elements/GoToParentButton.h"
 
 class PathPanel : public Panel
 {
@@ -21,9 +22,8 @@ private:
 	std::queue<DirectoryChangeEvent> m_DirectoryChangeEventQueue;
 	static float s_Width;
 	static float s_Height;
+	GoToParentButton m_GoToParentButton;
 
 	bool OnCurrentXboxLocationChange(DirectoryChangeEvent& event);
 	void UpdateDirectories();
-
-	void RenderGoToParentButton();
 };
