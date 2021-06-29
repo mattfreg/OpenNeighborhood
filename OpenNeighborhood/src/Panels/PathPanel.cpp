@@ -57,14 +57,13 @@ void PathPanel::OnRender()
 
 	ImGui::SameLine();
 
-	for (size_t i = 0; i < m_Directories.size(); i++)
+	for (size_t i = 0; i < m_PathNodes.size(); i++)
 	{
 		ImGui::PushID((int)i);
 
-		if (ImGui::Button(m_Directories[i].c_str()))
-			LOG_INFO(m_Directories[i] + " clicked");
+		m_PathNodes[i].OnRender();
 
-		if (i + 1 < m_Directories.size())
+		if (i + 1 < m_PathNodes.size())
 		{
 			ImGui::SameLine();
 			ImGui::Text("%s", ">");
@@ -98,14 +97,14 @@ bool PathPanel::OnCurrentXboxLocationChange(ContentsChangeEvent& event)
 
 void PathPanel::UpdateDirectories()
 {
-	m_Directories.clear();
+	m_PathNodes.clear();
 	std::string locationCopy = XboxManager::GetCurrentLocation() + '\\';
 	size_t pos = 0;
 
 	while ((pos = locationCopy.find('\\')) != std::string::npos)
 	{
 		std::string directory = locationCopy.substr(0, pos);
-		m_Directories.push_back(directory);
+		m_PathNodes.push_back(PathNode(directory));
 
 		locationCopy.erase(0, pos + 1);
 	}

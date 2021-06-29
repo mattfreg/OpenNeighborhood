@@ -3,6 +3,7 @@
 #include "Panels/Panel.h"
 #include "Events/AppEvent.h"
 #include "Elements/GoToParentButton.h"
+#include "Elements/PathNode.h"
 
 class PathPanel : public Panel
 {
@@ -18,7 +19,7 @@ public:
 	static void SetWidth(float width) { s_Width = width; }
 	static void SetHeight(float height) { s_Height = height; }
 private:
-	std::vector<std::string> m_Directories;
+	std::vector<PathNode> m_PathNodes;
 	std::queue<ContentsChangeEvent> m_ContentsChangeEventQueue;
 	static float s_Width;
 	static float s_Height;
