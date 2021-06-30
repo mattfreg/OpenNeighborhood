@@ -28,7 +28,7 @@ namespace XBDM
 			return false;
 		}
 
-		m_Socket = socket(AF_UNSPEC, SOCK_STREAM, IPPROTO_TCP);
+		m_Socket = socket(addrInfo->ai_family, addrInfo->ai_socktype, addrInfo->ai_protocol);
 		if (m_Socket < 0)
 		{
 			CleanupSocket();
