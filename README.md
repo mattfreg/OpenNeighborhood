@@ -1,7 +1,9 @@
 # OpenNeighborhood
 Open-source and cross-platform clone of Xbox 360 Neighborhood.
 
-![Home](https://github.com/ClementDreptin/OpenNeighborhood/blob/master/Resources/Screenshots/home.png?raw=true) ![Hdd root](https://github.com/ClementDreptin/OpenNeighborhood/blob/master/Resources/Screenshots/hdd-root.png?raw=true)
+Home | Root of Hdd
+--- | ---
+<img src="./Resources/Screenshots/home.png" alt="Home"/> | <img src="./Resources/Screenshots/hdd-root.png" alt="Hdd root"/>
 
 ## Disclaimer
 **There are no prebuilt binaries for any platform at the moment, the only way to use OpenNeighborhood is to compile it from source.**
