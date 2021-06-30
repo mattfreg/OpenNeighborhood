@@ -9,7 +9,8 @@ std::filesystem::path GetExecDir()
 #ifdef PLATFORM_WINDOWS
 	GetModuleFileNameA(NULL, path, MAX_SIZE);
 #else
-	readlink("/proc/self/exe", path, MAX_SIZE);
+	size_t read = readlink("/proc/self/exe", path, MAX_SIZE);
+	ASSERT(read != -1, "Couldn't get the execution directory!");
 #endif
 
 	std::filesystem::path execFilePath(path);
