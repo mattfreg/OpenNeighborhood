@@ -32,6 +32,7 @@ protected:
 	EventCallbackFn m_EventCallback;
 
 	void OnEvent(Event& event);
+	void DisplayErrorModal();
 
 	// XBDM related members
 	bool m_Success = true; // Gets set to false whenever an XBDM operation related to the element fails

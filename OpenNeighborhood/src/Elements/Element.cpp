@@ -29,6 +29,17 @@ void Element::OnRender()
 			OnRightClick();
 	}
 
+	DisplayErrorModal();
+}
+
+void Element::OnEvent(Event& event)
+{
+	OpenNeighborhood& currentLayer = OpenNeighborhood::Get();
+	currentLayer.OnEvent(event);
+}
+
+void Element::DisplayErrorModal()
+{
 	if (!m_Success)
 	{
 		ImGui::OpenPopup("Error");
@@ -41,7 +52,7 @@ void Element::OnRender()
 	{
 		ImGui::Text("%s", m_ErrorMessage.c_str());
 
-		if (ImGui::Button("OK", ImVec2(120, 0)))
+		if (ImGui::Button("OK", ImVec2(120.0f, 0.0f)))
 		{
 			m_Success = true;
 			ImGui::CloseCurrentPopup();
@@ -49,10 +60,4 @@ void Element::OnRender()
 
 		ImGui::EndPopup();
 	}
-}
-
-void Element::OnEvent(Event& event)
-{
-	OpenNeighborhood& currentLayer = OpenNeighborhood::Get();
-	currentLayer.OnEvent(event);
 }
