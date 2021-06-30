@@ -166,7 +166,7 @@ namespace XBDM
 	std::string Console::Receive()
 	{
 		std::string result;
-		char buffer[2048]{ 0 };
+		char buffer[2048] = { 0 };
 
 		while (recv(m_Socket, buffer, sizeof(buffer), 0) != SOCKET_ERROR)
 		{

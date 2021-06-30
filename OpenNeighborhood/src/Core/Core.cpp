@@ -4,7 +4,7 @@
 std::filesystem::path GetExecDir()
 {
 	const int MAX_SIZE = 200;
-	char path[MAX_SIZE]{ 0 };
+	char path[MAX_SIZE] = { 0 };
 
 #ifdef PLATFORM_WINDOWS
 	GetModuleFileNameA(NULL, path, MAX_SIZE);
