@@ -271,7 +271,7 @@ namespace XBDM
 #ifdef _WIN32
 		Sleep(milliseconds);
 #else
-		usleep(milliseconds);
+		usleep(milliseconds * 1000);
 #endif
 	}
 }
