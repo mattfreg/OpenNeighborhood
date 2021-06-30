@@ -105,7 +105,7 @@ void AddXboxButton::CreateXbox(const std::string& consoleName, const std::string
 	ContentsChangeEvent event(xboxElement, true);
 	m_EventCallback(event);
 
-	std::string configFilePath = GetExecDir() /= "OpenNeighborhood.ini";
+	std::string configFilePath = GetExecDir().append("OpenNeighborhood.ini").string();
 	mINI::INIFile configFile(configFilePath);
 	mINI::INIStructure config;
 

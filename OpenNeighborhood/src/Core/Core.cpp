@@ -7,7 +7,7 @@ std::filesystem::path GetExecDir()
 	char path[MAX_SIZE]{ 0 };
 
 #ifdef PLATFORM_WINDOWS
-	GetModuleFileName(NULL, path, MAX_SIZE);
+	GetModuleFileNameA(NULL, path, MAX_SIZE);
 #else
 	readlink("/proc/self/exe", path, MAX_SIZE);
 #endif

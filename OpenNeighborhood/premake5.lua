@@ -25,10 +25,6 @@ project "OpenNeighborhood"
 		"%{IncludeDir.Glad}"
 	}
 
-	postbuildcommands {
-		"{COPY} assets %{cfg.targetdir}"
-	}
-
 	defines {
 		"GLFW_INCLUDE_NONE"
 	}
@@ -39,6 +35,16 @@ project "OpenNeighborhood"
 		"ImGui",
 		"XBDM"
 	}
+
+	filter "system:windows"
+		postbuildcommands {
+			"{COPY} assets %{cfg.targetdir}/assets"
+		}
+
+	filter "system:not windows"
+		postbuildcommands {
+			"{COPY} assets %{cfg.targetdir}"
+		}
 
 	filter "system:not macosx"
 		linkgroups "on"

@@ -8,7 +8,7 @@ Element::Element(const std::string& label, const std::string& textureName, const
 	: m_Label(label), m_TextureName(textureName), m_ErrorMessage(errorMessage)
 {
 	if (!TextureManager::TextureExists(textureName))
-		TextureManager::AddTexture(textureName, GetExecDir() /= "assets/icons/" + textureName + ".png");
+		TextureManager::AddTexture(textureName, GetExecDir().append("assets/icons/").string() + textureName + ".png");
 
 	auto texture = TextureManager::GetTexture(textureName);
 	m_Width = texture->GetWidth() * 3;
