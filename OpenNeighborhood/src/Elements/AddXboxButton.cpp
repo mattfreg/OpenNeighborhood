@@ -90,26 +90,7 @@ void AddXboxButton::OnRender()
 		ImGui::EndPopup();
 	}
 
-	if (!m_Success)
-	{
-		ImGui::OpenPopup("Error");
-
-		ImVec2 center(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
-		ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-	}
-
-	if (ImGui::BeginPopupModal("Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-	{
-		ImGui::Text("%s", m_ErrorMessage.c_str());
-
-		if (ImGui::Button("OK", ImVec2(120, 0)))
-		{
-			m_Success = true;
-			ImGui::CloseCurrentPopup();
-		}
-
-		ImGui::EndPopup();
-	}
+	DisplayErrorModal();
 }
 
 void AddXboxButton::OnClick()

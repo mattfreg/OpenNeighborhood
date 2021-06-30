@@ -6,6 +6,7 @@
 
 #include "Elements/AddXboxButton.h"
 #include "Elements/Xbox.h"
+#include "Panels/PathPanel.h"
 
 ContentsPanel::ContentsPanel()
 {
@@ -28,13 +29,11 @@ ContentsPanel::ContentsPanel()
 			}
 		}
 	}
-
-	UpdateEventCallbacks();
 }
 
 void ContentsPanel::OnRender()
 {
-	float pathPanelSize = m_Margin * 5.0f;
+	float pathPanelHeight = PathPanel::GetHeight();
 
 	ImGuiWindowFlags windowFlags =
 		  ImGuiWindowFlags_NoTitleBar
@@ -45,8 +44,8 @@ void ContentsPanel::OnRender()
 		| ImGuiWindowFlags_NoNavFocus
 	;
 
-	ImGui::SetNextWindowPos(ImVec2(m_Margin, m_Margin * 2.0f + pathPanelSize));
-	ImGui::SetNextWindowSize(ImVec2((float)m_WindowWidth - m_Margin * 2.0f, (float)m_WindowHeight - (m_Margin * 3.0f + pathPanelSize)));
+	ImGui::SetNextWindowPos(ImVec2(m_Margin, m_Margin * 2.0f + pathPanelHeight));
+	ImGui::SetNextWindowSize(ImVec2((float)m_WindowWidth - m_Margin * 2.0f, (float)m_WindowHeight - (m_Margin * 3.0f + pathPanelHeight)));
 
 	ImGui::Begin("Contents Window", nullptr, windowFlags);
 
@@ -84,12 +83,6 @@ bool ContentsPanel::OnContentsChange(ContentsChangeEvent& event)
 	return true;
 }
 
-void ContentsPanel::UpdateEventCallbacks()
-{
-	for (auto& element : m_Elements)
-		element->SetEventCallback(BIND_EVENT_FN(ContentsPanel::OnEvent));
-}
-
 void ContentsPanel::InjectNewElements()
 {
 	ContentsChangeEvent& event = m_ContentsChangeEventQueue.front();
@@ -101,6 +94,5 @@ void ContentsPanel::InjectNewElements()
 	else
 		m_Elements = *event.GetElements();
 
-	UpdateEventCallbacks();
 	m_ContentsChangeEventQueue.pop();
 }

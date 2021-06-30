@@ -17,20 +17,22 @@ void File::OnClick()
 
 void File::OpenDirectory()
 {
-	XBDM::Console xbox = XboxManager::GetConsole();
+	XBDM::Console& xbox = XboxManager::GetConsole();
 	std::vector<XBDM::File> files;
 
 	try
 	{
 		files = xbox.GetDirectoryContents(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name);
 	}
-	catch (const std::invalid_argument& exception)
+	catch (const std::invalid_argument&)
 	{
 		m_Success = false;
 	}
 
 	if (m_Success)
 	{
+		XboxManager::GoToDirectory(m_Data.Name);
+
 		Ref<std::vector<Ref<Element>>> fileElements = CreateRef<std::vector<Ref<Element>>>();
 
 		for (auto& file : files)
@@ -38,13 +40,11 @@ void File::OpenDirectory()
 
 		ContentsChangeEvent event(fileElements);
 		m_EventCallback(event);
-
-		XboxManager::GoToDirectory(m_Data.Name);
 	}
 }
 
 void File::LaunchXEX()
 {
-	XBDM::Console xbox = XboxManager::GetConsole();
+	XBDM::Console& xbox = XboxManager::GetConsole();
 	xbox.LaunchXEX(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name);
 }

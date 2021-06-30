@@ -15,6 +15,5 @@ private:
 	std::queue<ContentsChangeEvent> m_ContentsChangeEventQueue;
 
 	bool OnContentsChange(ContentsChangeEvent& event);
-	void UpdateEventCallbacks();
 	void InjectNewElements();
 };
