@@ -104,7 +104,7 @@ void PathPanel::UpdateDirectories()
 	while ((pos = locationCopy.find('\\')) != std::string::npos)
 	{
 		std::string directory = locationCopy.substr(0, pos);
-		m_PathNodes.push_back(PathNode(directory));
+		m_PathNodes.push_back(PathNode(directory, m_PathNodes.size(), this));
 
 		locationCopy.erase(0, pos + 1);
 	}

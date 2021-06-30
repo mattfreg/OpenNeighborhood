@@ -8,6 +8,8 @@
 class PathPanel : public Panel
 {
 public:
+	friend class PathNode;
+
 	PathPanel();
 
 	virtual void OnRender() override;
