@@ -13,9 +13,10 @@ ContentsPanel::ContentsPanel()
 	m_Elements.emplace_back(CreateRef<AddXboxButton>());
 
 	struct stat buffer;
-	if (stat("OpenNeighborhood.ini", &buffer) != -1)
+	std::string configFilePath = GetExecDir().append("OpenNeighborhood.ini").string();
+	if (stat(configFilePath.c_str(), &buffer) != -1)
 	{
-		mINI::INIFile configFile("OpenNeighborhood.ini");
+		mINI::INIFile configFile(configFilePath);
 		mINI::INIStructure config;
 		configFile.read(config);
 
