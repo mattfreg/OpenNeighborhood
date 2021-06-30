@@ -54,8 +54,7 @@ project "OpenNeighborhood"
 		links {
 			"X11",
 			"pthread",
-			"dl",
-			"stdc++fs"
+			"dl"
 		}
 
 	filter "system:macosx"

@@ -105,11 +105,12 @@ void AddXboxButton::CreateXbox(const std::string& consoleName, const std::string
 	ContentsChangeEvent event(xboxElement, true);
 	m_EventCallback(event);
 
-	mINI::INIFile configFile("OpenNeighborhood.ini");
+	std::string configFilePath = GetExecDir() /= "OpenNeighborhood.ini";
+	mINI::INIFile configFile(configFilePath);
 	mINI::INIStructure config;
 
 	struct stat buffer;
-	if (stat("OpenNeighborhood.ini", &buffer) == -1)
+	if (stat(configFilePath.c_str(), &buffer) == -1)
 	{
 		config[consoleName]["ip_address"] = ipAddress;
 		configFile.generate(config, true);
