@@ -10,7 +10,15 @@ bool XboxManager::CreateConsole(const std::string& ipAddress, std::string& conso
 
 	if (s_Console.OpenConnection())
 	{
-		consoleName = s_Console.GetName();
+		try
+		{
+			consoleName = s_Console.GetName();
+		}
+		catch (const std::exception&)
+		{
+			s_Console.CloseConnection();
+			return false;
+		}
 		
 		if (!keepConnectionOpen)
 			s_Console.CloseConnection();

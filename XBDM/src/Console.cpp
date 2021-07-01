@@ -71,6 +71,12 @@ namespace XBDM
 		SendCommand("dbgname");
 		std::string response = Receive();
 
+		if (response.length() <= 5)
+			throw std::exception("Response length too short");
+
+		if (response[0] != '2')
+			throw std::exception("Couldn't get the console name");
+
 		std::string result = response.substr(5, response.length() - 5);
 		return result;
 	}
