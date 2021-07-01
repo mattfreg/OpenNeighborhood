@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Render/TextureManager.h"
 
+#include "Core/Assert.h"
+
 std::unordered_map<std::string, Ref<Texture>> TextureManager::s_Textures;
 uint32_t TextureManager::s_TextureCount;
 

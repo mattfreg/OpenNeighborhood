@@ -67,7 +67,7 @@ void AddXboxButton::OnRender()
 
 		ImGui::PopID();
 
-		if (ImGui::Button("OK", ImVec2(120, 0)))
+		if (ImGui::Button("OK", ImVec2(120.0f, 0.0f)))
 		{
 			std::stringstream ipAddress;
 			ipAddress << bytes[0] << "." << bytes[1] << "." << bytes[2] << "." << bytes[3];

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Core/Core.h"
-#include "Events/Event.h"
 #include "Events/AppEvent.h"
 #include "Core/Window.h"
 #include "Core/Stack.h"

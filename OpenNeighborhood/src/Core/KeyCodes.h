@@ -1,6 +1,6 @@
 #pragma once
 
-using KeyCode = uint16_t;
+using KeyCode = short;
 
 namespace Key
 {

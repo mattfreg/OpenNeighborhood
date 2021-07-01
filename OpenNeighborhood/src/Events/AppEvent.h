@@ -6,10 +6,11 @@
 class WindowResizeEvent : public Event
 {
 public:
-	WindowResizeEvent(unsigned int width, unsigned int height) : m_Width(width), m_Height(height) {}
+	WindowResizeEvent(float width, float height)
+		: m_Width(width), m_Height(height) {}
 
-	inline unsigned int GetWidth() const { return m_Width; }
-	inline unsigned int GetHeight() const { return m_Height; }
+	inline float GetWidth() const { return m_Width; }
+	inline float GetHeight() const { return m_Height; }
 
 	std::string ToString() const override
 	{
@@ -21,7 +22,8 @@ public:
 	EVENT_CLASS_TYPE(WindowResize)
 	EVENT_CLASS_CATEGORY(EventCategoryApp)
 private:
-	unsigned int m_Width, m_Height;
+	float m_Width;
+	float m_Height;
 };
 
 class WindowCloseEvent : public Event

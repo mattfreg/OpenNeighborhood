@@ -17,7 +17,8 @@ protected:
 class KeyPressedEvent : public KeyEvent
 {
 public:
-	KeyPressedEvent(int keyCode, int repeatCount) : KeyEvent(keyCode), m_RepeatCount(repeatCount) {}
+	KeyPressedEvent(int keyCode, int repeatCount)
+		: KeyEvent(keyCode), m_RepeatCount(repeatCount) {}
 
 	inline int GetRepeatCount() const { return m_RepeatCount; }
 
@@ -36,7 +37,8 @@ private:
 class KeyReleasedEvent : public KeyEvent
 {
 public:
-	KeyReleasedEvent(int keyCode) : KeyEvent(keyCode) {}
+	KeyReleasedEvent(int keyCode)
+		: KeyEvent(keyCode) {}
 
 	std::string ToString() const override
 	{
@@ -51,7 +53,8 @@ public:
 class KeyTypedEvent : public KeyEvent
 {
 public:
-	KeyTypedEvent(int keyCode) : KeyEvent(keyCode) {}
+	KeyTypedEvent(int keyCode)
+		: KeyEvent(keyCode) {}
 
 	std::string ToString() const override
 	{

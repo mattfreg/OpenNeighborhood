@@ -15,7 +15,7 @@ PathPanel::PathPanel()
 	if (!TextureManager::TextureExists(textureName))
 		TextureManager::AddTexture(textureName, GetExecDir().append("assets/icons/").string() + textureName + ".png");
 
-	s_Width = (float)m_WindowWidth - m_Margin * 2.0f;
+	s_Width = m_WindowWidth - m_Margin * 2.0f;
 	s_Height = m_Margin * 2.4f;
 }
 
@@ -31,7 +31,7 @@ void PathPanel::OnRender()
 		| ImGuiWindowFlags_HorizontalScrollbar
 	;
 
-	s_Width = (float)m_WindowWidth - m_Margin * 2.0f;
+	s_Width = m_WindowWidth - m_Margin * 2.0f;
 
 	ImGui::SetNextWindowPos(ImVec2(m_Margin, m_Margin));
 	ImGui::SetNextWindowSize(ImVec2(s_Width, s_Height));

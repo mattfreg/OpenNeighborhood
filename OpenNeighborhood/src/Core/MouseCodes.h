@@ -1,6 +1,6 @@
 #pragma once
 
-using MouseCode = uint16_t;
+using MouseCode = short;
 
 namespace Mouse
 {

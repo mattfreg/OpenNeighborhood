@@ -28,6 +28,8 @@ enum EventCategory
 
 #define EVENT_CLASS_CATEGORY(category) inline virtual int GetCategoryFlags() const override { return category; }
 
+#define BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
+
 class Event
 {
 	friend class EventDispatcher;

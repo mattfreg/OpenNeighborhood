@@ -2,19 +2,18 @@
 
 #include <GLFW/glfw3.h>
 
-#include "Core/Core.h"
 #include "Events/Event.h"
 
 struct WindowProps
 {
-	std::string title;
-	uint32_t width;
-	uint32_t height;
+	std::string Title;
+	float Width;
+	float Height;
 
 	WindowProps(const std::string& title = "OpenNeighborhood",
-		uint32_t width = 1280,
-		uint32_t height = 720)
-		: title(title), width(width), height(height) {}
+		float width = 1280,
+		float height = 720)
+		: Title(title), Width(width), Height(height) {}
 };
 
 class Window
@@ -27,11 +26,11 @@ public:
 
 	void OnUpdate();
 
-	inline unsigned int GetWidth() const { return m_Data.width; }
-	inline unsigned int GetHeight() const { return m_Data.height; }
+	inline float GetWidth() const { return m_Data.Width; }
+	inline float GetHeight() const { return m_Data.Height; }
 
 	// Window attributes
-	inline void SetEventCallback(const EventCallbackFn& callback) { m_Data.eventCallback = callback; }
+	inline void SetEventCallback(const EventCallbackFn& callback) { m_Data.EventCallback = callback; }
 	void SetVSync(bool enabled);
 	bool IsVSync() const;
 
@@ -43,11 +42,12 @@ private:
 
 	struct WindowData
 	{
-		std::string title;
-		unsigned int width, height;
+		std::string Title;
+		float Width;
+		float Height;
 		bool VSync;
 
-		EventCallbackFn eventCallback;
+		EventCallbackFn EventCallback;
 	};
 
 	WindowData m_Data;

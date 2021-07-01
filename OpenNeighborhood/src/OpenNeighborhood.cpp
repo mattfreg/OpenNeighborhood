@@ -5,8 +5,7 @@
 #include "Panels/MainPanel.h"
 #include "Panels/PathPanel.h"
 #include "Panels/ContentsPanel.h"
-
-#include "Events/AppEvent.h"
+#include "Core/Assert.h"
 
 OpenNeighborhood* OpenNeighborhood::s_Instance = nullptr;
 
