@@ -51,7 +51,7 @@ void Element::DisplayErrorModal()
 		ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 	}
 
-	if (ImGui::BeginPopupModal("Error", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	if (ImGui::BeginPopupModal("Error", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
 	{
 		ImGui::Text("%s", m_ErrorMessage.c_str());
 
