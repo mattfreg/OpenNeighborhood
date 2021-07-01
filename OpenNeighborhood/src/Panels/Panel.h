@@ -15,8 +15,8 @@ public:
 	virtual void OnEvent(Event& event);
 protected:
 	float m_Margin = 20.0f;
-	unsigned int m_WindowWidth;
-	unsigned int m_WindowHeight;
+	float m_WindowWidth;
+	float m_WindowHeight;
 private:
 	bool OnWindowResize(WindowResizeEvent& event);
 	void SetWindowWidthAndHeight();

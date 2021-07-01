@@ -4,8 +4,10 @@
 #include <glad/glad.h>
 #include <stb_image/stb_image.h>
 
+#include "Core/Assert.h"
+
 Texture::Texture(const std::string& filePath)
-	: m_RendererID(0), m_Width(0), m_Height(0)
+	: m_RendererID(0), m_Width(0.0f), m_Height(0.0f)
 {
 	int width, height, channels;
 	stbi_uc* data = nullptr;

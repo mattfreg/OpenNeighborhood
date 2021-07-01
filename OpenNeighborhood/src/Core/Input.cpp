@@ -5,23 +5,23 @@
 
 bool Input::IsKeyPressed(int keyCode)
 {
-	auto window = static_cast<GLFWwindow*>(App::Get().GetWindow().GetNativeWindow());
-	auto state = glfwGetKey(window, keyCode);
+	GLFWwindow* window = (GLFWwindow*)(App::Get().GetWindow().GetNativeWindow());
+	int state = glfwGetKey(window, keyCode);
 
 	return state == GLFW_PRESS || state == GLFW_REPEAT;
 }
 
 bool Input::IsMouseButtonPressed(int button)
 {
-	auto window = static_cast<GLFWwindow*>(App::Get().GetWindow().GetNativeWindow());
-	auto state = glfwGetMouseButton(window, button);
+	GLFWwindow* window = (GLFWwindow*)(App::Get().GetWindow().GetNativeWindow());
+	int state = glfwGetMouseButton(window, button);
 
 	return state == GLFW_PRESS;
 }
 
 std::pair<float, float> Input::GetMousePosition()
 {
-	auto window = static_cast<GLFWwindow*>(App::Get().GetWindow().GetNativeWindow());
+	GLFWwindow* window = (GLFWwindow*)(App::Get().GetWindow().GetNativeWindow());
 	double xPos, yPos;
 	glfwGetCursorPos(window, &xPos, &yPos);
 

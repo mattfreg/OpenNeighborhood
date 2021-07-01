@@ -28,6 +28,8 @@ enum EventCategory
 
 #define EVENT_CLASS_CATEGORY(category) inline virtual int GetCategoryFlags() const override { return category; }
 
+#define BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
+
 class Event
 {
 	friend class EventDispatcher;
@@ -39,7 +41,6 @@ public:
 	virtual EventType GetEventType() const = 0;
 	virtual const char* GetName() const = 0;
 	virtual int GetCategoryFlags() const = 0;
-	inline virtual std::string ToString() const { return GetName(); }
 
 	inline bool IsInCategory(EventCategory category)
 	{
@@ -67,8 +68,3 @@ public:
 private:
 	Event& m_Event;
 };
-
-inline std::ostream& operator<<(std::ostream& os, const Event& event)
-{
-	return os << event.ToString();
-}

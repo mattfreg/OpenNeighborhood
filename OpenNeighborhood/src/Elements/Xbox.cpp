@@ -15,18 +15,15 @@ void Xbox::OnClick()
 
 	if (m_Success)
 	{
-		Ref<std::vector<Ref<Element>>> driveElements = CreateRef<std::vector<Ref<Element>>>();
+		auto driveElements = CreateRef<std::vector<Ref<Element>>>();
 		XBDM::Console& xbox = XboxManager::GetConsole();
 
 		std::vector<XBDM::Drive> drives = xbox.GetDrives();
 
-		if (m_Success)
-		{
-			for (auto& drive : drives)
-				driveElements->emplace_back(CreateRef<Drive>(drive));
+		for (auto& drive : drives)
+			driveElements->emplace_back(CreateRef<Drive>(drive));
 
-			ContentsChangeEvent event(driveElements);
-			m_EventCallback(event);
-		}
+		ContentsChangeEvent event(driveElements);
+		m_EventCallback(event);
 	}
 }

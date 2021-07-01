@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Core/Core.h"
-#include "Events/Event.h"
 #include "Events/AppEvent.h"
 #include "Core/Window.h"
 #include "Core/Stack.h"
@@ -15,7 +13,7 @@ public:
 
 	void Run();
 
-	void OnEvent(Event&);
+	void OnEvent(Event& event);
 
 	void PushLayer(Layer* layer);
 
@@ -24,7 +22,7 @@ public:
 
 	void Close();
 private:
-	Scope<Window> m_Window;
+	Window* m_Window;
 	bool m_Running = true;
 	bool m_Minimized = false;
 

@@ -11,7 +11,7 @@ workspace "OpenNeighborhood"
 		"MultiProcessorCompile"
 	}
 
-OutputDir = "%{cfg.buildcfg}-%{cfg.system}"
+OutputDir = "%{cfg.buildcfg}"
 TargetDir = "bin/" .. OutputDir
 ObjDir = "bin-int/" .. OutputDir
 

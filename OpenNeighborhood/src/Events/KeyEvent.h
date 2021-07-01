@@ -17,16 +17,10 @@ protected:
 class KeyPressedEvent : public KeyEvent
 {
 public:
-	KeyPressedEvent(int keyCode, int repeatCount) : KeyEvent(keyCode), m_RepeatCount(repeatCount) {}
+	KeyPressedEvent(int keyCode, int repeatCount)
+		: KeyEvent(keyCode), m_RepeatCount(repeatCount) {}
 
 	inline int GetRepeatCount() const { return m_RepeatCount; }
-
-	std::string ToString() const override
-	{
-		std::stringstream ss;
-		ss << "KeyPressedEvent: " << m_KeyCode << " (" << m_RepeatCount << " repeats)";
-		return ss.str();
-	}
 
 	EVENT_CLASS_TYPE(KeyPressed)
 private:
@@ -36,14 +30,8 @@ private:
 class KeyReleasedEvent : public KeyEvent
 {
 public:
-	KeyReleasedEvent(int keyCode) : KeyEvent(keyCode) {}
-
-	std::string ToString() const override
-	{
-		std::stringstream ss;
-		ss << "KeyReleasedEvent: " << m_KeyCode;
-		return ss.str();
-	}
+	KeyReleasedEvent(int keyCode)
+		: KeyEvent(keyCode) {}
 
 	EVENT_CLASS_TYPE(KeyReleased)
 };
@@ -51,14 +39,8 @@ public:
 class KeyTypedEvent : public KeyEvent
 {
 public:
-	KeyTypedEvent(int keyCode) : KeyEvent(keyCode) {}
-
-	std::string ToString() const override
-	{
-		std::stringstream ss;
-		ss << "KeyTypedEvent: " << m_KeyCode;
-		return ss.str();
-	}
+	KeyTypedEvent(int keyCode)
+		: KeyEvent(keyCode) {}
 
 	EVENT_CLASS_TYPE(KeyTyped);
 };

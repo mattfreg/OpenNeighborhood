@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Core/App.h"
 
+#include "Core/Assert.h"
 #include "Xbox/XboxManager.h"
 
 App* App::s_Instance = nullptr;
@@ -10,7 +11,7 @@ App::App(const std::string& name)
 	ASSERT(!s_Instance, "App already exists!");
 	s_Instance = this;
 
-	m_Window = Scope<Window>(Window::Create(WindowProps(name)));
+	m_Window = Window::Create(WindowProps(name));
 	m_Window->SetEventCallback(BIND_EVENT_FN(App::OnEvent));
 }
 
@@ -67,7 +68,7 @@ bool App::OnWindowClose(WindowCloseEvent& event)
 
 bool App::OnWindowResize(WindowResizeEvent& event)
 {
-	if (event.GetWidth() == 0 || event.GetHeight() == 0)
+	if (event.GetWidth() == 0.0f || event.GetHeight() == 0.0f)
 	{
 		m_Minimized = true;
 		return false;
