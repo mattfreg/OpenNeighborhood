@@ -36,6 +36,7 @@ void PathNode::OnClick()
 
 	try
 	{
+		// If the new location ends with ':', then it's a drive and we need to add '\' at the end
 		files = xbox.GetDirectoryContents(newXboxLocation[newXboxLocation.length() - 1] == ':' ? newXboxLocation + '\\' : newXboxLocation);
 	}
 	catch (const std::invalid_argument&)
@@ -47,7 +48,7 @@ void PathNode::OnClick()
 	{
 		XboxManager::SetCurrentLocation(newXboxLocation);
 
-		Ref<std::vector<Ref<Element>>> fileElements = CreateRef<std::vector<Ref<Element>>>();
+		auto fileElements = CreateRef<std::vector<Ref<Element>>>();
 
 		for (auto& file : files)
 			fileElements->emplace_back(CreateRef<File>(file));

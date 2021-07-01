@@ -13,7 +13,7 @@ public:
 
 	void Run();
 
-	void OnEvent(Event&);
+	void OnEvent(Event& event);
 
 	void PushLayer(Layer* layer);
 

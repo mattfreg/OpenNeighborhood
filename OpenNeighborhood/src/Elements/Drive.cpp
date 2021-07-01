@@ -28,7 +28,7 @@ void Drive::OnClick()
 	{
 		XboxManager::GoToDirectory(m_Data.Name);
 
-		Ref<std::vector<Ref<Element>>> fileElements = CreateRef<std::vector<Ref<Element>>>();
+		auto fileElements = CreateRef<std::vector<Ref<Element>>>();
 
 		for (auto& file : files)
 			fileElements->emplace_back(CreateRef<File>(file));

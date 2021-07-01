@@ -4,7 +4,7 @@
 #include "Core/PlatformDetector.h"
 
 #ifdef DEBUG
-	#if defined(PLATFORM_WINDOWS)
+	#ifdef PLATFORM_WINDOWS
 		#define DEBUGBREAK() __debugbreak()
 	#elif (defined(PLATFORM_LINUX) || defined(PLATFORM_MACOS))
 		#include <signal.h>

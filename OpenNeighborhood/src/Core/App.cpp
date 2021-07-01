@@ -68,7 +68,7 @@ bool App::OnWindowClose(WindowCloseEvent& event)
 
 bool App::OnWindowResize(WindowResizeEvent& event)
 {
-	if (event.GetWidth() == 0 || event.GetHeight() == 0)
+	if (event.GetWidth() == 0.0f || event.GetHeight() == 0.0f)
 	{
 		m_Minimized = true;
 		return false;

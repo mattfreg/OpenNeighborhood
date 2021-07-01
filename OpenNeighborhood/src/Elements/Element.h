@@ -8,6 +8,8 @@
 class Element
 {
 public:
+	using EventCallbackFn = std::function<void(Event&)>;
+
 	Element(const std::string& label, const std::string& textureName, const std::string& errorMessage);
 
 	virtual ~Element() = default;
@@ -21,7 +23,6 @@ public:
 	inline float GetWidth() const { return m_Width; }
 	inline float GetHeight() const { return m_Height; }
 
-	using EventCallbackFn = std::function<void(Event&)>;
 	inline void SetEventCallback(const EventCallbackFn& callback) { m_EventCallback = callback; }
 protected:
 	std::string m_Label;

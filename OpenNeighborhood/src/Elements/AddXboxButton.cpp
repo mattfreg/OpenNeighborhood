@@ -16,7 +16,7 @@ void AddXboxButton::OnRender()
 {
 	auto texture = TextureManager::GetTexture(m_TextureName);
 
-	if (ImGui::ImageButtonWithText((void*)(intptr_t)texture->GetTextureID(), ImVec2((float)texture->GetWidth(), (float)texture->GetHeight()), ImVec2((float)m_Width, (float)m_Height), m_Label.c_str(), ImVec2(m_Padding, m_Padding)))
+	if (ImGui::ImageButtonWithText((void*)(intptr_t)texture->GetTextureID(), ImVec2(texture->GetWidth(), texture->GetHeight()), ImVec2(m_Width, m_Height), m_Label.c_str(), ImVec2(m_Padding, m_Padding)))
 		if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			OnClick();
 
@@ -100,7 +100,7 @@ void AddXboxButton::OnClick()
 
 void AddXboxButton::CreateXbox(const std::string& consoleName, const std::string& ipAddress)
 {
-	Ref<std::vector<Ref<Element>>> xboxElement = CreateRef<std::vector<Ref<Element>>>();
+	auto xboxElement = CreateRef<std::vector<Ref<Element>>>();
 	xboxElement->emplace_back(CreateRef<Xbox>(consoleName, ipAddress));
 	ContentsChangeEvent event(xboxElement, true);
 	m_EventCallback(event);

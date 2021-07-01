@@ -35,7 +35,7 @@ namespace XBDM
 			return false;
 		}
 
-		timeval tv = { 5 ,0 };
+		timeval tv = { 5, 0 };
 		setsockopt(m_Socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof(timeval));
 
 		if (connect(m_Socket, addrInfo->ai_addr, (int)addrInfo->ai_addrlen) == SOCKET_ERROR)
@@ -111,6 +111,10 @@ namespace XBDM
 			SendCommand("drivefreespace name=\"" + drive.Name + ":\\\"");
 			std::string spaceResponse = Receive();
 
+			/**
+			 * Creating 8-byte integers and making the value of 'XXXhi' properties their
+			 * upper 4 bytes and the value of 'XXXlo' properties their lower 4 bytes.
+			 */
 			drive.FreeBytesAvailable = (UINT64)GetIntegerProperty(spaceResponse, "freetocallerhi") << 32 | (UINT64)GetIntegerProperty(spaceResponse, "freetocallerlo");
 			drive.TotalBytes = (UINT64)GetIntegerProperty(spaceResponse, "totalbyteshi") << 32 | (UINT64)GetIntegerProperty(spaceResponse, "totalbyteslo");
 			drive.TotalFreeBytes = (UINT64)GetIntegerProperty(spaceResponse, "totalfreebyteshi") << 32 | (UINT64)GetIntegerProperty(spaceResponse, "totalfreebyteslo");
@@ -142,6 +146,10 @@ namespace XBDM
 
 			File file;
 
+			/**
+			 * Creating an 8-byte integer and making the value of sizehi
+			 * its upper 4 bytes and the value of sizelo its lower 4 bytes.
+			 */
 			file.Name = fileName;
 			file.Size = (UINT64)GetIntegerProperty(line, "sizehi") << 32 | (UINT64)GetIntegerProperty(line, "sizelo");
 			file.IsDirectory = EndsWith(line, " directory");
@@ -220,7 +228,7 @@ namespace XBDM
 		if (line.find(propertyName) == std::string::npos)
 			return (DWORD)std::string::npos;
 
-		// all of the properties are like this: NAME=VALUE
+		// all integers properties are like this: NAME=VALUE
 		size_t startIndex = line.find(propertyName) + propertyName.size() + 1;
 		size_t spaceIndex = line.find(' ', startIndex);
 		size_t crIndex = line.find('\r', startIndex);

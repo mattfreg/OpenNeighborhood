@@ -32,7 +32,7 @@ public:
 	// Window attributes
 	inline void SetEventCallback(const EventCallbackFn& callback) { m_Data.EventCallback = callback; }
 	void SetVSync(bool enabled);
-	bool IsVSync() const;
+	bool IsVSync() const { return m_Data.VSync; }
 
 	inline void* GetNativeWindow() const { return m_Window; }
 

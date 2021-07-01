@@ -168,8 +168,3 @@ void Window::SetVSync(bool enabled)
 
 	m_Data.VSync = enabled;
 }
-
-bool Window::IsVSync() const
-{
-	return m_Data.VSync;
-}
