@@ -127,12 +127,19 @@ namespace XBDM
 			 * Creating 8-byte integers and making the value of 'XXXhi' properties their
 			 * upper 4 bytes and the value of 'XXXlo' properties their lower 4 bytes.
 			 */
-			drive.FreeBytesAvailable = (UINT64)GetIntegerProperty(spaceResponse, "freetocallerhi") << 32 | (UINT64)GetIntegerProperty(spaceResponse, "freetocallerlo");
-			drive.TotalBytes = (UINT64)GetIntegerProperty(spaceResponse, "totalbyteshi") << 32 | (UINT64)GetIntegerProperty(spaceResponse, "totalbyteslo");
-			drive.TotalFreeBytes = (UINT64)GetIntegerProperty(spaceResponse, "totalfreebyteshi") << 32 | (UINT64)GetIntegerProperty(spaceResponse, "totalfreebyteslo");
-			drive.TotalUsedBytes = drive.TotalBytes - drive.FreeBytesAvailable;
+			try
+			{
+				drive.FreeBytesAvailable = (UINT64)GetIntegerProperty(spaceResponse, "freetocallerhi") << 32 | (UINT64)GetIntegerProperty(spaceResponse, "freetocallerlo");
+				drive.TotalBytes = (UINT64)GetIntegerProperty(spaceResponse, "totalbyteshi") << 32 | (UINT64)GetIntegerProperty(spaceResponse, "totalbyteslo");
+				drive.TotalFreeBytes = (UINT64)GetIntegerProperty(spaceResponse, "totalfreebyteshi") << 32 | (UINT64)GetIntegerProperty(spaceResponse, "totalfreebyteslo");
+				drive.TotalUsedBytes = drive.TotalBytes - drive.FreeBytesAvailable;
 
-			drives.push_back(drive);
+				drives.push_back(drive);
+			}
+			catch (const std::exception&)
+			{
+				throw std::exception("Unable to fetch some data about the drives");
+			}
 		}
 
 		return drives;
@@ -162,14 +169,21 @@ namespace XBDM
 			 * Creating an 8-byte integer and making the value of sizehi
 			 * its upper 4 bytes and the value of sizelo its lower 4 bytes.
 			 */
-			file.Name = fileName;
-			file.Size = (UINT64)GetIntegerProperty(line, "sizehi") << 32 | (UINT64)GetIntegerProperty(line, "sizelo");
-			file.IsDirectory = EndsWith(line, " directory");
+			try
+			{
+				file.Name = fileName;
+				file.Size = (UINT64)GetIntegerProperty(line, "sizehi") << 32 | (UINT64)GetIntegerProperty(line, "sizelo");
+				file.IsDirectory = EndsWith(line, " directory");
 
-			std::filesystem::path filePath(file.Name);
-			file.IsXEX = filePath.extension() == ".xex";
+				std::filesystem::path filePath(file.Name);
+				file.IsXEX = filePath.extension() == ".xex";
 
-			files.push_back(file);
+				files.push_back(file);
+			}
+			catch (const std::exception&)
+			{
+				throw std::exception("Unable to fetch some data about the files");
+			}
 		}
 
 		return files;
@@ -238,7 +252,7 @@ namespace XBDM
 	DWORD Console::GetIntegerProperty(const std::string& line, const std::string& propertyName, bool hex)
 	{
 		if (line.find(propertyName) == std::string::npos)
-			return (DWORD)std::string::npos;
+			throw std::exception(std::string("Property '" + propertyName + "' not found").c_str());
 
 		// all integers properties are like this: NAME=VALUE
 		size_t startIndex = line.find(propertyName) + propertyName.size() + 1;

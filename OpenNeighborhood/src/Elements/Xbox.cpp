@@ -25,9 +25,9 @@ void Xbox::OnClick()
 	{
 		drives = xbox.GetDrives();
 	}
-	catch (const std::exception&)
+	catch (const std::exception& exception)
 	{
-		m_ErrorMessage = "Couldn't fetch the drives!";
+		m_ErrorMessage = exception.what();
 		m_Success = false;
 	}
 

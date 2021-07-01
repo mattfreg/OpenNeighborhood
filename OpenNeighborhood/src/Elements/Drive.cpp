@@ -19,8 +19,9 @@ void Drive::OnClick()
 	{
 		files = xbox.GetDirectoryContents(XboxManager::GetCurrentLocation() + m_Data.Name + ":\\");
 	}
-	catch (const std::invalid_argument&)
+	catch (const std::exception& exception)
 	{
+		m_ErrorMessage = exception.what();
 		m_Success = false;
 	}
 
