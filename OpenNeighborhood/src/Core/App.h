@@ -22,7 +22,7 @@ public:
 
 	void Close();
 private:
-	Scope<Window> m_Window;
+	Window* m_Window;
 	bool m_Running = true;
 	bool m_Minimized = false;
 

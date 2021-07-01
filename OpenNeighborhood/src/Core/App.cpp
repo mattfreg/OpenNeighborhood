@@ -11,7 +11,7 @@ App::App(const std::string& name)
 	ASSERT(!s_Instance, "App already exists!");
 	s_Instance = this;
 
-	m_Window = Scope<Window>(Window::Create(WindowProps(name)));
+	m_Window = Window::Create(WindowProps(name));
 	m_Window->SetEventCallback(BIND_EVENT_FN(App::OnEvent));
 }
 
