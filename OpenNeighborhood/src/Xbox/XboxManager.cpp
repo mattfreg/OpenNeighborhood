@@ -8,25 +8,23 @@ bool XboxManager::CreateConsole(const std::string& ipAddress, std::string& conso
 {
 	s_Console = XBDM::Console(ipAddress);
 
-	if (s_Console.OpenConnection())
-	{
-		try
-		{
-			consoleName = s_Console.GetName();
-		}
-		catch (const std::exception&)
-		{
-			s_Console.CloseConnection();
-			return false;
-		}
-		
-		if (!keepConnectionOpen)
-			s_Console.CloseConnection();
-
-		return true;
-	}
-	else
+	if (!s_Console.OpenConnection())
 		return false;
+
+	try
+	{
+		consoleName = s_Console.GetName();
+	}
+	catch (const std::exception&)
+	{
+		s_Console.CloseConnection();
+		return false;
+	}
+
+	if (!keepConnectionOpen)
+		s_Console.CloseConnection();
+
+	return true;
 }
 
 const std::string& XboxManager::GoToDirectory(const std::string& directory)
