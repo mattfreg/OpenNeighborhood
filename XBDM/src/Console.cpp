@@ -96,11 +96,21 @@ namespace XBDM
 
 		std::vector<std::string> lines = SplitResponse(listResponse, "\r\n");
 
+		// We delete the first line because it doesn't contain any info about the drives
+		lines.erase(lines.begin());
+
 		for (auto& line : lines)
 		{
-			std::string driveName = GetStringProperty(line, "drivename");
-			if (driveName == "")
-				continue;
+			std::string driveName;
+
+			try
+			{
+				driveName = GetStringProperty(line, "drivename");
+			}
+			catch (const std::exception&)
+			{
+				throw std::exception("Unable to get drive name");
+			}
 
 			Drive drive;
 			drive.Name = driveName;
@@ -152,16 +162,29 @@ namespace XBDM
 		SendCommand("dirlist name=\"" + directoryPath + "\"");
 		std::string contentResponse = Receive();
 
+		if (contentResponse.length() <= 4)
+			throw std::exception("Response length too short");
+
+		if (contentResponse[0] != '2')
+			throw std::invalid_argument("Invalid directory path: " + directoryPath);
+
 		std::vector<std::string> lines = SplitResponse(contentResponse, "\r\n");
 
-		if (!lines.empty() && lines[0][0] != '2')
-			throw std::invalid_argument("Invalid directory path: " + directoryPath);
+		// We delete the first line because it doesn't contain any info about the files
+		lines.erase(lines.begin());
 
 		for (auto& line : lines)
 		{
-			std::string fileName = GetStringProperty(line, "name");
-			if (fileName == "")
-				continue;
+			std::string fileName;
+			
+			try
+			{
+				fileName = GetStringProperty(line, "name");
+			}
+			catch (const std::exception&)
+			{
+				throw std::exception("Unable get file name");
+			}
 
 			File file;
 
@@ -199,14 +222,28 @@ namespace XBDM
 
 	std::string Console::Receive()
 	{
-		std::string result;
-		char buffer[2048] = { 0 };
+		const int MAX_SIZE = 2048;
 
-		while (recv(m_Socket, buffer, sizeof(buffer), 0) != SOCKET_ERROR)
+		std::string result;
+		char buffer[MAX_SIZE] = { 0 };
+
+		/**
+		 * We only receive MAX_SIZE - 1 bytes to make sure the last byte
+		 * is always 0 so that we concat a null terminated string.
+		 */
+		while (recv(m_Socket, buffer, MAX_SIZE - 1, 0) != SOCKET_ERROR)
 		{
 			SleepFor(10); // The Xbox 360 is old and slow, we need to give it some time...
 			result += buffer;
 		}
+
+		/**
+		 * Sometimes the response ends but we still receive some stuff.
+		 * If that's the case, we want to remove everything after ".\r\n".
+		 */
+		size_t endPos = result.find(".\r\n");
+		if (endPos != std::string::npos && result.substr(result.length() - 3, 3) != ".\r\n")
+			result = result.substr(0, endPos);
 
 		return result;
 	}
@@ -272,7 +309,7 @@ namespace XBDM
 	std::string Console::GetStringProperty(const std::string& line, const std::string& propertyName)
 	{
 		if (line.find(propertyName) == std::string::npos)
-			return "";
+			throw std::exception(std::string("Property '" + propertyName + "' not found").c_str());
 
 		// all string properties are like this: NAME="VALUE"
 		size_t startIndex = line.find(propertyName) + propertyName.size() + 2;
