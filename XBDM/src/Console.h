@@ -15,7 +15,7 @@ namespace XBDM
 
 		std::string GetName();
 		std::vector<Drive> GetDrives();
-		std::vector<File> GetDirectoryContents(const std::string& directoryPath);
+		std::set<File> GetDirectoryContents(const std::string& directoryPath);
 
 		void LaunchXEX(const std::string& xexPath);
 

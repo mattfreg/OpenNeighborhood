@@ -34,5 +34,7 @@ namespace XBDM
 		UINT64 Size;
 		bool IsXEX;
 		bool IsDirectory;
+
+		bool operator<(const File& rhs) const { return Name < rhs.Name; }
 	};
 };

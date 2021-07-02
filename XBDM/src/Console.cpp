@@ -155,9 +155,9 @@ namespace XBDM
 		return drives;
 	}
 
-	std::vector<File> Console::GetDirectoryContents(const std::string& directoryPath)
+	std::set<File> Console::GetDirectoryContents(const std::string& directoryPath)
 	{
-		std::vector<File> files;
+		std::set<File> files;
 
 		SendCommand("dirlist name=\"" + directoryPath + "\"");
 		std::string contentResponse = Receive();
@@ -201,7 +201,7 @@ namespace XBDM
 				std::filesystem::path filePath(file.Name);
 				file.IsXEX = filePath.extension() == ".xex";
 
-				files.push_back(file);
+				files.emplace(file);
 			}
 			catch (const std::exception&)
 			{

@@ -39,7 +39,7 @@ void GoToParentButton::OnClick()
 		parentLocation += '\\';
 
 	XBDM::Console& xbox = XboxManager::GetConsole();
-	std::vector<XBDM::File> files;
+	std::set<XBDM::File> files;
 
 	try
 	{
