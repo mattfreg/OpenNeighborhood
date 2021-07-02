@@ -24,23 +24,24 @@ void File::OpenDirectory()
 	{
 		files = xbox.GetDirectoryContents(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name);
 	}
-	catch (const std::invalid_argument&)
+	catch (const std::exception& exception)
 	{
+		m_ErrorMessage = exception.what();
 		m_Success = false;
 	}
 
-	if (m_Success)
-	{
-		XboxManager::GoToDirectory(m_Data.Name);
+	if (!m_Success)
+		return;
 
-		auto fileElements = CreateRef<std::vector<Ref<Element>>>();
+	XboxManager::GoToDirectory(m_Data.Name);
 
-		for (auto& file : files)
-			fileElements->emplace_back(CreateRef<File>(file));
+	auto fileElements = CreateRef<std::vector<Ref<Element>>>();
 
-		ContentsChangeEvent event(fileElements);
-		m_EventCallback(event);
-	}
+	for (auto& file : files)
+		fileElements->emplace_back(CreateRef<File>(file));
+
+	ContentsChangeEvent event(fileElements);
+	m_EventCallback(event);
 }
 
 void File::LaunchXEX()
