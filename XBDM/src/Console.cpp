@@ -72,10 +72,10 @@ namespace XBDM
 		std::string response = Receive();
 
 		if (response.length() <= 5)
-			throw std::exception("Response length too short");
+			throw std::runtime_error("Response length too short");
 
 		if (response[0] != '2')
-			throw std::exception("Couldn't get the console name");
+			throw std::runtime_error("Couldn't get the console name");
 
 		std::string result = response.substr(5, response.length() - 5);
 		return result;
@@ -89,10 +89,10 @@ namespace XBDM
 		std::string listResponse = Receive();
 
 		if (listResponse.length() <= 4)
-			throw std::exception("Response length too short");
+			throw std::runtime_error("Response length too short");
 
 		if (listResponse[0] != '2')
-			throw std::exception("Couldn't get the drive list");
+			throw std::runtime_error("Couldn't get the drive list");
 
 		std::vector<std::string> lines = SplitResponse(listResponse, "\r\n");
 
@@ -109,7 +109,7 @@ namespace XBDM
 			}
 			catch (const std::exception&)
 			{
-				throw std::exception("Unable to get drive name");
+				throw std::runtime_error("Unable to get drive name");
 			}
 
 			Drive drive;
@@ -148,7 +148,7 @@ namespace XBDM
 			}
 			catch (const std::exception&)
 			{
-				throw std::exception("Unable to fetch some data about the drives");
+				throw std::runtime_error("Unable to fetch some data about the drives");
 			}
 		}
 
@@ -163,7 +163,7 @@ namespace XBDM
 		std::string contentResponse = Receive();
 
 		if (contentResponse.length() <= 4)
-			throw std::exception("Response length too short");
+			throw std::runtime_error("Response length too short");
 
 		if (contentResponse[0] != '2')
 			throw std::invalid_argument("Invalid directory path: " + directoryPath);
@@ -183,7 +183,7 @@ namespace XBDM
 			}
 			catch (const std::exception&)
 			{
-				throw std::exception("Unable get file name");
+				throw std::runtime_error("Unable get file name");
 			}
 
 			File file;
@@ -205,7 +205,7 @@ namespace XBDM
 			}
 			catch (const std::exception&)
 			{
-				throw std::exception("Unable to fetch some data about the files");
+				throw std::runtime_error("Unable to fetch some data about the files");
 			}
 		}
 
@@ -289,7 +289,7 @@ namespace XBDM
 	DWORD Console::GetIntegerProperty(const std::string& line, const std::string& propertyName, bool hex)
 	{
 		if (line.find(propertyName) == std::string::npos)
-			throw std::exception(std::string("Property '" + propertyName + "' not found").c_str());
+			throw std::runtime_error(std::string("Property '" + propertyName + "' not found").c_str());
 
 		// all integers properties are like this: NAME=VALUE
 		size_t startIndex = line.find(propertyName) + propertyName.size() + 1;
@@ -309,7 +309,7 @@ namespace XBDM
 	std::string Console::GetStringProperty(const std::string& line, const std::string& propertyName)
 	{
 		if (line.find(propertyName) == std::string::npos)
-			throw std::exception(std::string("Property '" + propertyName + "' not found").c_str());
+			throw std::runtime_error(std::string("Property '" + propertyName + "' not found").c_str());
 
 		// all string properties are like this: NAME="VALUE"
 		size_t startIndex = line.find(propertyName) + propertyName.size() + 2;
