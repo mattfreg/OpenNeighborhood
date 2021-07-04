@@ -21,8 +21,6 @@ public:
 	inline const std::string& GetTextureName() const { return m_TextureName; }
 	inline float GetWidth() const { return m_Width; }
 	inline float GetHeight() const { return m_Height; }
-
-	inline void SetEventCallback(const EventCallbackFn& callback) { m_EventCallback = callback; }
 protected:
 	std::string m_Label;
 	std::string m_TextureName;
