@@ -249,9 +249,6 @@ namespace XBDM
 			throw std::runtime_error("Couldn't receive the file");
 		}
 
-		// Removing the header from headerBuffer
-		ZeroMemory(headerBuffer, sizeof(headerBuffer));
-
 		// Receiving the file size (4-byte integer sent right after the header)
 		int fileSize = 0;
 		if (recv(m_Socket, (char*)&fileSize, sizeof(int), 0) == SOCKET_ERROR)
