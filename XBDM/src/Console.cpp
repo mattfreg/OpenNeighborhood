@@ -222,7 +222,6 @@ namespace XBDM
 
 	void Console::ReceiveFile(const std::string& remotePath, const std::string& localPath)
 	{
-		const int PACKET_SIZE = 2048;
 		char headerBuffer[40] = { 0 };
 		std::string header = "203- binary response follows\r\n";
 
@@ -266,7 +265,7 @@ namespace XBDM
 
 		int bytes = 0;
 		int totalBytes = 0;
-		char contentBuffer[PACKET_SIZE] = { 0 };
+		char contentBuffer[s_PacketSize] = { 0 };
 
 		std::ofstream outFile;
 		outFile.open(localPath, std::ofstream::binary);
@@ -298,16 +297,14 @@ namespace XBDM
 
 	std::string Console::Receive()
 	{
-		const int MAX_SIZE = 2048;
-
 		std::string result;
-		char buffer[MAX_SIZE] = { 0 };
+		char buffer[s_PacketSize] = { 0 };
 
 		/**
-		 * We only receive MAX_SIZE - 1 bytes to make sure the last byte
+		 * We only receive s_PacketSize - 1 bytes to make sure the last byte
 		 * is always 0 so that we concat a null terminated string.
 		 */
-		while (recv(m_Socket, buffer, MAX_SIZE - 1, 0) != SOCKET_ERROR)
+		while (recv(m_Socket, buffer, s_PacketSize - 1, 0) != SOCKET_ERROR)
 		{
 			SleepFor(10); // The Xbox 360 is old and slow, we need to give it some time...
 			result += buffer;
@@ -398,7 +395,7 @@ namespace XBDM
 
 	void Console::ClearSocket()
 	{
-		char buffer[2048] = { 0 };
+		char buffer[s_PacketSize] = { 0 };
 		while (recv(m_Socket, buffer, sizeof(buffer), 0) != SOCKET_ERROR);
 	}
 

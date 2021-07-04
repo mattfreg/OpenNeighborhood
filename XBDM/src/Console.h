@@ -26,6 +26,7 @@ namespace XBDM
 		bool m_Connected = false;
 		std::string m_IpAddress;
 		SOCKET m_Socket;
+		static const int s_PacketSize = 2048;
 
 		std::string Receive();
 		void SendCommand(const std::string& command);
