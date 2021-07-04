@@ -16,7 +16,6 @@ public:
 
 	virtual void OnRender();
 	virtual void OnClick() = 0;
-	virtual void OnRightClick() {}
 
 	inline const std::string& GetLabel() const { return m_Label; }
 	inline const std::string& GetTextureName() const { return m_TextureName; }
@@ -34,6 +33,7 @@ protected:
 
 	void OnEvent(Event& event);
 	void DisplayErrorModal();
+	virtual void DisplayContextMenu() {}
 
 	// XBDM related members
 	bool m_Success = true; // Gets set to false whenever an XBDM operation related to the element fails
