@@ -220,6 +220,82 @@ namespace XBDM
 		std::string response = Receive();
 	}
 
+	void Console::ReceiveFile(const std::string& remotePath, const std::string& localPath)
+	{
+		const int PACKET_SIZE = 2048;
+		char headerBuffer[40] = { 0 };
+		std::string header = "203- binary response follows\r\n";
+
+		SendCommand("getfile name=\"" + remotePath + "\"");
+
+		// Giving the Xbox 360 some time to create the response
+		Sleep(10);
+
+		// Receiving the header
+		if (recv(m_Socket, headerBuffer, header.length(), 0) == SOCKET_ERROR)
+			throw std::runtime_error("Couldn't receive the response header");
+
+		if (strlen(headerBuffer) <= 4)
+		{
+			ClearSocket();
+			throw std::runtime_error("Response length too short");
+		}
+
+		if (headerBuffer[0] != '2')
+		{
+			ClearSocket();
+			throw std::invalid_argument("Invalid remote path: " + remotePath);
+		}
+
+		if (header != headerBuffer)
+		{
+			ClearSocket();
+			throw std::runtime_error("Couldn't receive the file");
+		}
+
+		// Removing the header from headerBuffer
+		ZeroMemory(headerBuffer, sizeof(headerBuffer));
+
+		// Receiving the file size (4-byte integer sent right after the header)
+		size_t fileSize = 0;
+		if (recv(m_Socket, (char*)&fileSize, sizeof(size_t), 0) == SOCKET_ERROR)
+		{
+			ClearSocket();
+			throw std::runtime_error("Couldn't receive the file size");
+		}
+
+		int bytes = 0;
+		int totalBytes = 0;
+		char contentBuffer[PACKET_SIZE] = { 0 };
+
+		std::ofstream outFile;
+		outFile.open(localPath, std::ofstream::binary);
+
+		if (outFile.fail())
+		{
+			ClearSocket();
+			throw std::runtime_error("Invalid local path: " + localPath);
+		}
+
+		while (totalBytes < fileSize)
+		{
+			if ((bytes = recv(m_Socket, contentBuffer, sizeof(contentBuffer), 0)) == SOCKET_ERROR)
+				throw std::runtime_error("Couldn't receive the file");
+
+			totalBytes += bytes;
+
+			outFile.write(contentBuffer, bytes);
+
+			// Resetting contentBuffer
+			ZeroMemory(contentBuffer, sizeof(contentBuffer));
+		}
+
+		outFile.close();
+
+		// Cleaning the socket just in case there is more to receive
+		ClearSocket();
+	}
+
 	std::string Console::Receive()
 	{
 		const int MAX_SIZE = 2048;
@@ -318,6 +394,12 @@ namespace XBDM
 		std::string toReturn = line.substr(startIndex, endIndex - startIndex);
 
 		return toReturn;
+	}
+
+	void Console::ClearSocket()
+	{
+		char buffer[2048] = { 0 };
+		while (recv(m_Socket, buffer, sizeof(buffer), 0) != SOCKET_ERROR);
 	}
 
 	void Console::CleanupSocket()

@@ -19,6 +19,8 @@ namespace XBDM
 
 		void LaunchXEX(const std::string& xexPath);
 
+		void ReceiveFile(const std::string& remotePath, const std::string& localPath);
+
 		bool IsConnected() { return m_Connected; }
 	private:
 		bool m_Connected = false;
@@ -34,6 +36,7 @@ namespace XBDM
 		DWORD GetIntegerProperty(const std::string& line, const std::string& propertyName, bool hex = true);
 		std::string GetStringProperty(const std::string& line, const std::string& propertyName);
 
+		void ClearSocket();
 		void CleanupSocket();
 		void CloseSocket();
 
