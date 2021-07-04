@@ -228,7 +228,7 @@ namespace XBDM
 		SendCommand("getfile name=\"" + remotePath + "\"");
 
 		// Receiving the header
-		if (recv(m_Socket, headerBuffer, header.length(), 0) == SOCKET_ERROR)
+		if (recv(m_Socket, headerBuffer, (int)header.length(), 0) == SOCKET_ERROR)
 			throw std::runtime_error("Couldn't receive the response header");
 
 		if (strlen(headerBuffer) <= 4)
@@ -253,8 +253,8 @@ namespace XBDM
 		ZeroMemory(headerBuffer, sizeof(headerBuffer));
 
 		// Receiving the file size (4-byte integer sent right after the header)
-		size_t fileSize = 0;
-		if (recv(m_Socket, (char*)&fileSize, sizeof(size_t), 0) == SOCKET_ERROR)
+		int fileSize = 0;
+		if (recv(m_Socket, (char*)&fileSize, sizeof(int), 0) == SOCKET_ERROR)
 		{
 			ClearSocket();
 			throw std::runtime_error("Couldn't receive the file size");
@@ -316,7 +316,7 @@ namespace XBDM
 		SendCommand(command.str());
 
 		// Receiving the header
-		if (recv(m_Socket, headerBuffer, header.length(), 0) == SOCKET_ERROR)
+		if (recv(m_Socket, headerBuffer, (int)header.length(), 0) == SOCKET_ERROR)
 			throw std::runtime_error("Couldn't receive the response header");
 
 		if (strlen(headerBuffer) <= 4)
@@ -346,7 +346,7 @@ namespace XBDM
 		{
 			file.read(contentBuffer, sizeof(contentBuffer));
 
-			if (send(m_Socket, contentBuffer, file.gcount(), 0) == SOCKET_ERROR)
+			if (send(m_Socket, contentBuffer, (int)file.gcount(), 0) == SOCKET_ERROR)
 			{
 				CloseSocket();
 				CleanupSocket();
