@@ -227,9 +227,6 @@ namespace XBDM
 
 		SendCommand("getfile name=\"" + remotePath + "\"");
 
-		// Giving the Xbox 360 some time to create the response
-		Sleep(10);
-
 		// Receiving the header
 		if (recv(m_Socket, headerBuffer, header.length(), 0) == SOCKET_ERROR)
 			throw std::runtime_error("Couldn't receive the response header");
@@ -306,7 +303,8 @@ namespace XBDM
 		 */
 		while (recv(m_Socket, buffer, s_PacketSize - 1, 0) != SOCKET_ERROR)
 		{
-			SleepFor(10); // The Xbox 360 is old and slow, we need to give it some time...
+			// Giving the Xbox 360 some time to notice we received something...
+			SleepFor(10);
 			result += buffer;
 		}
 
@@ -329,6 +327,9 @@ namespace XBDM
 			CloseSocket();
 			CleanupSocket();
 		}
+
+		// Giving the Xbox 360 some time to process the command and create a response...
+		SleepFor(10);
 	}
 
 	std::vector<std::string> Console::SplitResponse(const std::string& response, const std::string& delimiter)
