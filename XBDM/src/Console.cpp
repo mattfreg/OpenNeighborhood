@@ -292,6 +292,81 @@ namespace XBDM
 		ClearSocket();
 	}
 
+	void Console::SendFile(const std::string& remotePath, const std::string& localPath)
+	{
+		std::ifstream file;
+		file.open(localPath, std::ifstream::binary);
+
+		if (file.fail())
+			throw std::runtime_error("Invalid local path: " + localPath);
+
+		// Getting the file size
+		file.seekg(0, file.end);
+		size_t fileSize = file.tellg();
+		file.seekg(0, file.beg);
+
+		// Creating the command
+		std::stringstream command;
+		command << "sendfile name=\"" << remotePath << "\" ";
+		command << "length=0x" << std::hex << fileSize << "\r\n";
+
+		char headerBuffer[40] = { 0 };
+		std::string header = "204- send binary data\r\n";
+
+		SendCommand(command.str());
+
+		// Receiving the header
+		if (recv(m_Socket, headerBuffer, header.length(), 0) == SOCKET_ERROR)
+			throw std::runtime_error("Couldn't receive the response header");
+
+		if (strlen(headerBuffer) <= 4)
+		{
+			ClearSocket();
+			file.close();
+			throw std::runtime_error("Response length too short");
+		}
+
+		if (headerBuffer[0] != '2')
+		{
+			ClearSocket();
+			file.close();
+			throw std::invalid_argument("Invalid remote path: " + remotePath);
+		}
+
+		if (header != headerBuffer)
+		{
+			ClearSocket();
+			file.close();
+			throw std::runtime_error("Couldn't receive the file");
+		}
+
+		char contentBuffer[s_PacketSize] = { 0 };
+
+		while (!file.eof())
+		{
+			file.read(contentBuffer, sizeof(contentBuffer));
+
+			if (send(m_Socket, contentBuffer, file.gcount(), 0) == SOCKET_ERROR)
+			{
+				CloseSocket();
+				CleanupSocket();
+				file.close();
+				throw std::runtime_error("Couldn't send file");
+			}
+
+			// Resetting contentBuffer
+			ZeroMemory(contentBuffer, sizeof(contentBuffer));
+
+			// Giving the Xbox 360 some time to process what was sent...
+			SleepFor(10);
+		}
+
+		file.close();
+
+		// Receiving the "200- OK\r\n" message the Xbox sends when the entire file is received
+		ClearSocket();
+	}
+
 	std::string Console::Receive()
 	{
 		std::string result;

@@ -20,6 +20,7 @@ namespace XBDM
 		void LaunchXEX(const std::string& xexPath);
 
 		void ReceiveFile(const std::string& remotePath, const std::string& localPath);
+		void SendFile(const std::string& remotePath, const std::string& localPath);
 
 		bool IsConnected() { return m_Connected; }
 	private:
