@@ -49,3 +49,27 @@ void File::LaunchXEX()
 	XBDM::Console& xbox = XboxManager::GetConsole();
 	xbox.LaunchXEX(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name);
 }
+
+void File::Download()
+{
+	XBDM::Console& xbox = XboxManager::GetConsole();
+
+	try
+	{
+		xbox.ReceiveFile(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name, GetExecDir().append(m_Data.Name).string());
+	}
+	catch (const std::exception& exception)
+	{
+		m_ErrorMessage = exception.what();
+		m_Success = false;
+	}
+}
+
+void File::DisplayContextMenu()
+{
+	if (ImGui::Button("Download"))
+	{
+		Download();
+		ImGui::CloseCurrentPopup();
+	}
+}
