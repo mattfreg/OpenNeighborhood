@@ -34,6 +34,7 @@ void Element::OnRender()
 		ImGui::EndPopup();
 	}
 
+	DisplayConfirmModal();
 	DisplayErrorModal();
 }
 
@@ -41,6 +42,39 @@ void Element::OnEvent(Event& event)
 {
 	OpenNeighborhood& currentLayer = OpenNeighborhood::Get();
 	currentLayer.OnEvent(event);
+}
+
+void Element::DisplayConfirmModal()
+{
+	if (m_Confirm)
+	{
+		ImGui::OpenPopup("Confirm");
+
+		ImVec2 center(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
+		ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+	}
+
+	if (ImGui::BeginPopupModal("Confirm", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("%s", m_ConfirmMessage.c_str());
+
+		if (ImGui::Button("OK", ImVec2(120.0f, 0.0f)))
+		{
+			m_ConfirmCallback();
+			m_Confirm = false;
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Cancel", ImVec2(120.0f, 0.0f)))
+		{
+			m_Confirm = false;
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::EndPopup();
+	}
 }
 
 void Element::DisplayErrorModal()

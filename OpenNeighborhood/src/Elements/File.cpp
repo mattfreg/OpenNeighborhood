@@ -59,17 +59,39 @@ void File::Download()
 		return;
 	}
 
-	XBDM::Console& xbox = XboxManager::GetConsole();
+	std::filesystem::path localPath = GetExecDir().append(m_Data.Name);
+	std::string& localPathString = localPath.string();
 
-	try
+	/**
+	 * It's important to capture localPath by copy because it will be destroyed
+	 * by the time doDownload is called if it's called as the confirm callback,
+	 * capturing it by reference would create a crash.
+	 */
+	auto download = [this, localPath]()
 	{
-		xbox.ReceiveFile(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name, GetExecDir().append(m_Data.Name).string());
-	}
-	catch (const std::exception& exception)
+		XBDM::Console& xbox = XboxManager::GetConsole();
+		
+		try
+		{
+			xbox.ReceiveFile(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name, localPath.string());
+		}
+		catch (const std::exception& exception)
+		{
+			m_ErrorMessage = exception.what();
+			m_Success = false;
+		}
+	};
+
+	m_ConfirmCallback = download;
+
+	if (std::filesystem::exists(localPath))
 	{
-		m_ErrorMessage = exception.what();
-		m_Success = false;
+		m_ConfirmMessage = "A file named \"" + m_Data.Name + "\" already exists, do you want to overwrite it?";
+		m_Confirm = true;
+		return;
 	}
+
+	download();
 }
 
 void File::DisplayContextMenu()
