@@ -22,7 +22,8 @@ project "OpenNeighborhood"
 		"vendor",
 		"%{wks.location}/XBDM/src",
 		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.Glad}"
+		"%{IncludeDir.Glad}",
+		"vendor/nativefiledialog-extended/src/include"
 	}
 
 	defines {
@@ -33,7 +34,8 @@ project "OpenNeighborhood"
 		"GLFW",
 		"Glad",
 		"ImGui",
-		"XBDM"
+		"XBDM",
+		"NativeFileDialogExtended"
 	}
 
 	filter "system:windows"

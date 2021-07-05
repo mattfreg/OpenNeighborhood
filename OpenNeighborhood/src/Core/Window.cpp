@@ -2,6 +2,7 @@
 #include "Core/Window.h"
 
 #include <glad/glad.h>
+#include <nfd.hpp>
 
 #include "Events/AppEvent.h"
 #include "Events/MouseEvent.h"
@@ -41,6 +42,8 @@ void Window::Init(const WindowProps& props)
 	{
 		int success = glfwInit();
 		ASSERT(success, "Could not initialize GLFW!");
+
+		NFD::Guard nfdGuard;
 
 		glfwSetErrorCallback(GLFWErrorCallback);
 

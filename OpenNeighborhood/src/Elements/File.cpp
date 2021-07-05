@@ -1,8 +1,12 @@
 #include "pch.h"
 #include "Elements/File.h"
 
+#include <nfd.hpp>
+
 #include "Xbox/XboxManager.h"
 #include "Events/AppEvent.h"
+
+#include "Core/Log.h"
 
 File::File(const XBDM::File& data)
 	: m_Data(data), Element(data.Name, data.IsDirectory ? "directory" : data.IsXEX ? "xex" : "file", "Couldn't access file!") {}
@@ -98,6 +102,27 @@ void File::DisplayContextMenu()
 	if (ImGui::Button("Download"))
 	{
 		Download();
+		ImGui::CloseCurrentPopup();
+	}
+
+	if (ImGui::Button("Open File Dialog"))
+	{
+		NFD::UniquePath outPath;
+
+		nfdresult_t result = NFD::PickFolder(outPath);
+		if (result == NFD_OKAY)
+		{
+			LOG_INFO("Success: ", outPath.get());
+		}
+		else if (result == NFD_CANCEL)
+		{
+			LOG_INFO("User pressed cancel.");
+		}
+		else
+		{
+			LOG_ERROR("Error: ", NFD::GetError());
+		}
+
 		ImGui::CloseCurrentPopup();
 	}
 }
