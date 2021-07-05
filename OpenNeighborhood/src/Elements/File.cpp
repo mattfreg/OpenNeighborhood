@@ -60,7 +60,6 @@ void File::Download()
 	}
 
 	std::filesystem::path localPath = GetExecDir().append(m_Data.Name);
-	std::string& localPathString = localPath.string();
 
 	/**
 	 * It's important to capture localPath by copy because it will be destroyed
