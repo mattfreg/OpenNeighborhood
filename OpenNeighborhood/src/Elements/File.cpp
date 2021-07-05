@@ -52,6 +52,13 @@ void File::LaunchXEX()
 
 void File::Download()
 {
+	if (m_Data.IsDirectory)
+	{
+		m_ErrorMessage = "Cannot download a directory";
+		m_Success = false;
+		return;
+	}
+
 	XBDM::Console& xbox = XboxManager::GetConsole();
 
 	try
