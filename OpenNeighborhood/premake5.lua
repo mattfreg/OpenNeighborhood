@@ -65,6 +65,11 @@ project "OpenNeighborhood"
 			"dl"
 		}
 
+		-- I know it's not dynamic but NativeFileDialog links to gtk staticly
+		-- and that's the only way I found to link everything successfully
+		libdirs "vendor/nativefiledialog-extended/bin/%{cfg.buildcfg}/NativeFileDialogExtended"
+		linkoptions "-lNativeFileDialogExtended `pkg-config --libs gtk+-3.0`"
+
 	filter "system:macosx"
 		linkoptions {
 			"-framework Cocoa",

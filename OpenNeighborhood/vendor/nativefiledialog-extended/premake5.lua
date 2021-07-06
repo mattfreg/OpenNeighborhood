@@ -24,6 +24,10 @@ project "NativeFileDialogExtended"
 			"src/nfd_gtk.cpp"
 		}
 
+		buildoptions {
+			"`pkg-config --cflags gtk+-3.0`"
+		}
+
 	filter "system:windows"
 		systemversion "latest"
 
