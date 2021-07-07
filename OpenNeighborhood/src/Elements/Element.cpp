@@ -60,7 +60,9 @@ void Element::DisplayConfirmModal()
 
 		if (ImGui::Button("OK", ImVec2(120.0f, 0.0f)))
 		{
-			m_ConfirmCallback();
+			if (m_ConfirmCallback)
+				m_ConfirmCallback();
+
 			m_Confirm = false;
 			ImGui::CloseCurrentPopup();
 		}

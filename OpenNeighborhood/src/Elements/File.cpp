@@ -85,27 +85,17 @@ void File::Download()
 
 	std::filesystem::path localPath = outPath.get();
 
-	/**
-	 * It's important to capture localPath by copy because it will be destroyed
-	 * by the time doDownload is called if it's called as the confirm callback,
-	 * capturing it by reference would create a crash.
-	 */
-	m_ConfirmCallback = [this, localPath]()
-	{
-		XBDM::Console& xbox = XboxManager::GetConsole();
-		
-		try
-		{
-			xbox.ReceiveFile(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name, localPath.string());
-		}
-		catch (const std::exception& exception)
-		{
-			m_ErrorMessage = exception.what();
-			m_Success = false;
-		}
-	};
+	XBDM::Console& xbox = XboxManager::GetConsole();
 
-	m_ConfirmCallback();
+	try
+	{
+		xbox.ReceiveFile(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name, localPath.string());
+	}
+	catch (const std::exception& exception)
+	{
+		m_ErrorMessage = exception.what();
+		m_Success = false;
+	}
 }
 
 void File::DisplayContextMenu()
