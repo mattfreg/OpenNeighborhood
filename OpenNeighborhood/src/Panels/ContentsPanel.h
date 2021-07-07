@@ -18,4 +18,9 @@ private:
 	void InjectNewElements();
 
 	void Upload();
+
+	void DisplayErrorModal();
+
+	bool m_Success = true;
+	std::string m_ErrorMessage;
 };
