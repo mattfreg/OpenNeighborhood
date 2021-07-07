@@ -334,7 +334,7 @@ namespace XBDM
 		{
 			ClearSocket();
 			file.close();
-			throw std::runtime_error("Couldn't receive the file");
+			throw std::runtime_error("Couldn't send the file");
 		}
 
 		char contentBuffer[s_PacketSize] = { 0 };
@@ -348,7 +348,7 @@ namespace XBDM
 				CloseSocket();
 				CleanupSocket();
 				file.close();
-				throw std::runtime_error("Couldn't send file");
+				throw std::runtime_error("Couldn't send the file");
 			}
 
 			// Resetting contentBuffer
