@@ -3,10 +3,12 @@
 
 #define MINI_CASE_SENSITIVE
 #include <mINI/ini.h>
+#include <nfd.hpp>
 
 #include "Elements/AddXboxButton.h"
 #include "Elements/Xbox.h"
 #include "Panels/PathPanel.h"
+#include "Xbox/XboxManager.h"
 
 ContentsPanel::ContentsPanel()
 {
@@ -62,6 +64,20 @@ void ContentsPanel::OnRender()
 		ImGui::PopID();
 	}
 
+	if (XboxManager::GetCurrentLocation() != "")
+	{
+		if (ImGui::BeginPopupContextWindow())
+		{
+			if (ImGui::Button("Upload Here"))
+			{
+				Upload();
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
+		}
+	}
+
 	ImGui::End();
 
 	if (!m_ContentsChangeEventQueue.empty())
@@ -95,4 +111,27 @@ void ContentsPanel::InjectNewElements()
 		m_Elements = *event.GetElements();
 
 	m_ContentsChangeEventQueue.pop();
+}
+
+void ContentsPanel::Upload()
+{
+	NFD::UniquePathN outPath;
+	nfdresult_t result = NFD::OpenDialog(outPath);
+
+	if (result == NFD_CANCEL || result == NFD_ERROR)
+		return;
+
+	std::filesystem::path localPath = outPath.get();
+	std::string remotePath = XboxManager::GetCurrentLocation() + '\\' + localPath.filename().string();
+
+	XBDM::Console& xbox = XboxManager::GetConsole();
+
+	try
+	{
+		xbox.SendFile(remotePath, localPath.string());
+	}
+	catch (const std::exception&)
+	{
+
+	}
 }
