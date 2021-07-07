@@ -78,6 +78,7 @@ void ContentsPanel::OnRender()
 		}
 	}
 
+	DisplayConfirmModal();
 	DisplayErrorModal();
 
 	ImGui::End();
@@ -124,18 +125,78 @@ void ContentsPanel::Upload()
 		return;
 
 	std::filesystem::path localPath = outPath.get();
-	std::string remotePath = XboxManager::GetCurrentLocation() + '\\' + localPath.filename().string();
+	std::string fileName = localPath.filename().string();
+	std::string remotePath = XboxManager::GetCurrentLocation() + '\\' + fileName;
 
-	XBDM::Console& xbox = XboxManager::GetConsole();
-
-	try
+	/**
+	 * It's important to capture remotePath and localPath by copy because they will
+	 * be destroyed by the time upload is called if it's called as the confirm
+	 * callback, capturing them by reference would create a crash.
+	 */
+	auto upload = [this, remotePath, localPath]()
 	{
-		xbox.SendFile(remotePath, localPath.string());
+		XBDM::Console& xbox = XboxManager::GetConsole();
+
+		try
+		{
+			xbox.SendFile(remotePath, localPath.string());
+		}
+		catch (const std::exception& exception)
+		{
+			m_ErrorMessage = exception.what();
+			m_Success = false;
+		}
+	};
+
+	m_ConfirmCallback = upload;
+
+	auto fileAlreadyExists = std::find_if(m_Elements.begin(), m_Elements.end(), [&](const Ref<Element>& element)
+	{
+		return element->GetLabel() == fileName;
+	});
+
+	if (fileAlreadyExists != m_Elements.end())
+	{
+		m_ConfirmMessage = "A file named \"" + fileName + "\" already exists, do you want to overwrite it?";
+		m_Confirm = true;
+		return;
 	}
-	catch (const std::exception& exception)
+
+	upload();
+}
+
+void ContentsPanel::DisplayConfirmModal()
+{
+	if (m_Confirm)
 	{
-		m_ErrorMessage = exception.what();
-		m_Success = false;
+		ImGui::OpenPopup("Confirm");
+
+		ImVec2 center(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
+		ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+	}
+
+	if (ImGui::BeginPopupModal("Confirm", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("%s", m_ConfirmMessage.c_str());
+
+		if (ImGui::Button("OK", ImVec2(120.0f, 0.0f)))
+		{
+			if (m_ConfirmCallback)
+				m_ConfirmCallback();
+
+			m_Confirm = false;
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Cancel", ImVec2(120.0f, 0.0f)))
+		{
+			m_Confirm = false;
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::EndPopup();
 	}
 }
 
