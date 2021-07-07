@@ -6,8 +6,6 @@
 #include "Xbox/XboxManager.h"
 #include "Events/AppEvent.h"
 
-#include "Core/Log.h"
-
 File::File(const XBDM::File& data)
 	: m_Data(data), Element(data.Name, data.IsDirectory ? "directory" : data.IsXEX ? "xex" : "file", "Couldn't access file!") {}
 
@@ -63,14 +61,36 @@ void File::Download()
 		return;
 	}
 
-	std::filesystem::path localPath = GetExecDir().append(m_Data.Name);
+	/**
+	 * Depending on the system, std::filesystem::path::native can return either
+	 * std::wstring or std::string. Since we don't know, we are just using auto.
+	 */
+	auto extension = std::filesystem::path(m_Data.Name).extension().native().substr(1);
+	auto filterName = extension;
+	std::transform(filterName.begin(), filterName.end(), filterName.begin(), [](auto c) { return std::toupper(c); });
+
+	NFD::UniquePathN outPath;
+	nfdnfilteritem_t filterItem[] = { { filterName.c_str(), extension.c_str() } };
+	nfdresult_t result = NFD::SaveDialog(outPath, filterItem, 1);
+
+	if (result == NFD_ERROR)
+	{
+		m_ErrorMessage = NFD::GetError();
+		m_Success = false;
+		return;
+	}
+	
+	if (result == NFD_CANCEL)
+		return;
+
+	std::filesystem::path localPath = outPath.get();
 
 	/**
 	 * It's important to capture localPath by copy because it will be destroyed
 	 * by the time doDownload is called if it's called as the confirm callback,
 	 * capturing it by reference would create a crash.
 	 */
-	auto download = [this, localPath]()
+	m_ConfirmCallback = [this, localPath]()
 	{
 		XBDM::Console& xbox = XboxManager::GetConsole();
 		
@@ -85,16 +105,7 @@ void File::Download()
 		}
 	};
 
-	m_ConfirmCallback = download;
-
-	if (std::filesystem::exists(localPath))
-	{
-		m_ConfirmMessage = "A file named \"" + m_Data.Name + "\" already exists, do you want to overwrite it?";
-		m_Confirm = true;
-		return;
-	}
-
-	download();
+	m_ConfirmCallback();
 }
 
 void File::DisplayContextMenu()
@@ -102,27 +113,6 @@ void File::DisplayContextMenu()
 	if (ImGui::Button("Download"))
 	{
 		Download();
-		ImGui::CloseCurrentPopup();
-	}
-
-	if (ImGui::Button("Open File Dialog"))
-	{
-		NFD::UniquePath outPath;
-
-		nfdresult_t result = NFD::PickFolder(outPath);
-		if (result == NFD_OKAY)
-		{
-			LOG_INFO("Success: ", outPath.get());
-		}
-		else if (result == NFD_CANCEL)
-		{
-			LOG_INFO("User pressed cancel.");
-		}
-		else
-		{
-			LOG_ERROR("Error: ", NFD::GetError());
-		}
-
 		ImGui::CloseCurrentPopup();
 	}
 }
