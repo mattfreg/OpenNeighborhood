@@ -51,19 +51,6 @@ void ContentsPanel::OnRender()
 
 	ImGui::Begin("Contents Window", nullptr, windowFlags);
 
-	ImGuiStyle& style = ImGui::GetStyle();
-	float panelWidth = ImGui::GetWindowPos().x + ImGui::GetWindowContentRegionMax().x;
-	for (size_t i = 0; i < m_Elements.size(); i++)
-	{
-		ImGui::PushID((int)i);
-		m_Elements[i]->OnRender();
-		float lastButtonX = ImGui::GetItemRectMax().x;
-		float nextButtonX = lastButtonX + style.ItemSpacing.x + m_Elements[i]->GetWidth(); // Expected position if next button was on same line
-		if (i + 1 < m_Elements.size() && nextButtonX < panelWidth)
-			ImGui::SameLine();
-		ImGui::PopID();
-	}
-
 	if (XboxManager::GetCurrentLocation() != "")
 	{
 		if (ImGui::BeginPopupContextWindow())
@@ -76,6 +63,19 @@ void ContentsPanel::OnRender()
 
 			ImGui::EndPopup();
 		}
+	}
+
+	ImGuiStyle& style = ImGui::GetStyle();
+	float panelWidth = ImGui::GetWindowPos().x + ImGui::GetWindowContentRegionMax().x;
+	for (size_t i = 0; i < m_Elements.size(); i++)
+	{
+		ImGui::PushID((int)i);
+		m_Elements[i]->OnRender();
+		float lastButtonX = ImGui::GetItemRectMax().x;
+		float nextButtonX = lastButtonX + style.ItemSpacing.x + m_Elements[i]->GetWidth(); // Expected position if next button was on same line
+		if (i + 1 < m_Elements.size() && nextButtonX < panelWidth)
+			ImGui::SameLine();
+		ImGui::PopID();
 	}
 
 	DisplayConfirmModal();
