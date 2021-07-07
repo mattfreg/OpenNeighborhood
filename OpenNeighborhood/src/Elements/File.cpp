@@ -54,13 +54,6 @@ void File::LaunchXEX()
 
 void File::Download()
 {
-	if (m_Data.IsDirectory)
-	{
-		m_ErrorMessage = "Cannot download a directory";
-		m_Success = false;
-		return;
-	}
-
 	/**
 	 * Depending on the system, std::filesystem::path::native can return either
 	 * std::wstring or std::string. Since we don't know, we are just using auto.
@@ -100,9 +93,17 @@ void File::Download()
 
 void File::DisplayContextMenu()
 {
-	if (ImGui::Button("Download"))
+	if (!m_Data.IsDirectory)
 	{
-		Download();
-		ImGui::CloseCurrentPopup();
+		if (ImGui::BeginPopupContextItem())
+		{
+			if (ImGui::Button("Download"))
+			{
+				Download();
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
+		}
 	}
 }

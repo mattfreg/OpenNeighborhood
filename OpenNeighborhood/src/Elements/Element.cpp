@@ -28,11 +28,7 @@ void Element::OnRender()
 		if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			OnClick();
 
-	if (ImGui::BeginPopupContextItem())
-	{
-		DisplayContextMenu();
-		ImGui::EndPopup();
-	}
+	DisplayContextMenu();
 
 	DisplayConfirmModal();
 	DisplayErrorModal();
