@@ -9,6 +9,7 @@
 #include "Elements/Xbox.h"
 #include "Panels/PathPanel.h"
 #include "Xbox/XboxManager.h"
+#include "Elements/File.h"
 
 ContentsPanel::ContentsPanel()
 {
@@ -146,6 +147,34 @@ void ContentsPanel::Upload()
 			m_ErrorMessage = exception.what();
 			m_Success = false;
 		}
+
+		// Refreshing the content
+		std::set<XBDM::File> files;
+		std::string location = XboxManager::GetCurrentLocation();
+
+		// If the current location is a drive (e.g hdd:), we need to append '\' to it
+		location = location.back() == ':' ? location + '\\' : location;
+
+		try
+		{
+			files = xbox.GetDirectoryContents(location);
+		}
+		catch (const std::exception& exception)
+		{
+			m_ErrorMessage = exception.what();
+			m_Success = false;
+		}
+
+		if (!m_Success)
+			return;
+
+		auto fileElements = CreateRef<std::vector<Ref<Element>>>();
+
+		for (auto& file : files)
+			fileElements->emplace_back(CreateRef<File>(file));
+
+		ContentsChangeEvent event(fileElements);
+		OnContentsChange(event);
 	};
 
 	m_ConfirmCallback = upload;

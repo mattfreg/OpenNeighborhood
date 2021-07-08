@@ -37,7 +37,7 @@ void PathNode::OnClick()
 	try
 	{
 		// If the new location ends with ':', then it's a drive and we need to add '\' at the end
-		files = xbox.GetDirectoryContents(newXboxLocation[newXboxLocation.length() - 1] == ':' ? newXboxLocation + '\\' : newXboxLocation);
+		files = xbox.GetDirectoryContents(newXboxLocation.back() == ':' ? newXboxLocation + '\\' : newXboxLocation);
 	}
 	catch (const std::exception& exception)
 	{
