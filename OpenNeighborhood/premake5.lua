@@ -49,6 +49,7 @@ project "OpenNeighborhood"
         links "opengl32.lib"
 
     filter "system:linux"
+        kind "ConsoleApp"
         systemversion "latest"
         links {
             "X11",
