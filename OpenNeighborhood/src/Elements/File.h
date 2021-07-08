@@ -15,4 +15,7 @@ private:
 
 	void OpenDirectory();
 	void LaunchXEX();
+	void Download();
+
+	void DisplayContextMenu() override;
 };

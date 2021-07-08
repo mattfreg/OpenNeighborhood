@@ -24,6 +24,7 @@ group "Dependencies"
 	include "OpenNeighborhood/vendor/GLFW"
 	include "OpenNeighborhood/vendor/Glad"
 	include "OpenNeighborhood/vendor/ImGui"
+	include "OpenNeighborhood/vendor/nativefiledialog-extended"
 group ""
 
 include "OpenNeighborhood"

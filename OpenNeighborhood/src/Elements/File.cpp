@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Elements/File.h"
 
+#include <nfd.hpp>
+
 #include "Xbox/XboxManager.h"
 #include "Events/AppEvent.h"
 
@@ -48,4 +50,60 @@ void File::LaunchXEX()
 {
 	XBDM::Console& xbox = XboxManager::GetConsole();
 	xbox.LaunchXEX(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name);
+}
+
+void File::Download()
+{
+	/**
+	 * Depending on the system, std::filesystem::path::native can return either
+	 * std::wstring or std::string. Since we don't know, we are just using auto.
+	 */
+	auto extension = std::filesystem::path(m_Data.Name).extension().native().substr(1);
+	auto filterName = extension;
+	std::transform(filterName.begin(), filterName.end(), filterName.begin(), [](auto c) { return std::toupper(c); });
+
+	NFD::UniquePathN outPath;
+	nfdnfilteritem_t filterItem[] = { { filterName.c_str(), extension.c_str() } };
+	nfdresult_t result = NFD::SaveDialog(outPath, filterItem, 1);
+
+	if (result == NFD_ERROR)
+	{
+		m_ErrorMessage = NFD::GetError();
+		m_Success = false;
+		return;
+	}
+	
+	if (result == NFD_CANCEL)
+		return;
+
+	std::filesystem::path localPath = outPath.get();
+
+	XBDM::Console& xbox = XboxManager::GetConsole();
+
+	try
+	{
+		xbox.ReceiveFile(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name, localPath.string());
+	}
+	catch (const std::exception& exception)
+	{
+		m_ErrorMessage = exception.what();
+		m_Success = false;
+	}
+}
+
+void File::DisplayContextMenu()
+{
+	if (!m_Data.IsDirectory)
+	{
+		if (ImGui::BeginPopupContextItem())
+		{
+			if (ImGui::Button("Download"))
+			{
+				Download();
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
+		}
+	}
 }

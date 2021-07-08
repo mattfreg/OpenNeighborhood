@@ -19,11 +19,15 @@ namespace XBDM
 
 		void LaunchXEX(const std::string& xexPath);
 
+		void ReceiveFile(const std::string& remotePath, const std::string& localPath);
+		void SendFile(const std::string& remotePath, const std::string& localPath);
+
 		bool IsConnected() { return m_Connected; }
 	private:
 		bool m_Connected = false;
 		std::string m_IpAddress;
 		SOCKET m_Socket;
+		static const int s_PacketSize = 2048;
 
 		std::string Receive();
 		void SendCommand(const std::string& command);
@@ -34,6 +38,7 @@ namespace XBDM
 		DWORD GetIntegerProperty(const std::string& line, const std::string& propertyName, bool hex = true);
 		std::string GetStringProperty(const std::string& line, const std::string& propertyName);
 
+		void ClearSocket();
 		void CleanupSocket();
 		void CloseSocket();
 

@@ -5,8 +5,6 @@
 #include "Events/AppEvent.h"
 #include "Elements/Drive.h"
 
-#include "Core/Log.h"
-
 Xbox::Xbox(const std::string& label, const std::string& ipAddress)
 	: m_IpAddress(ipAddress), Element(label, "xbox", "Couldn't find console!") {}
 
