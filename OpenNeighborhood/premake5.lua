@@ -1,5 +1,4 @@
 project "OpenNeighborhood"
-    kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
     staticruntime "on"
@@ -63,6 +62,7 @@ project "OpenNeighborhood"
         linkoptions "-lNativeFileDialogExtended `pkg-config --libs gtk+-3.0`"
 
     filter "system:macosx"
+        kind "WindowedApp"
         linkoptions {
             "-framework Cocoa",
             "-framework IOKit",
@@ -78,3 +78,10 @@ project "OpenNeighborhood"
         defines "RELEASE"
         runtime "Release"
         optimize "on"
+
+    filter { "configurations:Debug", "system:windows" }
+        kind "ConsoleApp"
+
+    filter { "configurations:Release", "system:windows" }
+        kind "WindowedApp"
+        linkoptions "/entry:mainCRTStartup"
