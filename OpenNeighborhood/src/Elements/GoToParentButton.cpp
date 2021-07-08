@@ -37,17 +37,9 @@ void GoToParentButton::OnClick()
     XBDM::Console& xbox = XboxManager::GetConsole();
     std::set<XBDM::File> files;
 
-    try
-    {
-        files = xbox.GetDirectoryContents(parentLocation);
-    }
-    catch (const std::exception& exception)
-    {
-        UI::SetErrorMessage(exception.what());
-        UI::SetSuccess(false);
-    }
+    bool success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(parentLocation); });
 
-    if (!UI::IsGood())
+    if (!success)
         return;
 
     XboxManager::GoToParent();

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Xbox/XboxManager.h"
 
+#include "Render/UI.h"
+
 XBDM::Console XboxManager::s_Console;
 std::string XboxManager::s_CurrentLocation;
 
@@ -56,4 +58,19 @@ const std::string& XboxManager::GoToParent()
     s_CurrentLocation = GetParent();
 
     return s_CurrentLocation;
+}
+
+bool XboxManager::Try(const TryCallbackFn& function)
+{
+    try
+    {
+        function();
+    }
+    catch (const std::exception& exception)
+    {
+        UI::SetErrorMessage(exception.what());
+        UI::SetSuccess(false);
+    }
+
+    return UI::IsGood();
 }

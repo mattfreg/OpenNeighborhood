@@ -23,17 +23,9 @@ void File::OpenDirectory()
     XBDM::Console& xbox = XboxManager::GetConsole();
     std::set<XBDM::File> files;
 
-    try
-    {
-        files = xbox.GetDirectoryContents(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name);
-    }
-    catch (const std::exception& exception)
-    {
-        UI::SetErrorMessage(exception.what());
-        UI::SetSuccess(false);
-    }
+    bool success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name); });
 
-    if (!UI::IsGood())
+    if (!success)
         return;
 
     XboxManager::GoToDirectory(m_Data.Name);
@@ -81,15 +73,7 @@ void File::Download()
 
     XBDM::Console& xbox = XboxManager::GetConsole();
 
-    try
-    {
-        xbox.ReceiveFile(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name, localPath.string());
-    }
-    catch (const std::exception& exception)
-    {
-        UI::SetErrorMessage(exception.what());
-        UI::SetSuccess(false);
-    }
+    XboxManager::Try([&]() { xbox.ReceiveFile(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name, localPath.string()); });
 }
 
 void File::DisplayContextMenu()

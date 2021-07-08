@@ -30,18 +30,10 @@ void PathNode::OnClick()
     XBDM::Console& xbox = XboxManager::GetConsole();
     std::set<XBDM::File> files;
 
-    try
-    {
-        // If the new location ends with ':', then it's a drive and we need to add '\' at the end
-        files = xbox.GetDirectoryContents(newXboxLocation.back() == ':' ? newXboxLocation + '\\' : newXboxLocation);
-    }
-    catch (const std::exception& exception)
-    {
-        UI::SetErrorMessage(exception.what());
-        UI::SetSuccess(false);
-    }
+    // If the new location ends with ':', then it's a drive and we need to add '\' at the end
+    bool success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(newXboxLocation.back() == ':' ? newXboxLocation + '\\' : newXboxLocation); });
 
-    if (!UI::IsGood())
+    if (!success)
         return;
 
     XboxManager::SetCurrentLocation(newXboxLocation);

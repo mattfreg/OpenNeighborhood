@@ -20,17 +20,9 @@ void Xbox::OnClick()
     XBDM::Console& xbox = XboxManager::GetConsole();
     std::vector<XBDM::Drive> drives;
 
-    try
-    {
-        drives = xbox.GetDrives();
-    }
-    catch (const std::exception& exception)
-    {
-        UI::SetErrorMessage(exception.what());
-        UI::SetSuccess(false);
-    }
+    bool success = XboxManager::Try([&]() { drives = xbox.GetDrives(); });
 
-    if (!UI::IsGood())
+    if (!success)
         return;
 
     auto driveElements = CreateRef<std::vector<Ref<Element>>>();

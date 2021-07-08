@@ -136,15 +136,10 @@ void ContentsPanel::Upload()
     {
         XBDM::Console& xbox = XboxManager::GetConsole();
 
-        try
-        {
-            xbox.SendFile(remotePath, localPath.string());
-        }
-        catch (const std::exception& exception)
-        {
-            UI::SetErrorMessage(exception.what());
-            UI::SetSuccess(false);
-        }
+        bool success = XboxManager::Try([&]() { xbox.SendFile(remotePath, localPath.string()); });
+
+        if (!success)
+            return;
 
         // Refreshing the content
         std::set<XBDM::File> files;
@@ -153,17 +148,9 @@ void ContentsPanel::Upload()
         // If the current location is a drive (e.g hdd:), we need to append '\' to it
         location = location.back() == ':' ? location + '\\' : location;
 
-        try
-        {
-            files = xbox.GetDirectoryContents(location);
-        }
-        catch (const std::exception& exception)
-        {
-            UI::SetErrorMessage(exception.what());
-            UI::SetSuccess(false);
-        }
+        success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(location); });
 
-        if (!UI::IsGood())
+        if (!success)
             return;
 
         auto fileElements = CreateRef<std::vector<Ref<Element>>>();
