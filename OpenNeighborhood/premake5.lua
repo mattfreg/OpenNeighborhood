@@ -26,9 +26,7 @@ project "OpenNeighborhood"
         "vendor/nativefiledialog-extended/src/include"
     }
 
-    defines {
-        "GLFW_INCLUDE_NONE"
-    }
+    defines "GLFW_INCLUDE_NONE"
 
     links {
         "GLFW",
@@ -39,23 +37,17 @@ project "OpenNeighborhood"
     }
 
     filter "system:windows"
-        postbuildcommands {
-            "{COPY} assets %{cfg.targetdir}/assets"
-        }
+        postbuildcommands "{COPY} assets %{cfg.targetdir}/assets"
 
     filter "system:not windows"
-        postbuildcommands {
-            "{COPY} assets %{cfg.targetdir}"
-        }
+        postbuildcommands "{COPY} assets %{cfg.targetdir}"
 
     filter "system:not macosx"
         linkgroups "on"
 
     filter "system:windows"
         systemversion "latest"
-        links {
-            "opengl32.lib"
-        }
+        links "opengl32.lib"
 
     filter "system:linux"
         systemversion "latest"
@@ -83,6 +75,6 @@ project "OpenNeighborhood"
         symbols "on"
 
     filter "configurations:Release"
-        runtime "Release"
         defines "RELEASE"
+        runtime "Release"
         optimize "on"

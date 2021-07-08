@@ -2,14 +2,9 @@ workspace "OpenNeighborhood"
     architecture "x86_64"
     startproject "OpenNeighborhood"
 
-    configurations {
-        "Debug",
-        "Release"
-    }
+    configurations { "Debug", "Release" }
 
-    flags {
-        "MultiProcessorCompile"
-    }
+    flags "MultiProcessorCompile"
 
 OutputDir = "%{cfg.buildcfg}"
 TargetDir = "bin/" .. OutputDir

@@ -36,9 +36,7 @@ project "GLFW"
             "src/linux_joystick.c"
         }
 
-        defines {
-            "_GLFW_X11"
-        }
+        defines "_GLFW_X11"
 
     filter "system:windows"
         systemversion "latest"
@@ -55,10 +53,7 @@ project "GLFW"
             "src/osmesa_context.c"
         }
 
-        defines  { 
-            "_GLFW_WIN32",
-            "_CRT_SECURE_NO_WARNINGS"
-        }
+        defines  { "_GLFW_WIN32", "_CRT_SECURE_NO_WARNINGS" }
 
     filter "system:macosx"
         files {
@@ -73,9 +68,7 @@ project "GLFW"
             "src/osmesa_context.c"
         }
 
-        defines {
-            "_GLFW_COCOA"
-        }
+        defines "_GLFW_COCOA"
 
     filter "configurations:Debug"
         runtime "Debug"

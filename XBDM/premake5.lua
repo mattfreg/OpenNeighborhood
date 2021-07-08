@@ -17,16 +17,11 @@ project "XBDM"
         "vendor/**.cpp"
     }
 
-    includedirs {
-        "src",
-        "vendor/dirent"
-    }
+    includedirs { "src", "vendor/dirent" }
 
     filter "system:windows"
         systemversion "latest"
-        links {
-            "Ws2_32.lib"
-        }
+        links "Ws2_32.lib"
 
     filter "configurations:Debug"
         runtime "Debug"

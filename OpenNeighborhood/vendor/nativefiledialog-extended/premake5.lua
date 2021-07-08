@@ -11,38 +11,26 @@ project "NativeFileDialogExtended"
         "src/include/nfd.hpp"
     }
 
-    includedirs {
-        "src/include"
-    }
+    includedirs "src/include"
 
     filter "system:linux"
         pic "on"
 
         systemversion "latest"
 
-        files {
-            "src/nfd_gtk.cpp"
-        }
+        files "src/nfd_gtk.cpp"
 
-        buildoptions {
-            "`pkg-config --cflags gtk+-3.0`"
-        }
+        buildoptions "`pkg-config --cflags gtk+-3.0`"
 
     filter "system:windows"
         systemversion "latest"
 
-        files {
-            "src/nfd_win.cpp"
-        }
+        files "src/nfd_win.cpp"
 
     filter "system:macosx"
-        files {
-            "src/nfd_cocoa.m"
-        }
+        files "src/nfd_cocoa.m"
 
-        linkoptions {
-            "-framework AppKit",
-        }
+        linkoptions "-framework AppKit"
 
     filter "configurations:Debug"
         runtime "Debug"

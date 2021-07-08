@@ -2,7 +2,7 @@ project "Glad"
     kind "StaticLib"
     language "C"
     staticruntime "on"
-    
+
     targetdir (TargetDir .. "/%{prj.name}")
     objdir (ObjDir .. "/%{prj.name}")
 
@@ -12,10 +12,8 @@ project "Glad"
         "src/glad.c"
     }
 
-    includedirs {
-        "include"
-    }
-    
+    includedirs "include"
+
     filter "system:windows"
         systemversion "latest"
 
