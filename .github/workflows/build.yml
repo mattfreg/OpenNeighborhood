@@ -17,7 +17,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: OpenNeighborhood-windows
-          path: bin\Release-windows\
+          path: bin\Release\
 
   linux:
     runs-on: ubuntu-latest
@@ -38,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: OpenNeighborhood-linux
-          path: bin/Release-linux/
+          path: bin/Release/
 
   macos:
     runs-on: macos-latest
@@ -54,4 +54,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: OpenNeighborhood-macos
-          path: bin/Release-macosx/
+          path: bin/Release/
