@@ -43,5 +43,8 @@ void OpenNeighborhood::OnUpdate()
     for (auto it = m_PanelStack.end(); it != m_PanelStack.begin();)
         (*--it)->OnRender();
 
+    UI::DisplayConfirmModal();
+    UI::DisplayErrorModal();
+
     UI::EndFrame();
 }

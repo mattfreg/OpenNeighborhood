@@ -8,9 +8,10 @@
 #include "Xbox/XboxManager.h"
 #include "Events/AppEvent.h"
 #include "Elements/Xbox.h"
+#include "Render/UI.h"
 
 AddXboxButton::AddXboxButton() 
-    : Element("Add Xbox 360", "addXboxButton", "Couldn't find console!") {}
+    : Element("Add Xbox 360", "addXboxButton") {}
 
 void AddXboxButton::OnRender()
 {
@@ -73,10 +74,12 @@ void AddXboxButton::OnRender()
             ipAddress << bytes[0] << "." << bytes[1] << "." << bytes[2] << "." << bytes[3];
             
             std::string consoleName;
-            m_Success = XboxManager::CreateConsole(ipAddress.str(), consoleName);
+            UI::SetSuccess(XboxManager::CreateConsole(ipAddress.str(), consoleName));
 
-            if (m_Success)
+            if (UI::IsGood())
                 CreateXbox(consoleName, ipAddress.str());
+            else
+                UI::SetErrorMessage("Couldn't find console");
 
             ImGui::CloseCurrentPopup();
         }
@@ -89,8 +92,6 @@ void AddXboxButton::OnRender()
 
         ImGui::EndPopup();
     }
-
-    DisplayErrorModal();
 }
 
 void AddXboxButton::OnClick()

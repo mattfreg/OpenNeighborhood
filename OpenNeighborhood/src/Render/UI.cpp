@@ -11,6 +11,11 @@
 ImFont* UI::s_OpenSansBold = nullptr;
 ImFont* UI::s_OpenSansRegular = nullptr;
 ImFont* UI::s_OpenSansRegularBig = nullptr;
+bool UI::s_Confirm = false;
+std::string UI::s_ConfirmMessage;
+ConfirmCallbackFn UI::s_ConfirmCallback;
+bool UI::s_Success = true;
+std::string UI::s_ErrorMessage;
 
 void UI::Init()
 {
@@ -54,6 +59,65 @@ void UI::Cleanup()
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
+}
+
+void UI::DisplayConfirmModal()
+{
+    if (s_Confirm)
+    {
+        ImGui::OpenPopup("Confirm");
+
+        ImVec2 center(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
+        ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+    }
+
+    if (ImGui::BeginPopupModal("Confirm", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+    {
+        ImGui::Text("%s", s_ConfirmMessage.c_str());
+
+        if (ImGui::Button("OK", ImVec2(120.0f, 0.0f)))
+        {
+            if (s_ConfirmCallback)
+                s_ConfirmCallback();
+
+            s_Confirm = false;
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::SameLine();
+
+        if (ImGui::Button("Cancel", ImVec2(120.0f, 0.0f)))
+        {
+            s_Confirm = false;
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
+}
+
+void UI::DisplayErrorModal()
+{
+    if (!s_Success)
+    {
+        ImGui::OpenPopup("Error");
+
+        ImVec2 center(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
+        ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+    }
+
+    if (ImGui::BeginPopupModal("Error", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+    {
+        ImGui::Text("%s", s_ErrorMessage.c_str());
+
+        if (ImGui::Button("OK", ImVec2(120.0f, 0.0f)))
+        {
+            s_Success = true;
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
 }
 
 void UI::SetDarkThemeColors()

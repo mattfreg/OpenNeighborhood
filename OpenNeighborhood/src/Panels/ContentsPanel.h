@@ -20,15 +20,4 @@ private:
     void InjectNewElements();
 
     void Upload();
-
-    void DisplayErrorModal();
-    void DisplayConfirmModal();
-
-    // Confirmation members
-    bool m_Confirm = false;
-    std::string m_ConfirmMessage;
-    ConfirmCallbackFn m_ConfirmCallback;
-
-    bool m_Success = true;
-    std::string m_ErrorMessage;
 };

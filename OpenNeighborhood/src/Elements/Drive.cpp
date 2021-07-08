@@ -4,9 +4,10 @@
 #include "Xbox/XboxManager.h"
 #include "Events/AppEvent.h"
 #include "Elements/File.h"
+#include "Render/UI.h"
 
 Drive::Drive(const XBDM::Drive& data)
-    : m_Data(data), Element(data.FriendlyName, "drive", "Couldn't fetch content from this drive!") {}
+    : m_Data(data), Element(data.FriendlyName, "drive") {}
 
 void Drive::OnClick()
 {
@@ -21,11 +22,11 @@ void Drive::OnClick()
     }
     catch (const std::exception& exception)
     {
-        m_ErrorMessage = exception.what();
-        m_Success = false;
+        UI::SetErrorMessage(exception.what());
+        UI::SetSuccess(false);
     }
 
-    if (!m_Success)
+    if (!UI::IsGood())
         return;
 
     XboxManager::GoToDirectory(m_Data.Name);

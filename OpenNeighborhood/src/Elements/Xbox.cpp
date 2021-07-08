@@ -4,16 +4,17 @@
 #include "Xbox/XboxManager.h"
 #include "Events/AppEvent.h"
 #include "Elements/Drive.h"
+#include "Render/UI.h"
 
 Xbox::Xbox(const std::string& label, const std::string& ipAddress)
-    : m_IpAddress(ipAddress), Element(label, "xbox", "Couldn't find console!") {}
+    : m_IpAddress(ipAddress), Element(label, "xbox") {}
 
 void Xbox::OnClick()
 {
     std::string consoleName;
-    m_Success = XboxManager::CreateConsole(m_IpAddress, consoleName, true);
+    UI::SetSuccess(XboxManager::CreateConsole(m_IpAddress, consoleName, true));
 
-    if (!m_Success)
+    if (!UI::IsGood())
         return;
 
     XBDM::Console& xbox = XboxManager::GetConsole();
@@ -25,11 +26,11 @@ void Xbox::OnClick()
     }
     catch (const std::exception& exception)
     {
-        m_ErrorMessage = exception.what();
-        m_Success = false;
+        UI::SetErrorMessage(exception.what());
+        UI::SetSuccess(false);
     }
 
-    if (!m_Success)
+    if (!UI::IsGood())
         return;
 
     auto driveElements = CreateRef<std::vector<Ref<Element>>>();

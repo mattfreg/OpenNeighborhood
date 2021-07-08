@@ -10,6 +10,7 @@
 #include "Panels/PathPanel.h"
 #include "Xbox/XboxManager.h"
 #include "Elements/File.h"
+#include "Render/UI.h"
 
 ContentsPanel::ContentsPanel()
 {
@@ -79,9 +80,6 @@ void ContentsPanel::OnRender()
         ImGui::PopID();
     }
 
-    DisplayConfirmModal();
-    DisplayErrorModal();
-
     ImGui::End();
 
     if (!m_ContentsChangeEventQueue.empty())
@@ -144,8 +142,8 @@ void ContentsPanel::Upload()
         }
         catch (const std::exception& exception)
         {
-            m_ErrorMessage = exception.what();
-            m_Success = false;
+            UI::SetErrorMessage(exception.what());
+            UI::SetSuccess(false);
         }
 
         // Refreshing the content
@@ -161,11 +159,11 @@ void ContentsPanel::Upload()
         }
         catch (const std::exception& exception)
         {
-            m_ErrorMessage = exception.what();
-            m_Success = false;
+            UI::SetErrorMessage(exception.what());
+            UI::SetSuccess(false);
         }
 
-        if (!m_Success)
+        if (!UI::IsGood())
             return;
 
         auto fileElements = CreateRef<std::vector<Ref<Element>>>();
@@ -177,7 +175,7 @@ void ContentsPanel::Upload()
         OnContentsChange(event);
     };
 
-    m_ConfirmCallback = upload;
+    UI::SetConfirmCallback(upload);
 
     auto fileAlreadyExists = std::find_if(m_Elements.begin(), m_Elements.end(), [&](const Ref<Element>& element)
     {
@@ -186,69 +184,10 @@ void ContentsPanel::Upload()
 
     if (fileAlreadyExists != m_Elements.end())
     {
-        m_ConfirmMessage = "A file named \"" + fileName + "\" already exists, do you want to overwrite it?";
-        m_Confirm = true;
+        UI::SetConfirmMessage("A file named \"" + fileName + "\" already exists, do you want to overwrite it?");
+        UI::SetConfirm(true);
         return;
     }
 
     upload();
-}
-
-void ContentsPanel::DisplayConfirmModal()
-{
-    if (m_Confirm)
-    {
-        ImGui::OpenPopup("Confirm");
-
-        ImVec2 center(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
-        ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-    }
-
-    if (ImGui::BeginPopupModal("Confirm", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
-    {
-        ImGui::Text("%s", m_ConfirmMessage.c_str());
-
-        if (ImGui::Button("OK", ImVec2(120.0f, 0.0f)))
-        {
-            if (m_ConfirmCallback)
-                m_ConfirmCallback();
-
-            m_Confirm = false;
-            ImGui::CloseCurrentPopup();
-        }
-
-        ImGui::SameLine();
-
-        if (ImGui::Button("Cancel", ImVec2(120.0f, 0.0f)))
-        {
-            m_Confirm = false;
-            ImGui::CloseCurrentPopup();
-        }
-
-        ImGui::EndPopup();
-    }
-}
-
-void ContentsPanel::DisplayErrorModal()
-{
-    if (!m_Success)
-    {
-        ImGui::OpenPopup("Error");
-
-        ImVec2 center(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
-        ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-    }
-
-    if (ImGui::BeginPopupModal("Error", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
-    {
-        ImGui::Text("%s", m_ErrorMessage.c_str());
-
-        if (ImGui::Button("OK", ImVec2(120.0f, 0.0f)))
-        {
-            m_Success = true;
-            ImGui::CloseCurrentPopup();
-        }
-
-        ImGui::EndPopup();
-    }
 }

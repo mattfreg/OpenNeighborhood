@@ -3,9 +3,10 @@
 
 #include "Render/TextureManager.h"
 #include "OpenNeighborhood.h"
+#include "Render/UI.h"
 
-Element::Element(const std::string& label, const std::string& textureName, const std::string& errorMessage)
-    : m_Label(label), m_TextureName(textureName), m_ErrorMessage(errorMessage)
+Element::Element(const std::string& label, const std::string& textureName)
+    : m_Label(label), m_TextureName(textureName)
 {
     if (textureName != "")
     {
@@ -29,72 +30,10 @@ void Element::OnRender()
             OnClick();
 
     DisplayContextMenu();
-
-    DisplayConfirmModal();
-    DisplayErrorModal();
 }
 
 void Element::OnEvent(Event& event)
 {
     OpenNeighborhood& currentLayer = OpenNeighborhood::Get();
     currentLayer.OnEvent(event);
-}
-
-void Element::DisplayConfirmModal()
-{
-    if (m_Confirm)
-    {
-        ImGui::OpenPopup("Confirm");
-
-        ImVec2 center(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
-        ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-    }
-
-    if (ImGui::BeginPopupModal("Confirm", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
-    {
-        ImGui::Text("%s", m_ConfirmMessage.c_str());
-
-        if (ImGui::Button("OK", ImVec2(120.0f, 0.0f)))
-        {
-            if (m_ConfirmCallback)
-                m_ConfirmCallback();
-
-            m_Confirm = false;
-            ImGui::CloseCurrentPopup();
-        }
-
-        ImGui::SameLine();
-
-        if (ImGui::Button("Cancel", ImVec2(120.0f, 0.0f)))
-        {
-            m_Confirm = false;
-            ImGui::CloseCurrentPopup();
-        }
-
-        ImGui::EndPopup();
-    }
-}
-
-void Element::DisplayErrorModal()
-{
-    if (!m_Success)
-    {
-        ImGui::OpenPopup("Error");
-
-        ImVec2 center(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
-        ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-    }
-
-    if (ImGui::BeginPopupModal("Error", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
-    {
-        ImGui::Text("%s", m_ErrorMessage.c_str());
-
-        if (ImGui::Button("OK", ImVec2(120.0f, 0.0f)))
-        {
-            m_Success = true;
-            ImGui::CloseCurrentPopup();
-        }
-
-        ImGui::EndPopup();
-    }
 }

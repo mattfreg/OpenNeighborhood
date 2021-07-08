@@ -5,9 +5,10 @@
 
 #include "Xbox/XboxManager.h"
 #include "Events/AppEvent.h"
+#include "Render/UI.h"
 
 File::File(const XBDM::File& data)
-    : m_Data(data), Element(data.Name, data.IsDirectory ? "directory" : data.IsXEX ? "xex" : "file", "Couldn't access file!") {}
+    : m_Data(data), Element(data.Name, data.IsDirectory ? "directory" : data.IsXEX ? "xex" : "file") {}
 
 void File::OnClick()
 {
@@ -28,11 +29,11 @@ void File::OpenDirectory()
     }
     catch (const std::exception& exception)
     {
-        m_ErrorMessage = exception.what();
-        m_Success = false;
+        UI::SetErrorMessage(exception.what());
+        UI::SetSuccess(false);
     }
 
-    if (!m_Success)
+    if (!UI::IsGood())
         return;
 
     XboxManager::GoToDirectory(m_Data.Name);
@@ -68,8 +69,8 @@ void File::Download()
 
     if (result == NFD_ERROR)
     {
-        m_ErrorMessage = NFD::GetError();
-        m_Success = false;
+        UI::SetErrorMessage(NFD::GetError());
+        UI::SetSuccess(false);
         return;
     }
     
@@ -86,8 +87,8 @@ void File::Download()
     }
     catch (const std::exception& exception)
     {
-        m_ErrorMessage = exception.what();
-        m_Success = false;
+        UI::SetErrorMessage(exception.what());
+        UI::SetSuccess(false);
     }
 }
 

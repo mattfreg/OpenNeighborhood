@@ -8,7 +8,7 @@
 #include "Render/UI.h"
 
 GoToParentButton::GoToParentButton()
-    : Element("", "leftArrow", "Couldn't access directory")
+    : Element("", "leftArrow")
 {
     auto texture = TextureManager::GetTexture(m_TextureName);
     m_Width = texture->GetWidth();
@@ -21,10 +21,6 @@ void GoToParentButton::OnRender()
 
     if (ImGui::ImageButton((void*)(intptr_t)texture->GetTextureID(), ImVec2((float)m_Width, (float)m_Height)))
         OnClick();
-
-    ImGui::PushFont(UI::GetRegularFont());
-    DisplayErrorModal();
-    ImGui::PopFont();
 }
 
 void GoToParentButton::OnClick()
@@ -47,11 +43,11 @@ void GoToParentButton::OnClick()
     }
     catch (const std::exception& exception)
     {
-        m_ErrorMessage = exception.what();
-        m_Success = false;
+        UI::SetErrorMessage(exception.what());
+        UI::SetSuccess(false);
     }
 
-    if (!m_Success)
+    if (!UI::IsGood())
         return;
 
     XboxManager::GoToParent();

@@ -7,16 +7,12 @@
 #include "Render/UI.h"
 
 PathNode::PathNode(const std::string& label, size_t posInPath, void* parentPanel)
-    : Element(label, "", "Couldn't access directory"), m_PosInPath(posInPath), m_ParentPanel(parentPanel) {}
+    : m_PosInPath(posInPath), m_ParentPanel(parentPanel), Element(label, "") {}
 
 void PathNode::OnRender()
 {
     if (ImGui::Button(m_Label.c_str()))
         OnClick();
-
-    ImGui::PushFont(UI::GetRegularFont());
-    DisplayErrorModal();
-    ImGui::PopFont();
 }
 
 void PathNode::OnClick()
@@ -41,11 +37,11 @@ void PathNode::OnClick()
     }
     catch (const std::exception& exception)
     {
-        m_ErrorMessage = exception.what();
-        m_Success = false;
+        UI::SetErrorMessage(exception.what());
+        UI::SetSuccess(false);
     }
 
-    if (!m_Success)
+    if (!UI::IsGood())
         return;
 
     XboxManager::SetCurrentLocation(newXboxLocation);
