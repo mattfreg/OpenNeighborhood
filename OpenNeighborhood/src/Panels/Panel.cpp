@@ -5,24 +5,24 @@
 
 Panel::Panel()
 {
-	SetWindowWidthAndHeight();
+    SetWindowWidthAndHeight();
 }
 
 void Panel::OnEvent(Event& event)
 {
-	EventDispatcher dispatcher(event);
-	dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Panel::OnWindowResize));
+    EventDispatcher dispatcher(event);
+    dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Panel::OnWindowResize));
 }
 
 bool Panel::OnWindowResize(WindowResizeEvent& event)
 {
-	SetWindowWidthAndHeight();
-	return true;
+    SetWindowWidthAndHeight();
+    return true;
 }
 
 void Panel::SetWindowWidthAndHeight()
 {
-	App& app = App::Get();
-	m_WindowWidth = app.GetWindow().GetWidth();
-	m_WindowHeight = app.GetWindow().GetHeight();
+    App& app = App::Get();
+    m_WindowWidth = app.GetWindow().GetWidth();
+    m_WindowHeight = app.GetWindow().GetHeight();
 }

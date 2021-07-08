@@ -7,9 +7,9 @@
 class Drive : public Element
 {
 public:
-	Drive(const XBDM::Drive& data);
+    Drive(const XBDM::Drive& data);
 
-	virtual void OnClick() override;
+    virtual void OnClick() override;
 private:
-	XBDM::Drive m_Data;
+    XBDM::Drive m_Data;
 };

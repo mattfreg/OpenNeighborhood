@@ -4,9 +4,9 @@
 
 int main()
 {
-	auto app = new OpenNeighborhoodApp();
+    auto app = new OpenNeighborhoodApp();
 
-	app->Run();
+    app->Run();
 
-	delete app;
+    delete app;
 }

@@ -5,9 +5,9 @@
 class Xbox : public Element
 {
 public:
-	Xbox(const std::string& label, const std::string& ipAddress);
+    Xbox(const std::string& label, const std::string& ipAddress);
 
-	virtual void OnClick() override;
+    virtual void OnClick() override;
 private:
-	std::string m_IpAddress;
+    std::string m_IpAddress;
 };

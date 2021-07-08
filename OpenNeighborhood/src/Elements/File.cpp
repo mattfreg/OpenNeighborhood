@@ -7,103 +7,103 @@
 #include "Events/AppEvent.h"
 
 File::File(const XBDM::File& data)
-	: m_Data(data), Element(data.Name, data.IsDirectory ? "directory" : data.IsXEX ? "xex" : "file", "Couldn't access file!") {}
+    : m_Data(data), Element(data.Name, data.IsDirectory ? "directory" : data.IsXEX ? "xex" : "file", "Couldn't access file!") {}
 
 void File::OnClick()
 {
-	if (m_Data.IsDirectory)
-		OpenDirectory();
-	else if (m_Data.IsXEX)
-		LaunchXEX();
+    if (m_Data.IsDirectory)
+        OpenDirectory();
+    else if (m_Data.IsXEX)
+        LaunchXEX();
 }
 
 void File::OpenDirectory()
 {
-	XBDM::Console& xbox = XboxManager::GetConsole();
-	std::set<XBDM::File> files;
+    XBDM::Console& xbox = XboxManager::GetConsole();
+    std::set<XBDM::File> files;
 
-	try
-	{
-		files = xbox.GetDirectoryContents(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name);
-	}
-	catch (const std::exception& exception)
-	{
-		m_ErrorMessage = exception.what();
-		m_Success = false;
-	}
+    try
+    {
+        files = xbox.GetDirectoryContents(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name);
+    }
+    catch (const std::exception& exception)
+    {
+        m_ErrorMessage = exception.what();
+        m_Success = false;
+    }
 
-	if (!m_Success)
-		return;
+    if (!m_Success)
+        return;
 
-	XboxManager::GoToDirectory(m_Data.Name);
+    XboxManager::GoToDirectory(m_Data.Name);
 
-	auto fileElements = CreateRef<std::vector<Ref<Element>>>();
+    auto fileElements = CreateRef<std::vector<Ref<Element>>>();
 
-	for (auto& file : files)
-		fileElements->emplace_back(CreateRef<File>(file));
+    for (auto& file : files)
+        fileElements->emplace_back(CreateRef<File>(file));
 
-	ContentsChangeEvent event(fileElements);
-	m_EventCallback(event);
+    ContentsChangeEvent event(fileElements);
+    m_EventCallback(event);
 }
 
 void File::LaunchXEX()
 {
-	XBDM::Console& xbox = XboxManager::GetConsole();
-	xbox.LaunchXEX(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name);
+    XBDM::Console& xbox = XboxManager::GetConsole();
+    xbox.LaunchXEX(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name);
 }
 
 void File::Download()
 {
-	/**
-	 * Depending on the system, std::filesystem::path::native can return either
-	 * std::wstring or std::string. Since we don't know, we are just using auto.
-	 */
-	auto extension = std::filesystem::path(m_Data.Name).extension().native().substr(1);
-	auto filterName = extension;
-	std::transform(filterName.begin(), filterName.end(), filterName.begin(), [](auto c) { return std::toupper(c); });
+    /**
+     * Depending on the system, std::filesystem::path::native can return either
+     * std::wstring or std::string. Since we don't know, we are just using auto.
+     */
+    auto extension = std::filesystem::path(m_Data.Name).extension().native().substr(1);
+    auto filterName = extension;
+    std::transform(filterName.begin(), filterName.end(), filterName.begin(), [](auto c) { return std::toupper(c); });
 
-	NFD::UniquePathN outPath;
-	nfdnfilteritem_t filterItem[] = { { filterName.c_str(), extension.c_str() } };
-	nfdresult_t result = NFD::SaveDialog(outPath, filterItem, 1);
+    NFD::UniquePathN outPath;
+    nfdnfilteritem_t filterItem[] = { { filterName.c_str(), extension.c_str() } };
+    nfdresult_t result = NFD::SaveDialog(outPath, filterItem, 1);
 
-	if (result == NFD_ERROR)
-	{
-		m_ErrorMessage = NFD::GetError();
-		m_Success = false;
-		return;
-	}
-	
-	if (result == NFD_CANCEL)
-		return;
+    if (result == NFD_ERROR)
+    {
+        m_ErrorMessage = NFD::GetError();
+        m_Success = false;
+        return;
+    }
+    
+    if (result == NFD_CANCEL)
+        return;
 
-	std::filesystem::path localPath = outPath.get();
+    std::filesystem::path localPath = outPath.get();
 
-	XBDM::Console& xbox = XboxManager::GetConsole();
+    XBDM::Console& xbox = XboxManager::GetConsole();
 
-	try
-	{
-		xbox.ReceiveFile(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name, localPath.string());
-	}
-	catch (const std::exception& exception)
-	{
-		m_ErrorMessage = exception.what();
-		m_Success = false;
-	}
+    try
+    {
+        xbox.ReceiveFile(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name, localPath.string());
+    }
+    catch (const std::exception& exception)
+    {
+        m_ErrorMessage = exception.what();
+        m_Success = false;
+    }
 }
 
 void File::DisplayContextMenu()
 {
-	if (!m_Data.IsDirectory)
-	{
-		if (ImGui::BeginPopupContextItem())
-		{
-			if (ImGui::Button("Download"))
-			{
-				Download();
-				ImGui::CloseCurrentPopup();
-			}
+    if (!m_Data.IsDirectory)
+    {
+        if (ImGui::BeginPopupContextItem())
+        {
+            if (ImGui::Button("Download"))
+            {
+                Download();
+                ImGui::CloseCurrentPopup();
+            }
 
-			ImGui::EndPopup();
-		}
-	}
+            ImGui::EndPopup();
+        }
+    }
 }

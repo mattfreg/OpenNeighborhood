@@ -5,5 +5,5 @@
 class MainPanel : public Panel
 {
 public:
-	virtual void OnRender() override;
+    virtual void OnRender() override;
 };

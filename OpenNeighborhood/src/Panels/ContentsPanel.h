@@ -6,29 +6,29 @@
 class ContentsPanel : public Panel
 {
 public:
-	using ConfirmCallbackFn = std::function<void()>;
+    using ConfirmCallbackFn = std::function<void()>;
 
-	ContentsPanel();
+    ContentsPanel();
 
-	virtual void OnRender() override;
-	virtual void OnEvent(Event& event) override;
+    virtual void OnRender() override;
+    virtual void OnEvent(Event& event) override;
 private:
-	std::vector<Ref<Element>> m_Elements;
-	std::queue<ContentsChangeEvent> m_ContentsChangeEventQueue;
+    std::vector<Ref<Element>> m_Elements;
+    std::queue<ContentsChangeEvent> m_ContentsChangeEventQueue;
 
-	bool OnContentsChange(ContentsChangeEvent& event);
-	void InjectNewElements();
+    bool OnContentsChange(ContentsChangeEvent& event);
+    void InjectNewElements();
 
-	void Upload();
+    void Upload();
 
-	void DisplayErrorModal();
-	void DisplayConfirmModal();
+    void DisplayErrorModal();
+    void DisplayConfirmModal();
 
-	// Confirmation members
-	bool m_Confirm = false;
-	std::string m_ConfirmMessage;
-	ConfirmCallbackFn m_ConfirmCallback;
+    // Confirmation members
+    bool m_Confirm = false;
+    std::string m_ConfirmMessage;
+    ConfirmCallbackFn m_ConfirmCallback;
 
-	bool m_Success = true;
-	std::string m_ErrorMessage;
+    bool m_Success = true;
+    std::string m_ErrorMessage;
 };

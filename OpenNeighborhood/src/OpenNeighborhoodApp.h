@@ -6,10 +6,10 @@
 class OpenNeighborhoodApp : public App
 {
 public:
-	OpenNeighborhoodApp()
-	{
-		PushLayer(new OpenNeighborhood());
-	}
+    OpenNeighborhoodApp()
+    {
+        PushLayer(new OpenNeighborhood());
+    }
 
-	~OpenNeighborhoodApp() {}
+    ~OpenNeighborhoodApp() {}
 };

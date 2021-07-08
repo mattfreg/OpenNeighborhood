@@ -5,8 +5,8 @@
 class GoToParentButton : public Element
 {
 public:
-	GoToParentButton();
+    GoToParentButton();
 
-	virtual void OnRender() override;
-	virtual void OnClick() override;
+    virtual void OnRender() override;
+    virtual void OnClick() override;
 };

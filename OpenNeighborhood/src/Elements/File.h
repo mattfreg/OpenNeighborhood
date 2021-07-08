@@ -7,15 +7,15 @@
 class File : public Element
 {
 public:
-	File(const XBDM::File& data);
+    File(const XBDM::File& data);
 
-	virtual void OnClick() override;
+    virtual void OnClick() override;
 private:
-	XBDM::File m_Data;
+    XBDM::File m_Data;
 
-	void OpenDirectory();
-	void LaunchXEX();
-	void Download();
+    void OpenDirectory();
+    void LaunchXEX();
+    void Download();
 
-	void DisplayContextMenu() override;
+    void DisplayContextMenu() override;
 };

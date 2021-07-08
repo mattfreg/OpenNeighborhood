@@ -1,13 +1,13 @@
 #ifdef _WIN32
-	#pragma once
+    #pragma once
 
-	#include <WinSock2.h>
-	#include <Windows.h>
-	#include <WS2tcpip.h>
+    #include <WinSock2.h>
+    #include <Windows.h>
+    #include <WS2tcpip.h>
 #else
-	#include <cstring>
-	#include <netdb.h>
-	#include <unistd.h>
+    #include <cstring>
+    #include <netdb.h>
+    #include <unistd.h>
 #endif
 
 #include <string>

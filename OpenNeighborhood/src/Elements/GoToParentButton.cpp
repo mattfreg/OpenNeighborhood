@@ -8,59 +8,59 @@
 #include "Render/UI.h"
 
 GoToParentButton::GoToParentButton()
-	: Element("", "leftArrow", "Couldn't access directory")
+    : Element("", "leftArrow", "Couldn't access directory")
 {
-	auto texture = TextureManager::GetTexture(m_TextureName);
-	m_Width = texture->GetWidth();
-	m_Height = texture->GetHeight();
+    auto texture = TextureManager::GetTexture(m_TextureName);
+    m_Width = texture->GetWidth();
+    m_Height = texture->GetHeight();
 }
 
 void GoToParentButton::OnRender()
 {
-	auto texture = TextureManager::GetTexture(m_TextureName);
+    auto texture = TextureManager::GetTexture(m_TextureName);
 
-	if (ImGui::ImageButton((void*)(intptr_t)texture->GetTextureID(), ImVec2((float)m_Width, (float)m_Height)))
-		OnClick();
+    if (ImGui::ImageButton((void*)(intptr_t)texture->GetTextureID(), ImVec2((float)m_Width, (float)m_Height)))
+        OnClick();
 
-	ImGui::PushFont(UI::GetRegularFont());
-	DisplayErrorModal();
-	ImGui::PopFont();
+    ImGui::PushFont(UI::GetRegularFont());
+    DisplayErrorModal();
+    ImGui::PopFont();
 }
 
 void GoToParentButton::OnClick()
 {
-	std::string currentLocation = XboxManager::GetCurrentLocation();
-	std::string parentLocation = XboxManager::GetParent();
+    std::string currentLocation = XboxManager::GetCurrentLocation();
+    std::string parentLocation = XboxManager::GetParent();
 
-	if (currentLocation == parentLocation)
-		return;
+    if (currentLocation == parentLocation)
+        return;
 
-	if (parentLocation[parentLocation.length() - 1] == ':')
-		parentLocation += '\\';
+    if (parentLocation[parentLocation.length() - 1] == ':')
+        parentLocation += '\\';
 
-	XBDM::Console& xbox = XboxManager::GetConsole();
-	std::set<XBDM::File> files;
+    XBDM::Console& xbox = XboxManager::GetConsole();
+    std::set<XBDM::File> files;
 
-	try
-	{
-		files = xbox.GetDirectoryContents(parentLocation);
-	}
-	catch (const std::exception& exception)
-	{
-		m_ErrorMessage = exception.what();
-		m_Success = false;
-	}
+    try
+    {
+        files = xbox.GetDirectoryContents(parentLocation);
+    }
+    catch (const std::exception& exception)
+    {
+        m_ErrorMessage = exception.what();
+        m_Success = false;
+    }
 
-	if (!m_Success)
-		return;
+    if (!m_Success)
+        return;
 
-	XboxManager::GoToParent();
+    XboxManager::GoToParent();
 
-	auto fileElements = CreateRef<std::vector<Ref<Element>>>();
+    auto fileElements = CreateRef<std::vector<Ref<Element>>>();
 
-	for (auto& file : files)
-		fileElements->emplace_back(CreateRef<File>(file));
+    for (auto& file : files)
+        fileElements->emplace_back(CreateRef<File>(file));
 
-	ContentsChangeEvent event(fileElements);
-	m_EventCallback(event);
+    ContentsChangeEvent event(fileElements);
+    m_EventCallback(event);
 }

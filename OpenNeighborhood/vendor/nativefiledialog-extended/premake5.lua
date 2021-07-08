@@ -1,53 +1,53 @@
 project "NativeFileDialogExtended"
-	kind "StaticLib"
-	language "C++"
-	staticruntime "on"
+    kind "StaticLib"
+    language "C++"
+    staticruntime "on"
 
-	targetdir (TargetDir .. "/%{prj.name}")
-	objdir (ObjDir .. "/%{prj.name}")
+    targetdir (TargetDir .. "/%{prj.name}")
+    objdir (ObjDir .. "/%{prj.name}")
 
-	files {
-		"src/include/nfd.h",
-		"src/include/nfd.hpp"
-	}
+    files {
+        "src/include/nfd.h",
+        "src/include/nfd.hpp"
+    }
 
-	includedirs {
-		"src/include"
-	}
+    includedirs {
+        "src/include"
+    }
 
-	filter "system:linux"
-		pic "on"
+    filter "system:linux"
+        pic "on"
 
-		systemversion "latest"
+        systemversion "latest"
 
-		files {
-			"src/nfd_gtk.cpp"
-		}
+        files {
+            "src/nfd_gtk.cpp"
+        }
 
-		buildoptions {
-			"`pkg-config --cflags gtk+-3.0`"
-		}
+        buildoptions {
+            "`pkg-config --cflags gtk+-3.0`"
+        }
 
-	filter "system:windows"
-		systemversion "latest"
+    filter "system:windows"
+        systemversion "latest"
 
-		files {
-			"src/nfd_win.cpp"
-		}
+        files {
+            "src/nfd_win.cpp"
+        }
 
-	filter "system:macosx"
-		files {
-			"src/nfd_cocoa.m"
-		}
+    filter "system:macosx"
+        files {
+            "src/nfd_cocoa.m"
+        }
 
-		linkoptions {
-			"-framework AppKit",
-		}
+        linkoptions {
+            "-framework AppKit",
+        }
 
-	filter "configurations:Debug"
-		runtime "Debug"
-		symbols "on"
+    filter "configurations:Debug"
+        runtime "Debug"
+        symbols "on"
 
-	filter "configurations:Release"
-		runtime "Release"
-		optimize "on"
+    filter "configurations:Release"
+        runtime "Release"
+        optimize "on"
