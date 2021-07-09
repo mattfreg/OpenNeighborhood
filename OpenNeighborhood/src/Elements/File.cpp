@@ -7,6 +7,8 @@
 #include "Events/AppEvent.h"
 #include "Render/UI.h"
 
+#include "Core/Log.h"
+
 File::File(const XBDM::File& data)
     : m_Data(data), Element(data.Name, data.IsDirectory ? "directory" : data.IsXEX ? "xex" : "file") {}
 
@@ -76,19 +78,37 @@ void File::Download()
     XboxManager::Try([&]() { xbox.ReceiveFile(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name, localPath.string()); });
 }
 
+void File::Delete()
+{
+    auto Delete = [this]()
+    {
+        LOG_INFO("Deleted ", m_Data.Name);
+    };
+
+    UI::SetConfirmCallback(Delete);
+    UI::SetConfirmMessage("Are you sure you want to delete \"" + m_Data.Name + '\"' + (m_Data.IsDirectory ? " and all of its content" : "") + '?');
+    UI::SetConfirm(true);
+}
+
 void File::DisplayContextMenu()
 {
-    if (!m_Data.IsDirectory)
+    if (ImGui::BeginPopupContextItem())
     {
-        if (ImGui::BeginPopupContextItem())
+        if (!m_Data.IsDirectory)
         {
             if (ImGui::Button("Download"))
             {
                 Download();
                 ImGui::CloseCurrentPopup();
             }
-
-            ImGui::EndPopup();
         }
+
+        if (ImGui::Button("Delete"))
+        {
+            Delete();
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
     }
 }
