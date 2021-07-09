@@ -7,8 +7,6 @@
 #include "Events/AppEvent.h"
 #include "Render/UI.h"
 
-#include "Core/Log.h"
-
 File::File(const XBDM::File& data)
     : m_Data(data), Element(data.Name, data.IsDirectory ? "directory" : data.IsXEX ? "xex" : "file") {}
 
@@ -82,11 +80,35 @@ void File::Delete()
 {
     auto Delete = [this]()
     {
-        LOG_INFO("Deleted ", m_Data.Name);
+        XBDM::Console& xbox = XboxManager::GetConsole();
+
+        bool success = XboxManager::Try([&]() { xbox.DeleteFile(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name, m_Data.IsDirectory); });
+
+        if (!success)
+            return;
+
+        std::set<XBDM::File> files;
+        std::string location = XboxManager::GetCurrentLocation();
+
+        // If the current location is a drive (e.g hdd:), we need to append '\' to it
+        location = location.back() == ':' ? location + '\\' : location;
+
+        success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(location); });
+
+        if (!success)
+            return;
+
+        auto fileElements = CreateRef<std::vector<Ref<Element>>>();
+
+        for (auto& file : files)
+            fileElements->emplace_back(CreateRef<File>(file));
+
+        ContentsChangeEvent event(fileElements);
+        m_EventCallback(event);
     };
 
     UI::SetConfirmCallback(Delete);
-    UI::SetConfirmMessage("Are you sure you want to delete \"" + m_Data.Name + '\"' + (m_Data.IsDirectory ? " and all of its content" : "") + '?');
+    UI::SetConfirmMessage("Are you sure you want to delete \"" + m_Data.Name + '\"' + (m_Data.IsDirectory ? " and all of its contents" : "") + '?');
     UI::SetConfirm(true);
 }
 

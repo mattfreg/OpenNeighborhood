@@ -364,6 +364,18 @@ namespace XBDM
         ClearSocket();
     }
 
+    void Console::DeleteFile(const std::string& path, bool isDirectory)
+    {
+        SendCommand("delete name=\"" + path + '\"' + (isDirectory ? " dir" : ""));
+        std::string response = Receive();
+
+        if (response.length() <= 4)
+            throw std::runtime_error("Response length too short");
+
+        if (response[0] != '2')
+            throw std::invalid_argument("Couldn't delete " + path);
+    }
+
     std::string Console::Receive()
     {
         std::string result;
