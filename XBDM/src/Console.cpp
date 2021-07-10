@@ -366,6 +366,14 @@ namespace XBDM
 
     void Console::DeleteFile(const std::string& path, bool isDirectory)
     {
+        if (isDirectory)
+        {
+            std::set<File> files = GetDirectoryContents(path);
+
+            for (auto& file : files)
+                DeleteFile(path + '\\' + file.Name, file.IsDirectory);    
+        }
+
         SendCommand("delete name=\"" + path + '\"' + (isDirectory ? " dir" : ""));
         std::string response = Receive();
 
