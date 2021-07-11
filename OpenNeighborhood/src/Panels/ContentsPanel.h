@@ -18,7 +18,9 @@ private:
 
     bool OnContentsChange(ContentsChangeEvent& event);
     void InjectNewElements();
+    void DisplayContextMenu();
     void UpdateContents();
 
     void Upload();
+    void CreateDirectory();
 };
