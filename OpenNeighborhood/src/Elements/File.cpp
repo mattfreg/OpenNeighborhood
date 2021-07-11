@@ -87,29 +87,35 @@ void File::Delete()
         if (!success)
             return;
 
-        std::set<XBDM::File> files;
-        std::string location = XboxManager::GetCurrentLocation();
-
-        // If the current location is a drive (e.g hdd:), we need to append '\' to it
-        location = location.back() == ':' ? location + '\\' : location;
-
-        success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(location); });
-
-        if (!success)
-            return;
-
-        auto fileElements = CreateRef<std::vector<Ref<Element>>>();
-
-        for (auto& file : files)
-            fileElements->emplace_back(CreateRef<File>(file));
-
-        ContentsChangeEvent event(fileElements);
-        m_EventCallback(event);
+        UpdateContents();
     };
 
     UI::SetConfirmCallback(Delete);
     UI::SetConfirmMessage("Are you sure you want to delete \"" + m_Data.Name + '\"' + (m_Data.IsDirectory ? " and all of its contents" : "") + '?');
     UI::SetConfirm(true);
+}
+
+void File::UpdateContents()
+{
+    XBDM::Console& xbox = XboxManager::GetConsole();
+    std::set<XBDM::File> files;
+    std::string location = XboxManager::GetCurrentLocation();
+
+    // If the current location is a drive (e.g hdd:), we need to append '\' to it
+    location = location.back() == ':' ? location + '\\' : location;
+
+    bool success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(location); });
+
+    if (!success)
+        return;
+
+    auto fileElements = CreateRef<std::vector<Ref<Element>>>();
+
+    for (auto& file : files)
+        fileElements->emplace_back(CreateRef<File>(file));
+
+    ContentsChangeEvent event(fileElements);
+    m_EventCallback(event);
 }
 
 void File::DisplayContextMenu()

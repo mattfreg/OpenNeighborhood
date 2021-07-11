@@ -18,6 +18,7 @@ private:
 
     bool OnContentsChange(ContentsChangeEvent& event);
     void InjectNewElements();
+    void UpdateContents();
 
     void Upload();
 };

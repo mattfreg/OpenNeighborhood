@@ -17,6 +17,7 @@ private:
     void LaunchXEX();
     void Download();
     void Delete();
+    void UpdateContents();
 
     void DisplayContextMenu() override;
 };

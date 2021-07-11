@@ -115,6 +115,29 @@ void ContentsPanel::InjectNewElements()
     m_ContentsChangeEventQueue.pop();
 }
 
+void ContentsPanel::UpdateContents()
+{
+    XBDM::Console& xbox = XboxManager::GetConsole();
+    std::set<XBDM::File> files;
+    std::string location = XboxManager::GetCurrentLocation();
+
+    // If the current location is a drive (e.g hdd:), we need to append '\' to it
+    location = location.back() == ':' ? location + '\\' : location;
+
+    bool success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(location); });
+
+    if (!success)
+        return;
+
+    auto fileElements = CreateRef<std::vector<Ref<Element>>>();
+
+    for (auto& file : files)
+        fileElements->emplace_back(CreateRef<File>(file));
+
+    ContentsChangeEvent event(fileElements);
+    OnContentsChange(event);
+}
+
 void ContentsPanel::Upload()
 {
     NFD::UniquePathN outPath;
@@ -141,25 +164,7 @@ void ContentsPanel::Upload()
         if (!success)
             return;
 
-        // Refreshing the content
-        std::set<XBDM::File> files;
-        std::string location = XboxManager::GetCurrentLocation();
-
-        // If the current location is a drive (e.g hdd:), we need to append '\' to it
-        location = location.back() == ':' ? location + '\\' : location;
-
-        success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(location); });
-
-        if (!success)
-            return;
-
-        auto fileElements = CreateRef<std::vector<Ref<Element>>>();
-
-        for (auto& file : files)
-            fileElements->emplace_back(CreateRef<File>(file));
-
-        ContentsChangeEvent event(fileElements);
-        OnContentsChange(event);
+        UpdateContents();
     };
 
     UI::SetConfirmCallback(upload);
