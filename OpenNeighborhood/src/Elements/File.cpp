@@ -84,10 +84,8 @@ void File::Delete()
 
         bool success = XboxManager::Try([&]() { xbox.DeleteFile(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name, m_Data.IsDirectory); });
 
-        if (!success)
-            return;
-
-        UpdateContents();
+        if (success)
+            UpdateContents();
     };
 
     UI::SetConfirmCallback(Delete);
