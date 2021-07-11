@@ -399,6 +399,18 @@ namespace XBDM
             throw std::runtime_error("Couldn't create directory " + path);
     }
 
+    void Console::RenameFile(const std::string& oldName, const std::string& newName)
+    {
+        SendCommand("rename name=\"" + oldName + "\" newname=\"" + newName + "\"");
+        std::string response = Receive();
+
+        if (response.length() <= 4)
+            throw std::runtime_error("Response length too short");
+
+        if (response[0] != '2')
+            throw std::runtime_error("Couldn't rename " + oldName);
+    }
+
     std::string Console::Receive()
     {
         std::string result;

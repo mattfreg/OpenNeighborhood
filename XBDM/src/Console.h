@@ -23,6 +23,7 @@ namespace XBDM
         void SendFile(const std::string& remotePath, const std::string& localPath);
         void DeleteFile(const std::string& path, bool isDirectory);
         void CreateDirectory(const std::string& path);
+        void RenameFile(const std::string& oldName, const std::string& newName);
 
         bool IsConnected() { return m_Connected; }
     private:
