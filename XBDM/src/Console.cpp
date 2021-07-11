@@ -393,7 +393,7 @@ namespace XBDM
             throw std::runtime_error("Response length too short");
 
         if (response.substr(0, 3) == "410")
-            throw std::invalid_argument("A directory with the name \"" + path + "\" already exists");
+            throw std::invalid_argument("A file or directory with the name \"" + path + "\" already exists");
 
         if (response[0] != '2')
             throw std::runtime_error("Couldn't create directory " + path);
