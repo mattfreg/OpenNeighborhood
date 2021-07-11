@@ -44,6 +44,7 @@ void OpenNeighborhood::OnUpdate()
         (*--it)->OnRender();
 
     UI::DisplayConfirmModal();
+    UI::DisplayInputTextModal();
     UI::DisplayErrorModal();
 
     UI::EndFrame();

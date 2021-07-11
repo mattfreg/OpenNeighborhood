@@ -16,6 +16,9 @@ std::string UI::s_ConfirmMessage;
 ConfirmCallbackFn UI::s_ConfirmCallback;
 bool UI::s_Success = true;
 std::string UI::s_ErrorMessage;
+bool UI::s_InputText;
+std::string UI::s_InputTextHeader;
+InputTextCallbackFn UI::s_InputTextCallback;
 
 void UI::Init()
 {
@@ -89,6 +92,46 @@ void UI::DisplayConfirmModal()
         if (ImGui::Button("Cancel", ImVec2(120.0f, 0.0f)))
         {
             s_Confirm = false;
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
+}
+
+void UI::DisplayInputTextModal()
+{
+    if (s_InputText)
+    {
+        ImGui::OpenPopup(s_InputTextHeader.c_str());
+
+        ImVec2 center(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
+        ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+    }
+
+    if (ImGui::BeginPopupModal(s_InputTextHeader.c_str(), nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+    {
+        static char buffer[50] = { 0 };
+        ImGui::InputText("", buffer, sizeof(buffer));
+
+        if (!ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+            ImGui::SetKeyboardFocusHere(-1);
+
+        if (ImGui::Button("OK", ImVec2(120.0f, 0.0f)))
+        {
+            if (s_InputTextCallback)
+                s_InputTextCallback(buffer);
+
+            s_InputText = false;
+            memset(buffer, 0, sizeof(buffer));
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::SameLine();
+
+        if (ImGui::Button("Cancel", ImVec2(120.0f, 0.0f)))
+        {
+            s_InputText = false;
             ImGui::CloseCurrentPopup();
         }
 

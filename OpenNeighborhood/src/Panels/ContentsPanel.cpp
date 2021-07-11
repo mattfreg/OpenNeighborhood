@@ -54,18 +54,7 @@ void ContentsPanel::OnRender()
     ImGui::Begin("Contents Window", nullptr, windowFlags);
 
     if (XboxManager::GetCurrentLocation() != "")
-    {
-        if (ImGui::BeginPopupContextWindow())
-        {
-            if (ImGui::Button("Upload Here"))
-            {
-                Upload();
-                ImGui::CloseCurrentPopup();
-            }
-
-            ImGui::EndPopup();
-        }
-    }
+        DisplayContextMenu();
 
     ImGuiStyle& style = ImGui::GetStyle();
     float panelWidth = ImGui::GetWindowPos().x + ImGui::GetWindowContentRegionMax().x;
@@ -115,6 +104,26 @@ void ContentsPanel::InjectNewElements()
     m_ContentsChangeEventQueue.pop();
 }
 
+void ContentsPanel::DisplayContextMenu()
+{
+    if (ImGui::BeginPopupContextWindow())
+    {
+        if (ImGui::Button("Upload Here"))
+        {
+            Upload();
+            ImGui::CloseCurrentPopup();
+        }
+
+        if (ImGui::Button("Create Directory"))
+        {
+            CreateDirectory();
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
+}
+
 void ContentsPanel::UpdateContents()
 {
     XBDM::Console& xbox = XboxManager::GetConsole();
@@ -161,10 +170,8 @@ void ContentsPanel::Upload()
 
         bool success = XboxManager::Try([&]() { xbox.SendFile(remotePath, localPath.string()); });
 
-        if (!success)
-            return;
-
-        UpdateContents();
+        if (success)
+            UpdateContents();
     };
 
     UI::SetConfirmCallback(upload);
@@ -182,4 +189,21 @@ void ContentsPanel::Upload()
     }
 
     upload();
+}
+
+void ContentsPanel::CreateDirectory()
+{
+    auto createDirectory = [this](const std::string& name)
+    {
+        XBDM::Console& xbox = XboxManager::GetConsole();
+
+        bool success = XboxManager::Try([&]() { xbox.CreateDirectory(XboxManager::GetCurrentLocation() + '\\' + name); });
+
+        if (success)
+            UpdateContents();
+    };
+
+    UI::SetInputTextCallback(createDirectory);
+    UI::SetInputTextHeader("Enter a name");
+    UI::DisplayInputText(true);
 }
