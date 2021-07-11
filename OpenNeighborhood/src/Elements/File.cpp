@@ -93,6 +93,24 @@ void File::Delete()
     UI::SetConfirm(true);
 }
 
+void File::Rename()
+{
+    auto rename = [this](const std::string& name)
+    {
+        XBDM::Console& xbox = XboxManager::GetConsole();
+        const std::string& location = XboxManager::GetCurrentLocation();
+
+        bool success = XboxManager::Try([&]() { xbox.RenameFile(location + '\\' + m_Data.Name, location + '\\' + name); });
+
+        if (success)
+            UpdateContents();
+    };
+
+    UI::SetInputTextCallback(rename);
+    UI::SetInputTextHeader("Enter a name");
+    UI::DisplayInputText(true);
+}
+
 void File::UpdateContents()
 {
     XBDM::Console& xbox = XboxManager::GetConsole();
@@ -132,6 +150,12 @@ void File::DisplayContextMenu()
         if (ImGui::Button("Delete"))
         {
             Delete();
+            ImGui::CloseCurrentPopup();
+        }
+
+        if (ImGui::Button("Rename"))
+        {
+            Rename();
             ImGui::CloseCurrentPopup();
         }
 
