@@ -108,6 +108,7 @@ void File::Rename()
 
     UI::SetInputTextCallback(rename);
     UI::SetInputTextHeader("Enter a name");
+    UI::SetInputTextDefaultValue(m_Data.Name);
     UI::DisplayInputText(true);
 }
 

@@ -30,6 +30,7 @@ public:
     inline static void DisplayInputText(bool display) { s_InputText = display; }
     inline static void SetInputTextHeader(const std::string& header) { s_InputTextHeader = header; }
     inline static void SetInputTextCallback(const InputTextCallbackFn& callback) { s_InputTextCallback = callback; }
+    inline static void SetInputTextDefaultValue(const std::string& defaultValue) { strcpy_s(s_InputTextBuffer, sizeof(s_InputTextBuffer), defaultValue.c_str()); }
 
     inline static ImFont* GetBoldFont() { return s_OpenSansBold; }
     inline static ImFont* GetRegularFont() { return s_OpenSansRegular; }
@@ -47,6 +48,7 @@ private:
     static bool s_InputText;
     static std::string s_InputTextHeader;
     static InputTextCallbackFn s_InputTextCallback;
+    static char s_InputTextBuffer[50];
 
     static ImFont* s_OpenSansBold;
     static ImFont* s_OpenSansRegular;

@@ -19,6 +19,7 @@ std::string UI::s_ErrorMessage;
 bool UI::s_InputText;
 std::string UI::s_InputTextHeader;
 InputTextCallbackFn UI::s_InputTextCallback;
+char UI::s_InputTextBuffer[50] = { 0 };
 
 void UI::Init()
 {
@@ -111,8 +112,7 @@ void UI::DisplayInputTextModal()
 
     if (ImGui::BeginPopupModal(s_InputTextHeader.c_str(), nullptr, ImGuiWindowFlags_AlwaysAutoResize))
     {
-        static char buffer[50] = { 0 };
-        ImGui::InputText("", buffer, sizeof(buffer));
+        ImGui::InputText("", s_InputTextBuffer, sizeof(s_InputTextBuffer));
 
         if (!ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(ImGuiMouseButton_Left))
             ImGui::SetKeyboardFocusHere(-1);
@@ -120,10 +120,10 @@ void UI::DisplayInputTextModal()
         if (ImGui::Button("OK", ImVec2(120.0f, 0.0f)))
         {
             if (s_InputTextCallback)
-                s_InputTextCallback(buffer);
+                s_InputTextCallback(s_InputTextBuffer);
 
             s_InputText = false;
-            memset(buffer, 0, sizeof(buffer));
+            memset(s_InputTextBuffer, 0, sizeof(s_InputTextBuffer));
             ImGui::CloseCurrentPopup();
         }
 
