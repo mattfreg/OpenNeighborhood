@@ -193,10 +193,17 @@ void ContentsPanel::Upload()
 
 void ContentsPanel::CreateDirectory()
 {
-    XBDM::Console& xbox = XboxManager::GetConsole();
+    auto createDirectory = [this](const std::string& name)
+    {
+        XBDM::Console& xbox = XboxManager::GetConsole();
 
-    bool success = XboxManager::Try([&]() { xbox.CreateDirectory(XboxManager::GetCurrentLocation() + '\\' + "FOLDER"); });
+        bool success = XboxManager::Try([&]() { xbox.CreateDirectory(XboxManager::GetCurrentLocation() + '\\' + name); });
 
-    if (success)
-        UpdateContents();
+        if (success)
+            UpdateContents();
+    };
+
+    UI::SetInputTextCallback(createDirectory);
+    UI::SetInputTextHeader("Enter a name");
+    UI::DisplayInputText(true);
 }
