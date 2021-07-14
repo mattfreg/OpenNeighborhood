@@ -35,7 +35,16 @@ namespace XBDM
             return false;
         }
 
+        /**
+         * The only way I found to reduce the response time on Linux is to set the timeout
+         * to 10 000 microseconds but it makes the response time extremely long on Windows.
+         * It's far from being an optimal solution but it works.
+         */
+#ifdef _WIN32
         timeval tv = { 5, 0 };
+#else
+        timeval tv = { 0, 10000 };
+#endif
         setsockopt(m_Socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof(timeval));
 
         if (connect(m_Socket, addrInfo->ai_addr, (int)addrInfo->ai_addrlen) == SOCKET_ERROR)
@@ -371,7 +380,7 @@ namespace XBDM
             std::set<File> files = GetDirectoryContents(path);
 
             for (auto& file : files)
-                DeleteFile(path + '\\' + file.Name, file.IsDirectory);    
+                DeleteFile(path + '\\' + file.Name, file.IsDirectory);
         }
 
         SendCommand("delete name=\"" + path + '\"' + (isDirectory ? " dir" : ""));
