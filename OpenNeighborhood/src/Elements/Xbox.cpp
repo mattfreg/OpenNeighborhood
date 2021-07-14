@@ -15,7 +15,10 @@ void Xbox::OnClick()
     UI::SetSuccess(XboxManager::CreateConsole(m_IpAddress, consoleName, true));
 
     if (!UI::IsGood())
+    {
+        UI::SetErrorMessage("Couldn't find console");
         return;
+    }
 
     XBDM::Console& xbox = XboxManager::GetConsole();
     std::vector<XBDM::Drive> drives;
