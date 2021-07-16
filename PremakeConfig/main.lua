@@ -1,3 +1,5 @@
+include "../vendor/premake/solutionitems.lua"
+
 workspace "OpenNeighborhood"
     location ".."
     architecture "x86_64"
@@ -6,6 +8,19 @@ workspace "OpenNeighborhood"
     configurations { "Debug", "Release" }
 
     flags "MultiProcessorCompile"
+
+    solutionitems {
+        { ["EditorConfig"] = ".editorconfig" },
+        { ["PremakeConfig"] = {
+            "PremakeConfig/Glad.lua",
+            "PremakeConfig/GLFW.lua",
+            "PremakeConfig/ImGui.lua",
+            "PremakeConfig/main.lua",
+            "PremakeConfig/NativeFileDialogExtended.lua",
+            "PremakeConfig/OpenNeighborhood.lua",
+            "PremakeConfig/XBDM.lua"
+        } }
+    }
 
 OutputDir = "%{cfg.buildcfg}"
 TargetDir = "%{wks.location}/bin/%{OutputDir}"
