@@ -1,8 +1,6 @@
 #pragma once
 
-#include <ImGui/imgui.h>
-#include <ImGui/imgui_custom_widgets.h>
-
+#include "Render/ImGuiCustomWidgets.h"
 #include "Events/AppEvent.h"
 
 class Panel

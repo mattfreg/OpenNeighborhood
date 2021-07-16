@@ -1,5 +1,5 @@
 //========================================================================
-// GLFW 3.3 GLX - www.glfw.org
+// GLFW 3.4 GLX - www.glfw.org
 //------------------------------------------------------------------------
 // Copyright (c) 2002-2006 Marcus Geelnard
 // Copyright (c) 2006-2019 Camilla Löwy <elmindreda@glfw.org>
@@ -92,6 +92,9 @@ static GLFWbool chooseGLXFBConfig(const _GLFWfbconfig* desired,
                 continue;
         }
 
+        if (getGLXFBConfigAttrib(n, GLX_DOUBLEBUFFER) != desired->doublebuffer)
+            continue;
+
         if (desired->transparent)
         {
             XVisualInfo* vi = glXGetVisualFromFBConfig(_glfw.x11.display, n);
@@ -119,8 +122,6 @@ static GLFWbool chooseGLXFBConfig(const _GLFWfbconfig* desired,
 
         if (getGLXFBConfigAttrib(n, GLX_STEREO))
             u->stereo = GLFW_TRUE;
-        if (getGLXFBConfigAttrib(n, GLX_DOUBLEBUFFER))
-            u->doublebuffer = GLFW_TRUE;
 
         if (_glfw.glx.ARB_multisample)
             u->samples = getGLXFBConfigAttrib(n, GLX_SAMPLES);

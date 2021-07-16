@@ -8,25 +8,16 @@ project "ImGui"
     objdir "%{ObjDir}/%{prj.name}"
 
     files {
-        "%{prj.location}/imconfig.h",
-        "%{prj.location}/imgui.h",
-        "%{prj.location}/imgui.cpp",
-        "%{prj.location}/imgui_custom_widgets.h",
-        "%{prj.location}/imgui_custom_widgets.cpp",
-        "%{prj.location}/imgui_draw.cpp",
-        "%{prj.location}/imgui_impl_glfw.cpp",
-        "%{prj.location}/imgui_impl_glfw.h",
-        "%{prj.location}/imgui_impl_opengl3.cpp",
-        "%{prj.location}/imgui_impl_opengl3.h",
-        "%{prj.location}/imgui_internal.h",
-        "%{prj.location}/imgui_widgets.cpp",
-        "%{prj.location}/imstb_rectpack.h",
-        "%{prj.location}/imstb_textedit.h",
-        "%{prj.location}/imstb_truetype.h",
-        "%{prj.location}/imgui_demo.cpp"
+        "%{prj.location}/*.h",
+        "%{prj.location}/*.cpp",
+        "%{prj.location}/backends/imgui_impl_glfw.cpp",
+        "%{prj.location}/backends/imgui_impl_glfw.h",
+        "%{prj.location}/backends/imgui_impl_opengl3.cpp",
+        "%{prj.location}/backends/imgui_impl_opengl3.h"
     }
 
     includedirs {
+        "%{prj.location}",
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.Glad}"
     }
