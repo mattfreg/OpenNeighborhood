@@ -23,7 +23,8 @@ project "OpenNeighborhood"
         "%{wks.location}/XBDM/src",
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.Glad}",
-        "%{prj.location}/vendor/NativeFileDialogExtended/src/include"
+        "%{prj.location}/vendor/NativeFileDialogExtended/src/include",
+        "%{prj.location}/vendor/ImGui"
     }
 
     defines "GLFW_INCLUDE_NONE"
