@@ -1,1 +1,1 @@
-./vendor/premake/bin/premake5 gmake2
+./vendor/premake/bin/premake5 --file=../PremakeConfig/main.lua gmake2

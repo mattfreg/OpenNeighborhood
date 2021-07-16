@@ -1,18 +1,19 @@
 project "Glad"
+    location "%{wks.location}/OpenNeighborhood/vendor/%{prj.name}"
     kind "StaticLib"
     language "C"
     staticruntime "on"
 
-    targetdir (TargetDir .. "/%{prj.name}")
-    objdir (ObjDir .. "/%{prj.name}")
+    targetdir "%{TargetDir}/%{prj.name}"
+    objdir "%{ObjDir}/%{prj.name}"
 
     files {
-        "include/glad/glad.h",
-        "include/KHR/khrplatform.h",
-        "src/glad.c"
+        "%{prj.location}/include/glad/glad.h",
+        "%{prj.location}/include/KHR/khrplatform.h",
+        "%{prj.location}/src/glad.c"
     }
 
-    includedirs "include"
+    includedirs "%{prj.location}/include"
 
     filter "system:windows"
         systemversion "latest"

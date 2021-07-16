@@ -1,4 +1,5 @@
 workspace "OpenNeighborhood"
+    location ".."
     architecture "x86_64"
     startproject "OpenNeighborhood"
 
@@ -7,8 +8,8 @@ workspace "OpenNeighborhood"
     flags "MultiProcessorCompile"
 
 OutputDir = "%{cfg.buildcfg}"
-TargetDir = "bin/" .. OutputDir
-ObjDir = "bin-int/" .. OutputDir
+TargetDir = "%{wks.location}/bin/%{OutputDir}"
+ObjDir = "%{wks.location}/bin-int/%{OutputDir}"
 
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
@@ -16,11 +17,11 @@ IncludeDir["GLFW"] = "%{wks.location}/OpenNeighborhood/vendor/GLFW/include"
 IncludeDir["Glad"] = "%{wks.location}/OpenNeighborhood/vendor/Glad/include"
 
 group "Dependencies"
-    include "OpenNeighborhood/vendor/GLFW"
-    include "OpenNeighborhood/vendor/Glad"
-    include "OpenNeighborhood/vendor/ImGui"
-    include "OpenNeighborhood/vendor/nativefiledialog-extended"
+    include "GLFW.lua"
+    include "Glad.lua"
+    include "ImGui.lua"
+    include "NativeFileDialogExtended.lua"
 group ""
 
-include "OpenNeighborhood"
-include "XBDM"
+include "OpenNeighborhood.lua"
+include "XBDM.lua"

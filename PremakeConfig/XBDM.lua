@@ -1,23 +1,24 @@
 project "XBDM"
+    location "%{wks.location}/%{prj.name}"
     kind "StaticLib"
     language "C++"
     cppdialect "C++17"
     staticruntime "on"
 
-    targetdir ("%{wks.location}/" .. TargetDir .. "/%{prj.name}")
-    objdir ("%{wks.location}/" .. ObjDir .. "/%{prj.name}")
+    targetdir "%{TargetDir}/%{prj.name}"
+    objdir "%{ObjDir}/%{prj.name}"
 
     pchheader "pch.h"
-    pchsource "src/pch.cpp"
+    pchsource "../%{prj.name}/src/pch.cpp"
 
     files {
-        "src/**.h",
-        "src/**.cpp",
-        "vendor/**.h",
-        "vendor/**.cpp"
+        "%{prj.location}/src/**.h",
+        "%{prj.location}/src/**.cpp",
+        "%{prj.location}/vendor/**.h",
+        "%{prj.location}/vendor/**.cpp"
     }
 
-    includedirs { "src", "vendor/dirent" }
+    includedirs { "%{prj.location}/src", "%{prj.location}/vendor/dirent" }
 
     filter "system:windows"
         systemversion "latest"

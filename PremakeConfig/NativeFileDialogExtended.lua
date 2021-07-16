@@ -1,34 +1,35 @@
 project "NativeFileDialogExtended"
+    location "%{wks.location}/OpenNeighborhood/vendor/%{prj.name}"
     kind "StaticLib"
     language "C++"
     staticruntime "on"
 
-    targetdir (TargetDir .. "/%{prj.name}")
-    objdir (ObjDir .. "/%{prj.name}")
+    targetdir "%{TargetDir}/%{prj.name}"
+    objdir "%{ObjDir}/%{prj.name}"
 
     files {
-        "src/include/nfd.h",
-        "src/include/nfd.hpp"
+        "%{prj.location}/src/include/nfd.h",
+        "%{prj.location}/src/include/nfd.hpp"
     }
 
-    includedirs "src/include"
+    includedirs "%{prj.location}/src/include"
 
     filter "system:linux"
         pic "on"
 
         systemversion "latest"
 
-        files "src/nfd_gtk.cpp"
+        files "%{prj.location}/src/nfd_gtk.cpp"
 
         buildoptions "`pkg-config --cflags gtk+-3.0`"
 
     filter "system:windows"
         systemversion "latest"
 
-        files "src/nfd_win.cpp"
+        files "%{prj.location}/src/nfd_win.cpp"
 
     filter "system:macosx"
-        files "src/nfd_cocoa.m"
+        files "%{prj.location}/src/nfd_cocoa.m"
 
         linkoptions "-framework AppKit"
 

@@ -1,28 +1,29 @@
 project "OpenNeighborhood"
+    location "%{wks.location}/%{prj.name}"
     language "C++"
     cppdialect "C++17"
     staticruntime "on"
 
-    targetdir ("%{wks.location}/" .. TargetDir .. "/%{prj.name}")
-    objdir ("%{wks.location}/" .. ObjDir .. "/%{prj.name}")
+    targetdir "%{TargetDir}/%{prj.name}"
+    objdir "%{ObjDir}/%{prj.name}"
 
     pchheader "pch.h"
-    pchsource "src/pch.cpp"
+    pchsource "../%{prj.name}/src/pch.cpp"
 
     files {
-        "src/**.h",
-        "src/**.cpp",
-        "vendor/stb_image/**.h",
-        "vendor/stb_image/**.cpp"
+        "%{prj.location}/src/**.h",
+        "%{prj.location}/src/**.cpp",
+        "%{prj.location}/vendor/stb_image/**.h",
+        "%{prj.location}/vendor/stb_image/**.cpp"
     }
 
     includedirs {
-        "src",
-        "vendor",
+        "%{prj.location}/src",
+        "%{prj.location}/vendor",
         "%{wks.location}/XBDM/src",
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.Glad}",
-        "vendor/nativefiledialog-extended/src/include"
+        "%{prj.location}/vendor/NativeFileDialogExtended/src/include"
     }
 
     defines "GLFW_INCLUDE_NONE"
@@ -61,7 +62,7 @@ project "OpenNeighborhood"
 
         -- I know it's not dynamic but NativeFileDialog links to gtk staticly
         -- and that's the only way I found to link everything successfully
-        libdirs "vendor/nativefiledialog-extended/bin/%{cfg.buildcfg}/NativeFileDialogExtended"
+        libdirs "%{prj.location}/vendor/nativefiledialog-extended/bin/%{cfg.buildcfg}/NativeFileDialogExtended"
         linkoptions "-lNativeFileDialogExtended `pkg-config --libs gtk+-3.0`"
 
     filter "system:macosx"
