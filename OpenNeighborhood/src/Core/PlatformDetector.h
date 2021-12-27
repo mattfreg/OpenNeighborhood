@@ -1,3 +1,6 @@
+#pragma once
+
+
 #ifdef _WIN32 // Windows x64/x86
     #ifdef _WIN64 // windows x64
         #define PLATFORM_WINDOWS

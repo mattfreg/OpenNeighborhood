@@ -6,11 +6,12 @@
 
 #include "Core/Assert.h"
 
-Texture::Texture(const std::string& filePath)
+
+Texture::Texture(const std::string &filePath)
     : m_RendererID(0), m_Width(0.0f), m_Height(0.0f)
 {
     int width, height, channels;
-    stbi_uc* data = nullptr;
+    stbi_uc *data = nullptr;
     data = stbi_load(filePath.c_str(), &width, &height, &channels, 0);
     ASSERT(data, "Failed to load image!");
     m_Width = (float)width;

@@ -4,10 +4,11 @@
 
 #include "Elements/Element.h"
 
+
 class File : public Element
 {
 public:
-    File(const XBDM::File& data);
+    File(const XBDM::File &data);
 
     virtual void OnClick() override;
 private:

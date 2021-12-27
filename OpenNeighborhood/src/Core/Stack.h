@@ -1,5 +1,6 @@
 #pragma once
 
+
 /**
 * This class is only intended to be used with pointer types
 */

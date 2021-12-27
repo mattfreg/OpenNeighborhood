@@ -7,7 +7,8 @@
 #include "Events/AppEvent.h"
 #include "Render/UI.h"
 
-File::File(const XBDM::File& data)
+
+File::File(const XBDM::File &data)
     : m_Data(data), Element(data.Name, data.IsDirectory ? "directory" : data.IsXEX ? "xex" : "file") {}
 
 void File::OnClick()
@@ -20,7 +21,7 @@ void File::OnClick()
 
 void File::OpenDirectory()
 {
-    XBDM::Console& xbox = XboxManager::GetConsole();
+    XBDM::Console &xbox = XboxManager::GetConsole();
     std::set<XBDM::File> files;
 
     bool success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name); });
@@ -32,7 +33,7 @@ void File::OpenDirectory()
 
     auto fileElements = CreateRef<std::vector<Ref<Element>>>();
 
-    for (auto& file : files)
+    for (auto &file : files)
         fileElements->emplace_back(CreateRef<File>(file));
 
     ContentsChangeEvent event(fileElements);
@@ -41,7 +42,7 @@ void File::OpenDirectory()
 
 void File::LaunchXEX()
 {
-    XBDM::Console& xbox = XboxManager::GetConsole();
+    XBDM::Console &xbox = XboxManager::GetConsole();
     xbox.LaunchXEX(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name);
 }
 
@@ -65,13 +66,13 @@ void File::Download()
         UI::SetSuccess(false);
         return;
     }
-    
+
     if (result == NFD_CANCEL)
         return;
 
     std::filesystem::path localPath = outPath.get();
 
-    XBDM::Console& xbox = XboxManager::GetConsole();
+    XBDM::Console &xbox = XboxManager::GetConsole();
 
     XboxManager::Try([&]() { xbox.ReceiveFile(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name, localPath.string()); });
 }
@@ -80,7 +81,7 @@ void File::Delete()
 {
     auto Delete = [this]()
     {
-        XBDM::Console& xbox = XboxManager::GetConsole();
+        XBDM::Console &xbox = XboxManager::GetConsole();
 
         bool success = XboxManager::Try([&]() { xbox.DeleteFile(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name, m_Data.IsDirectory); });
 
@@ -95,10 +96,10 @@ void File::Delete()
 
 void File::Rename()
 {
-    auto rename = [this](const std::string& name)
+    auto rename = [this](const std::string &name)
     {
-        XBDM::Console& xbox = XboxManager::GetConsole();
-        const std::string& location = XboxManager::GetCurrentLocation();
+        XBDM::Console &xbox = XboxManager::GetConsole();
+        const std::string &location = XboxManager::GetCurrentLocation();
 
         bool success = XboxManager::Try([&]() { xbox.RenameFile(location + '\\' + m_Data.Name, location + '\\' + name); });
 
@@ -114,7 +115,7 @@ void File::Rename()
 
 void File::UpdateContents()
 {
-    XBDM::Console& xbox = XboxManager::GetConsole();
+    XBDM::Console &xbox = XboxManager::GetConsole();
     std::set<XBDM::File> files;
     std::string location = XboxManager::GetCurrentLocation();
 
@@ -128,7 +129,7 @@ void File::UpdateContents()
 
     auto fileElements = CreateRef<std::vector<Ref<Element>>>();
 
-    for (auto& file : files)
+    for (auto &file : files)
         fileElements->emplace_back(CreateRef<File>(file));
 
     ContentsChangeEvent event(fileElements);

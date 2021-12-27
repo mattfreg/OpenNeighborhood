@@ -10,14 +10,15 @@
 #include "Elements/Xbox.h"
 #include "Render/UI.h"
 
-AddXboxButton::AddXboxButton() 
+
+AddXboxButton::AddXboxButton()
     : Element("Add Xbox 360", "addXboxButton") {}
 
 void AddXboxButton::OnRender()
 {
     auto texture = TextureManager::GetTexture(m_TextureName);
 
-    if (ImGui::ImageButtonWithText((void*)(intptr_t)texture->GetTextureID(), ImVec2(texture->GetWidth(), texture->GetHeight()), ImVec2(m_Width, m_Height), m_Label.c_str(), ImVec2(m_Padding, m_Padding)))
+    if (ImGui::ImageButtonWithText((void *)(intptr_t)texture->GetTextureID(), ImVec2(texture->GetWidth(), texture->GetHeight()), ImVec2(m_Width, m_Height), m_Label.c_str(), ImVec2(m_Padding, m_Padding)))
         if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
             OnClick();
 
@@ -72,7 +73,7 @@ void AddXboxButton::OnRender()
         {
             std::stringstream ipAddress;
             ipAddress << bytes[0] << "." << bytes[1] << "." << bytes[2] << "." << bytes[3];
-            
+
             std::string consoleName;
             UI::SetSuccess(XboxManager::CreateConsole(ipAddress.str(), consoleName));
 
@@ -99,7 +100,7 @@ void AddXboxButton::OnClick()
     ImGui::OpenPopup("Add Xbox 360 ?");
 }
 
-void AddXboxButton::CreateXbox(const std::string& consoleName, const std::string& ipAddress)
+void AddXboxButton::CreateXbox(const std::string &consoleName, const std::string &ipAddress)
 {
     auto xboxElement = CreateRef<std::vector<Ref<Element>>>();
     xboxElement->emplace_back(CreateRef<Xbox>(consoleName, ipAddress));

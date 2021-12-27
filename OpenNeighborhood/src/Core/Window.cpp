@@ -10,19 +10,20 @@
 #include "Core/Log.h"
 #include "Core/Assert.h"
 
+
 static bool s_GLFWInitialized = false;
 
-static void GLFWErrorCallback(int error, const char* desc)
+static void GLFWErrorCallback(int error, const char *desc)
 {
     LOG_ERROR("GLFW Error code: (", error, ") | ", desc);
 }
 
-Window* Window::Create(const WindowProps& props)
+Window *Window::Create(const WindowProps &props)
 {
     return new Window(props);
 }
 
-Window::Window(const WindowProps& props)
+Window::Window(const WindowProps &props)
 {
     Init(props);
 }
@@ -32,7 +33,7 @@ Window::~Window()
     Shutdown();
 }
 
-void Window::Init(const WindowProps& props)
+void Window::Init(const WindowProps &props)
 {
     m_Data.Title = props.Title;
     m_Data.Width = props.Width;
@@ -61,9 +62,9 @@ void Window::Init(const WindowProps& props)
     SetVSync(true);
 
     // Set GLFW callbacks
-    glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
+    glfwSetWindowSizeCallback(m_Window, [](GLFWwindow *window, int width, int height)
         {
-            WindowData& windowData = *(WindowData*)glfwGetWindowUserPointer(window);
+            WindowData &windowData = *(WindowData *)glfwGetWindowUserPointer(window);
             windowData.Width = (float)width;
             windowData.Height = (float)height;
 
@@ -71,80 +72,80 @@ void Window::Init(const WindowProps& props)
             windowData.EventCallback(event);
         });
 
-    glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
+    glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *window)
         {
-            WindowData& windowData = *(WindowData*)glfwGetWindowUserPointer(window);
+            WindowData &windowData = *(WindowData *)glfwGetWindowUserPointer(window);
             WindowCloseEvent event;
             windowData.EventCallback(event);
         });
 
-    glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+    glfwSetKeyCallback(m_Window, [](GLFWwindow *window, int key, int scancode, int action, int mods)
         {
-            WindowData& windowData = *(WindowData*)glfwGetWindowUserPointer(window);
+            WindowData &windowData = *(WindowData *)glfwGetWindowUserPointer(window);
 
             switch (action)
             {
-                case GLFW_PRESS:
-                {
-                    KeyPressedEvent event(key, 0);
-                    windowData.EventCallback(event);
-                    break;
-                }
-                case GLFW_RELEASE:
-                {
-                    KeyReleasedEvent event(key);
-                    windowData.EventCallback(event);
-                    break;
-                }
-                case GLFW_REPEAT:
-                {
-                    KeyPressedEvent event(key, 1);
-                    windowData.EventCallback(event);
-                    break;
-                }
+            case GLFW_PRESS:
+            {
+                KeyPressedEvent event(key, 0);
+                windowData.EventCallback(event);
+                break;
+            }
+            case GLFW_RELEASE:
+            {
+                KeyReleasedEvent event(key);
+                windowData.EventCallback(event);
+                break;
+            }
+            case GLFW_REPEAT:
+            {
+                KeyPressedEvent event(key, 1);
+                windowData.EventCallback(event);
+                break;
+            }
             }
         });
 
-    glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int keyCode)
+    glfwSetCharCallback(m_Window, [](GLFWwindow *window, unsigned int keyCode)
         {
-            WindowData& windowData = *(WindowData*)glfwGetWindowUserPointer(window);
+            WindowData &windowData = *(WindowData *)glfwGetWindowUserPointer(window);
 
             KeyTypedEvent event(keyCode);
             windowData.EventCallback(event);
         });
 
-    glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)
+    glfwSetMouseButtonCallback(m_Window, [](GLFWwindow *window, int button, int action, int mods)
         {
-            WindowData& windowData = *(WindowData*)glfwGetWindowUserPointer(window);
+            WindowData &windowData = *(WindowData *)glfwGetWindowUserPointer(window);
 
             switch (action)
             {
-                case GLFW_PRESS:
-                {
-                    MouseButtonPressedEvent event(button);
-                    windowData.EventCallback(event);
-                    break;
-                }
-                case GLFW_RELEASE:
-                {
-                    MouseButtonReleasedEvent event(button);
-                    windowData.EventCallback(event);
-                    break;
-                }
+            case GLFW_PRESS:
+            {
+                MouseButtonPressedEvent event(button);
+                windowData.EventCallback(event);
+                break;
+            }
+            case GLFW_RELEASE:
+            {
+                MouseButtonReleasedEvent event(button);
+                windowData.EventCallback(event);
+                break;
+            }
             }
         });
 
-    glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double xOffset, double yOffset)
+    glfwSetScrollCallback(m_Window, [](GLFWwindow *window, double xOffset, double yOffset)
         {
-            WindowData& windowData = *(WindowData*)glfwGetWindowUserPointer(window);
+            WindowData &windowData = *(WindowData *)glfwGetWindowUserPointer(window);
 
             MouseScrolledEvent event((float)xOffset, (float)yOffset);
             windowData.EventCallback(event);
         });
 
-    glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double x, double y)
+    glfwSetCursorPosCallback(m_Window, [](GLFWwindow *window, double x, double y)
         {
-            WindowData& windowData = *(WindowData*)glfwGetWindowUserPointer(window);
+            WindowData &windowData = *(WindowData *)glfwGetWindowUserPointer(window);
 
             MouseMovedEvent event((float)x, (float)y);
             windowData.EventCallback(event);

@@ -1,5 +1,6 @@
 #pragma once
 
+
 using MouseCode = short;
 
 namespace Mouse

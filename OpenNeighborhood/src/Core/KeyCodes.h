@@ -1,5 +1,6 @@
 #pragma once
 
+
 using KeyCode = short;
 
 namespace Key

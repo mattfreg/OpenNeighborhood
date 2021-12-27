@@ -3,6 +3,7 @@
 
 #include "Core/Assert.h"
 
+
 std::filesystem::path GetExecDir()
 {
     const int MAX_SIZE = 200;

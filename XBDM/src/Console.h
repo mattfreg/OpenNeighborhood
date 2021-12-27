@@ -2,28 +2,29 @@
 
 #include "Definitions.h"
 
+
 namespace XBDM
 {
     class Console
     {
     public:
         Console();
-        Console(const std::string& ipAddress);
+        Console(const std::string &ipAddress);
 
         bool OpenConnection();
         bool CloseConnection();
 
         std::string GetName();
         std::vector<Drive> GetDrives();
-        std::set<File> GetDirectoryContents(const std::string& directoryPath);
+        std::set<File> GetDirectoryContents(const std::string &directoryPath);
 
-        void LaunchXEX(const std::string& xexPath);
+        void LaunchXEX(const std::string &xexPath);
 
-        void ReceiveFile(const std::string& remotePath, const std::string& localPath);
-        void SendFile(const std::string& remotePath, const std::string& localPath);
-        void DeleteFile(const std::string& path, bool isDirectory);
-        void CreateDirectory(const std::string& path);
-        void RenameFile(const std::string& oldName, const std::string& newName);
+        void ReceiveFile(const std::string &remotePath, const std::string &localPath);
+        void SendFile(const std::string &remotePath, const std::string &localPath);
+        void DeleteFile(const std::string &path, bool isDirectory);
+        void CreateDirectory(const std::string &path);
+        void RenameFile(const std::string &oldName, const std::string &newName);
 
         bool IsConnected() { return m_Connected; }
     private:
@@ -33,13 +34,13 @@ namespace XBDM
         static const int s_PacketSize = 2048;
 
         std::string Receive();
-        void SendCommand(const std::string& command);
+        void SendCommand(const std::string &command);
 
-        std::vector<std::string> SplitResponse(const std::string& response, const std::string& delimiter);
-        bool EndsWith(const std::string& line, const std::string& ending);
+        std::vector<std::string> SplitResponse(const std::string &response, const std::string &delimiter);
+        bool EndsWith(const std::string &line, const std::string &ending);
 
-        DWORD GetIntegerProperty(const std::string& line, const std::string& propertyName, bool hex = true);
-        std::string GetStringProperty(const std::string& line, const std::string& propertyName);
+        DWORD GetIntegerProperty(const std::string &line, const std::string &propertyName, bool hex = true);
+        std::string GetStringProperty(const std::string &line, const std::string &propertyName);
 
         void ClearSocket();
         void CleanupSocket();

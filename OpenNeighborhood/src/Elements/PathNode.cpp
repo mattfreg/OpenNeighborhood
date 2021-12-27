@@ -6,7 +6,8 @@
 #include "Elements/File.h"
 #include "Render/UI.h"
 
-PathNode::PathNode(const std::string& label, size_t posInPath, void* parentPanel)
+
+PathNode::PathNode(const std::string &label, size_t posInPath, void *parentPanel)
     : m_PosInPath(posInPath), m_ParentPanel(parentPanel), Element(label, "") {}
 
 void PathNode::OnRender()
@@ -21,13 +22,13 @@ void PathNode::OnClick()
 
     for (size_t i = 0; i <= m_PosInPath; i++)
     {
-        newXboxLocation += ((PathPanel*)m_ParentPanel)->m_PathNodes[i].GetLabel();
+        newXboxLocation += ((PathPanel *)m_ParentPanel)->m_PathNodes[i].GetLabel();
 
         if (i < m_PosInPath)
             newXboxLocation += '\\';
     }
 
-    XBDM::Console& xbox = XboxManager::GetConsole();
+    XBDM::Console &xbox = XboxManager::GetConsole();
     std::set<XBDM::File> files;
 
     // If the new location ends with ':', then it's a drive and we need to add '\' at the end
@@ -40,7 +41,7 @@ void PathNode::OnClick()
 
     auto fileElements = CreateRef<std::vector<Ref<Element>>>();
 
-    for (auto& file : files)
+    for (auto &file : files)
         fileElements->emplace_back(CreateRef<File>(file));
 
     ContentsChangeEvent event(fileElements);

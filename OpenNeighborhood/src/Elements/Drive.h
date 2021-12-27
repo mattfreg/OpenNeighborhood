@@ -4,10 +4,11 @@
 
 #include "Elements/Element.h"
 
+
 class Drive : public Element
 {
 public:
-    Drive(const XBDM::Drive& data);
+    Drive(const XBDM::Drive &data);
 
     virtual void OnClick() override;
 private:

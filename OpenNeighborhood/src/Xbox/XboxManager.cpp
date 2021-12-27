@@ -3,10 +3,11 @@
 
 #include "Render/UI.h"
 
+
 XBDM::Console XboxManager::s_Console;
 std::string XboxManager::s_CurrentLocation;
 
-bool XboxManager::CreateConsole(const std::string& ipAddress, std::string& consoleName, bool keepConnectionOpen)
+bool XboxManager::CreateConsole(const std::string &ipAddress, std::string &consoleName, bool keepConnectionOpen)
 {
     s_Console = XBDM::Console(ipAddress);
 
@@ -17,7 +18,7 @@ bool XboxManager::CreateConsole(const std::string& ipAddress, std::string& conso
     {
         consoleName = s_Console.GetName();
     }
-    catch (const std::exception&)
+    catch (const std::exception &)
     {
         s_Console.CloseConnection();
         return false;
@@ -29,7 +30,7 @@ bool XboxManager::CreateConsole(const std::string& ipAddress, std::string& conso
     return true;
 }
 
-const std::string& XboxManager::GoToDirectory(const std::string& directory)
+const std::string &XboxManager::GoToDirectory(const std::string &directory)
 {
     if (directory.front() != '\\' && !s_CurrentLocation.empty())
         s_CurrentLocation += '\\';
@@ -53,20 +54,20 @@ std::string XboxManager::GetParent()
     return path;
 }
 
-const std::string& XboxManager::GoToParent()
+const std::string &XboxManager::GoToParent()
 {
     s_CurrentLocation = GetParent();
 
     return s_CurrentLocation;
 }
 
-bool XboxManager::Try(const TryCallbackFn& function)
+bool XboxManager::Try(const TryCallbackFn &function)
 {
     try
     {
         function();
     }
-    catch (const std::exception& exception)
+    catch (const std::exception &exception)
     {
         UI::SetErrorMessage(exception.what());
         UI::SetSuccess(false);

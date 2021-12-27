@@ -4,9 +4,10 @@
 #include "Core/Assert.h"
 #include "Xbox/XboxManager.h"
 
-App* App::s_Instance = nullptr;
 
-App::App(const std::string& name)
+App *App::s_Instance = nullptr;
+
+App::App(const std::string &name)
 {
     ASSERT(!s_Instance, "App already exists!");
     s_Instance = this;
@@ -17,11 +18,11 @@ App::App(const std::string& name)
 
 App::~App()
 {
-    for (Layer* layer : m_LayerStack)
+    for (Layer *layer : m_LayerStack)
         layer->OnDetach();
 }
 
-void App::PushLayer(Layer* layer)
+void App::PushLayer(Layer *layer)
 {
     m_LayerStack.Push(layer);
     layer->OnAttach();
@@ -29,7 +30,7 @@ void App::PushLayer(Layer* layer)
 
 void App::Close()
 {
-    XBDM::Console& xbox = XboxManager::GetConsole();
+    XBDM::Console &xbox = XboxManager::GetConsole();
     if (xbox.IsConnected())
         xbox.CloseConnection();
 
@@ -40,14 +41,14 @@ void App::Run()
 {
     while (m_Running)
     {
-        for (Layer* layer : m_LayerStack)
+        for (Layer *layer : m_LayerStack)
             layer->OnUpdate();
 
         m_Window->OnUpdate();
     }
 }
 
-void App::OnEvent(Event& event)
+void App::OnEvent(Event &event)
 {
     EventDispatcher dispatcher(event);
     dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(App::OnWindowClose));
@@ -60,13 +61,13 @@ void App::OnEvent(Event& event)
     }
 }
 
-bool App::OnWindowClose(WindowCloseEvent& event)
+bool App::OnWindowClose(WindowCloseEvent &event)
 {
     Close();
     return true;
 }
 
-bool App::OnWindowResize(WindowResizeEvent& event)
+bool App::OnWindowResize(WindowResizeEvent &event)
 {
     if (event.GetWidth() == 0.0f || event.GetHeight() == 0.0f)
     {

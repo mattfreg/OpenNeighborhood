@@ -4,11 +4,12 @@
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <ImGui/imgui_internal.h>
 
+
 namespace ImGui
 {
-    bool ImageButtonWithText(ImTextureID userTextureID, const ImVec2& imageSize, const ImVec2& totalSize, const char* label, const ImVec2& padding)
+    bool ImageButtonWithText(ImTextureID userTextureID, const ImVec2 &imageSize, const ImVec2 &totalSize, const char *label, const ImVec2 &padding)
     {
-        ImGuiWindow* window = GetCurrentWindow();
+        ImGuiWindow *window = GetCurrentWindow();
         if (window->SkipItems)
             return false;
 

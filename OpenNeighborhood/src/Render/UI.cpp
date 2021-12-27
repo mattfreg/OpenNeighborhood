@@ -8,9 +8,10 @@
 
 #include "Core/App.h"
 
-ImFont* UI::s_OpenSansBold = nullptr;
-ImFont* UI::s_OpenSansRegular = nullptr;
-ImFont* UI::s_OpenSansRegularBig = nullptr;
+
+ImFont *UI::s_OpenSansBold = nullptr;
+ImFont *UI::s_OpenSansRegular = nullptr;
+ImFont *UI::s_OpenSansRegularBig = nullptr;
 bool UI::s_Confirm = false;
 std::string UI::s_ConfirmMessage;
 ConfirmCallbackFn UI::s_ConfirmCallback;
@@ -25,7 +26,7 @@ void UI::Init()
 {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGuiIO &io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
     std::string openSansBoldPath = GetExecDir().append("assets/fonts/opensans/OpenSans-Bold.ttf").string();
@@ -37,8 +38,8 @@ void UI::Init()
 
     SetDarkThemeColors();
 
-    App& app = App::Get();
-    GLFWwindow* window = (GLFWwindow*)(app.GetWindow().GetNativeWindow());
+    App &app = App::Get();
+    GLFWwindow *window = (GLFWwindow *)(app.GetWindow().GetNativeWindow());
 
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 130");
@@ -165,7 +166,7 @@ void UI::DisplayErrorModal()
 
 void UI::SetDarkThemeColors()
 {
-    auto& colors = ImGui::GetStyle().Colors;
+    auto &colors = ImGui::GetStyle().Colors;
     colors[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.105f, 0.11f, 1.0f };
     colors[ImGuiCol_Border] = ImVec4{ 1.0f, 1.0f, 1.0f, 0.35f };
 

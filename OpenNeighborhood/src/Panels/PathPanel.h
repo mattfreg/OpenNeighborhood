@@ -5,6 +5,7 @@
 #include "Elements/GoToParentButton.h"
 #include "Elements/PathNode.h"
 
+
 class PathPanel : public Panel
 {
 public:
@@ -13,7 +14,7 @@ public:
     PathPanel();
 
     virtual void OnRender() override;
-    virtual void OnEvent(Event& event) override;
+    virtual void OnEvent(Event &event) override;
 
     inline static float GetWidth() { return s_Width; }
     inline static float GetHeight() { return s_Height; }
@@ -27,6 +28,6 @@ private:
     static float s_Height;
     GoToParentButton m_GoToParentButton;
 
-    bool OnCurrentXboxLocationChange(ContentsChangeEvent& event);
+    bool OnCurrentXboxLocationChange(ContentsChangeEvent &event);
     void UpdateDirectories();
 };

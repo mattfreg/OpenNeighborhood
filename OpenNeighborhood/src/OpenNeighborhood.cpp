@@ -7,7 +7,8 @@
 #include "Panels/ContentsPanel.h"
 #include "Core/Assert.h"
 
-OpenNeighborhood* OpenNeighborhood::s_Instance = nullptr;
+
+OpenNeighborhood *OpenNeighborhood::s_Instance = nullptr;
 
 OpenNeighborhood::OpenNeighborhood()
     : Layer("OpenNeighborhood")
@@ -30,9 +31,9 @@ void OpenNeighborhood::OnDetach()
     UI::Cleanup();
 }
 
-void OpenNeighborhood::OnEvent(Event& event)
+void OpenNeighborhood::OnEvent(Event &event)
 {
-    for (Panel* panel : m_PanelStack)
+    for (Panel *panel : m_PanelStack)
         panel->OnEvent(event);
 }
 

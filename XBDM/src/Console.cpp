@@ -1,19 +1,20 @@
 #include "pch.h"
 #include "Console.h"
 
+
 namespace XBDM
 {
     Console::Console()
         : m_Socket(INVALID_SOCKET) {}
 
-    Console::Console(const std::string& ipAddress)
+    Console::Console(const std::string &ipAddress)
         : m_IpAddress(ipAddress), m_Socket(INVALID_SOCKET) {}
 
     bool Console::OpenConnection()
     {
         m_Connected = false;
         addrinfo hints;
-        addrinfo* addrInfo;
+        addrinfo *addrInfo;
         ZeroMemory(&hints, sizeof(hints));
 
 #ifdef _WIN32
@@ -45,7 +46,7 @@ namespace XBDM
 #else
         timeval tv = { 0, 10000 };
 #endif
-        setsockopt(m_Socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof(timeval));
+        setsockopt(m_Socket, SOL_SOCKET, SO_RCVTIMEO, (const char *)&tv, sizeof(timeval));
 
         if (connect(m_Socket, addrInfo->ai_addr, (int)addrInfo->ai_addrlen) == SOCKET_ERROR)
         {
@@ -108,7 +109,7 @@ namespace XBDM
         // We delete the first line because it doesn't contain any info about the drives
         lines.erase(lines.begin());
 
-        for (auto& line : lines)
+        for (auto &line : lines)
         {
             std::string driveName;
 
@@ -116,7 +117,7 @@ namespace XBDM
             {
                 driveName = GetStringProperty(line, "drivename");
             }
-            catch (const std::exception&)
+            catch (const std::exception &)
             {
                 throw std::runtime_error("Unable to get drive name");
             }
@@ -155,7 +156,7 @@ namespace XBDM
 
                 drives.push_back(drive);
             }
-            catch (const std::exception&)
+            catch (const std::exception &)
             {
                 throw std::runtime_error("Unable to fetch some data about the drives");
             }
@@ -164,7 +165,7 @@ namespace XBDM
         return drives;
     }
 
-    std::set<File> Console::GetDirectoryContents(const std::string& directoryPath)
+    std::set<File> Console::GetDirectoryContents(const std::string &directoryPath)
     {
         std::set<File> files;
 
@@ -182,7 +183,7 @@ namespace XBDM
         // We delete the first line because it doesn't contain any info about the files
         lines.erase(lines.begin());
 
-        for (auto& line : lines)
+        for (auto &line : lines)
         {
             std::string fileName;
 
@@ -190,7 +191,7 @@ namespace XBDM
             {
                 fileName = GetStringProperty(line, "name");
             }
-            catch (const std::exception&)
+            catch (const std::exception &)
             {
                 throw std::runtime_error("Unable get file name");
             }
@@ -212,7 +213,7 @@ namespace XBDM
 
                 files.emplace(file);
             }
-            catch (const std::exception&)
+            catch (const std::exception &)
             {
                 throw std::runtime_error("Unable to fetch some data about the files");
             }
@@ -221,7 +222,7 @@ namespace XBDM
         return files;
     }
 
-    void Console::LaunchXEX(const std::string& xexPath)
+    void Console::LaunchXEX(const std::string &xexPath)
     {
         std::string directory = xexPath.substr(0, xexPath.find_last_of('\\') + 1);
 
@@ -229,7 +230,7 @@ namespace XBDM
         std::string response = Receive();
     }
 
-    void Console::ReceiveFile(const std::string& remotePath, const std::string& localPath)
+    void Console::ReceiveFile(const std::string &remotePath, const std::string &localPath)
     {
         char headerBuffer[40] = { 0 };
         std::string header = "203- binary response follows\r\n";
@@ -260,7 +261,7 @@ namespace XBDM
 
         // Receiving the file size (4-byte integer sent right after the header)
         int fileSize = 0;
-        if (recv(m_Socket, (char*)&fileSize, sizeof(int), 0) == SOCKET_ERROR)
+        if (recv(m_Socket, (char *)&fileSize, sizeof(int), 0) == SOCKET_ERROR)
         {
             ClearSocket();
             throw std::runtime_error("Couldn't receive the file size");
@@ -298,7 +299,7 @@ namespace XBDM
         ClearSocket();
     }
 
-    void Console::SendFile(const std::string& remotePath, const std::string& localPath)
+    void Console::SendFile(const std::string &remotePath, const std::string &localPath)
     {
         std::ifstream file;
         file.open(localPath, std::ifstream::binary);
@@ -373,13 +374,13 @@ namespace XBDM
         ClearSocket();
     }
 
-    void Console::DeleteFile(const std::string& path, bool isDirectory)
+    void Console::DeleteFile(const std::string &path, bool isDirectory)
     {
         if (isDirectory)
         {
             std::set<File> files = GetDirectoryContents(path);
 
-            for (auto& file : files)
+            for (auto &file : files)
                 DeleteFile(path + '\\' + file.Name, file.IsDirectory);
         }
 
@@ -393,7 +394,7 @@ namespace XBDM
             throw std::runtime_error("Couldn't delete " + path);
     }
 
-    void Console::CreateDirectory(const std::string& path)
+    void Console::CreateDirectory(const std::string &path)
     {
         SendCommand("mkdir name=\"" + path + "\"");
         std::string response = Receive();
@@ -408,7 +409,7 @@ namespace XBDM
             throw std::runtime_error("Couldn't create directory " + path);
     }
 
-    void Console::RenameFile(const std::string& oldName, const std::string& newName)
+    void Console::RenameFile(const std::string &oldName, const std::string &newName)
     {
         SendCommand("rename name=\"" + oldName + "\" newname=\"" + newName + "\"");
         std::string response = Receive();
@@ -447,7 +448,7 @@ namespace XBDM
         return result;
     }
 
-    void Console::SendCommand(const std::string& command)
+    void Console::SendCommand(const std::string &command)
     {
         std::string fullCommand = command + "\r\n";
         if (send(m_Socket, fullCommand.c_str(), (int)fullCommand.length(), 0) == SOCKET_ERROR)
@@ -460,7 +461,7 @@ namespace XBDM
         SleepFor(10);
     }
 
-    std::vector<std::string> Console::SplitResponse(const std::string& response, const std::string& delimiter)
+    std::vector<std::string> Console::SplitResponse(const std::string &response, const std::string &delimiter)
     {
         std::vector<std::string> result;
         std::string responseCopy = response;
@@ -480,7 +481,7 @@ namespace XBDM
         return result;
     }
 
-    bool Console::EndsWith(const std::string& line, const std::string& ending)
+    bool Console::EndsWith(const std::string &line, const std::string &ending)
     {
         if (ending.size() > line.size())
             return false;
@@ -488,7 +489,7 @@ namespace XBDM
         return std::equal(ending.rbegin(), ending.rend(), line.rbegin());
     }
 
-    DWORD Console::GetIntegerProperty(const std::string& line, const std::string& propertyName, bool hex)
+    DWORD Console::GetIntegerProperty(const std::string &line, const std::string &propertyName, bool hex)
     {
         if (line.find(propertyName) == std::string::npos)
             throw std::runtime_error(std::string("Property '" + propertyName + "' not found").c_str());
@@ -508,7 +509,7 @@ namespace XBDM
         return toReturn;
     }
 
-    std::string Console::GetStringProperty(const std::string& line, const std::string& propertyName)
+    std::string Console::GetStringProperty(const std::string &line, const std::string &propertyName)
     {
         if (line.find(propertyName) == std::string::npos)
             throw std::runtime_error(std::string("Property '" + propertyName + "' not found").c_str());

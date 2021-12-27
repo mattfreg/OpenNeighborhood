@@ -5,6 +5,7 @@
 #include "Render/UI.h"
 #include "Render/TextureManager.h"
 
+
 float PathPanel::s_Width;
 float PathPanel::s_Height;
 
@@ -22,13 +23,13 @@ PathPanel::PathPanel()
 void PathPanel::OnRender()
 {
     ImGuiWindowFlags windowFlags =
-          ImGuiWindowFlags_NoTitleBar |
-          ImGuiWindowFlags_NoCollapse |
-          ImGuiWindowFlags_NoResize |
-          ImGuiWindowFlags_NoMove |
-          ImGuiWindowFlags_NoBringToFrontOnFocus |
-          ImGuiWindowFlags_NoNavFocus |
-          ImGuiWindowFlags_HorizontalScrollbar;
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoBringToFrontOnFocus |
+        ImGuiWindowFlags_NoNavFocus |
+        ImGuiWindowFlags_HorizontalScrollbar;
 
     s_Width = m_WindowWidth - m_Margin * 2.0f;
 
@@ -43,11 +44,11 @@ void PathPanel::OnRender()
     ImGui::SameLine();
     ImGui::Text("%s", "");
 
-    ImGuiStyle& style = ImGui::GetStyle();
-    ImVec4& borderColor = style.Colors[ImGuiCol_Border];
+    ImGuiStyle &style = ImGui::GetStyle();
+    ImVec4 &borderColor = style.Colors[ImGuiCol_Border];
     auto texture = TextureManager::GetTexture(m_GoToParentButton.GetTextureName());
     float lineX = m_Margin + (float)texture->GetWidth() + style.ItemSpacing.x * 3.0f;
-    ImDrawList* drawList = ImGui::GetWindowDrawList();
+    ImDrawList *drawList = ImGui::GetWindowDrawList();
     drawList->AddLine(
         ImVec2(lineX, m_Margin),
         ImVec2(lineX, m_Margin + s_Height),
@@ -79,7 +80,7 @@ void PathPanel::OnRender()
         UpdateDirectories();
 }
 
-void PathPanel::OnEvent(Event& event)
+void PathPanel::OnEvent(Event &event)
 {
     Panel::OnEvent(event);
 
@@ -87,7 +88,7 @@ void PathPanel::OnEvent(Event& event)
     dispatcher.Dispatch<ContentsChangeEvent>(BIND_EVENT_FN(PathPanel::OnCurrentXboxLocationChange));
 }
 
-bool PathPanel::OnCurrentXboxLocationChange(ContentsChangeEvent& event)
+bool PathPanel::OnCurrentXboxLocationChange(ContentsChangeEvent &event)
 {
     m_ContentsChangeEventQueue.push(event);
 

@@ -5,31 +5,32 @@
 #include "Core/Stack.h"
 #include "Core/Layer.h"
 
+
 class App
 {
 public:
-    App(const std::string& name = "OpenNeighborhood");
+    App(const std::string &name = "OpenNeighborhood");
     virtual ~App();
 
     void Run();
 
-    void OnEvent(Event& event);
+    void OnEvent(Event &event);
 
-    void PushLayer(Layer* layer);
+    void PushLayer(Layer *layer);
 
-    inline static App& Get() { return *s_Instance; }
-    inline Window& GetWindow() { return *m_Window; }
+    inline static App &Get() { return *s_Instance; }
+    inline Window &GetWindow() { return *m_Window; }
 
     void Close();
 private:
-    Window* m_Window;
+    Window *m_Window;
     bool m_Running = true;
     bool m_Minimized = false;
 
-    Stack<Layer*> m_LayerStack;
+    Stack<Layer *> m_LayerStack;
 
-    static App* s_Instance;
+    static App *s_Instance;
 
-    bool OnWindowClose(WindowCloseEvent& event);
-    bool OnWindowResize(WindowResizeEvent& event);
+    bool OnWindowClose(WindowCloseEvent &event);
+    bool OnWindowResize(WindowResizeEvent &event);
 };

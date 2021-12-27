@@ -12,6 +12,7 @@
 #include "Elements/File.h"
 #include "Render/UI.h"
 
+
 ContentsPanel::ContentsPanel()
 {
     m_Elements.emplace_back(CreateRef<AddXboxButton>());
@@ -24,9 +25,9 @@ ContentsPanel::ContentsPanel()
         mINI::INIStructure config;
         configFile.read(config);
 
-        for (const auto& it : config)
+        for (const auto &it : config)
         {
-            const std::string& consoleName = it.first;
+            const std::string &consoleName = it.first;
             if (config.get(consoleName).has("ip_address"))
             {
                 std::string ipAddress = config.get(consoleName).get("ip_address");
@@ -56,7 +57,7 @@ void ContentsPanel::OnRender()
     if (XboxManager::GetCurrentLocation() != "")
         DisplayContextMenu();
 
-    ImGuiStyle& style = ImGui::GetStyle();
+    ImGuiStyle &style = ImGui::GetStyle();
     float panelWidth = ImGui::GetWindowPos().x + ImGui::GetWindowContentRegionMax().x;
     for (size_t i = 0; i < m_Elements.size(); i++)
     {
@@ -75,7 +76,7 @@ void ContentsPanel::OnRender()
         InjectNewElements();
 }
 
-void ContentsPanel::OnEvent(Event& event)
+void ContentsPanel::OnEvent(Event &event)
 {
     Panel::OnEvent(event);
 
@@ -83,7 +84,7 @@ void ContentsPanel::OnEvent(Event& event)
     dispatcher.Dispatch<ContentsChangeEvent>(BIND_EVENT_FN(ContentsPanel::OnContentsChange));
 }
 
-bool ContentsPanel::OnContentsChange(ContentsChangeEvent& event)
+bool ContentsPanel::OnContentsChange(ContentsChangeEvent &event)
 {
     m_ContentsChangeEventQueue.push(event);
 
@@ -92,7 +93,7 @@ bool ContentsPanel::OnContentsChange(ContentsChangeEvent& event)
 
 void ContentsPanel::InjectNewElements()
 {
-    ContentsChangeEvent& event = m_ContentsChangeEventQueue.front();
+    ContentsChangeEvent &event = m_ContentsChangeEventQueue.front();
     if (event.Append())
     {
         m_Elements.reserve(m_Elements.size() + event.GetElements()->size());
@@ -126,7 +127,7 @@ void ContentsPanel::DisplayContextMenu()
 
 void ContentsPanel::UpdateContents()
 {
-    XBDM::Console& xbox = XboxManager::GetConsole();
+    XBDM::Console &xbox = XboxManager::GetConsole();
     std::set<XBDM::File> files;
     std::string location = XboxManager::GetCurrentLocation();
 
@@ -140,7 +141,7 @@ void ContentsPanel::UpdateContents()
 
     auto fileElements = CreateRef<std::vector<Ref<Element>>>();
 
-    for (auto& file : files)
+    for (auto &file : files)
         fileElements->emplace_back(CreateRef<File>(file));
 
     ContentsChangeEvent event(fileElements);
@@ -166,7 +167,7 @@ void ContentsPanel::Upload()
      */
     auto upload = [this, remotePath, localPath]()
     {
-        XBDM::Console& xbox = XboxManager::GetConsole();
+        XBDM::Console &xbox = XboxManager::GetConsole();
 
         bool success = XboxManager::Try([&]() { xbox.SendFile(remotePath, localPath.string()); });
 
@@ -176,7 +177,7 @@ void ContentsPanel::Upload()
 
     UI::SetConfirmCallback(upload);
 
-    auto fileAlreadyExists = std::find_if(m_Elements.begin(), m_Elements.end(), [&](const Ref<Element>& element)
+    auto fileAlreadyExists = std::find_if(m_Elements.begin(), m_Elements.end(), [&](const Ref<Element> &element)
     {
         return element->GetLabel() == fileName;
     });
@@ -193,9 +194,9 @@ void ContentsPanel::Upload()
 
 void ContentsPanel::CreateDirectory()
 {
-    auto createDirectory = [this](const std::string& name)
+    auto createDirectory = [this](const std::string &name)
     {
-        XBDM::Console& xbox = XboxManager::GetConsole();
+        XBDM::Console &xbox = XboxManager::GetConsole();
 
         bool success = XboxManager::Try([&]() { xbox.CreateDirectory(XboxManager::GetCurrentLocation() + '\\' + name); });
 

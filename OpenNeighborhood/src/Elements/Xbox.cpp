@@ -6,7 +6,8 @@
 #include "Elements/Drive.h"
 #include "Render/UI.h"
 
-Xbox::Xbox(const std::string& label, const std::string& ipAddress)
+
+Xbox::Xbox(const std::string &label, const std::string &ipAddress)
     : m_IpAddress(ipAddress), Element(label, "xbox") {}
 
 void Xbox::OnClick()
@@ -20,7 +21,7 @@ void Xbox::OnClick()
         return;
     }
 
-    XBDM::Console& xbox = XboxManager::GetConsole();
+    XBDM::Console &xbox = XboxManager::GetConsole();
     std::vector<XBDM::Drive> drives;
 
     bool success = XboxManager::Try([&]() { drives = xbox.GetDrives(); });
@@ -30,7 +31,7 @@ void Xbox::OnClick()
 
     auto driveElements = CreateRef<std::vector<Ref<Element>>>();
 
-    for (auto& drive : drives)
+    for (auto &drive : drives)
         driveElements->emplace_back(CreateRef<Drive>(drive));
 
     ContentsChangeEvent event(driveElements);

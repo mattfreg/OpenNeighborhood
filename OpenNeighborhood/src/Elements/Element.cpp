@@ -5,7 +5,8 @@
 #include "OpenNeighborhood.h"
 #include "Render/UI.h"
 
-Element::Element(const std::string& label, const std::string& textureName)
+
+Element::Element(const std::string &label, const std::string &textureName)
     : m_Label(label), m_TextureName(textureName)
 {
     if (textureName != "")
@@ -25,15 +26,15 @@ void Element::OnRender()
 {
     auto texture = TextureManager::GetTexture(m_TextureName);
 
-    if (ImGui::ImageButtonWithText((void*)(intptr_t)texture->GetTextureID(), ImVec2(texture->GetWidth(), texture->GetHeight()), ImVec2(m_Width, m_Height), m_Label.c_str(), ImVec2(m_Padding, m_Padding)))
+    if (ImGui::ImageButtonWithText((void *)(intptr_t)texture->GetTextureID(), ImVec2(texture->GetWidth(), texture->GetHeight()), ImVec2(m_Width, m_Height), m_Label.c_str(), ImVec2(m_Padding, m_Padding)))
         if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
             OnClick();
 
     DisplayContextMenu();
 }
 
-void Element::OnEvent(Event& event)
+void Element::OnEvent(Event &event)
 {
-    OpenNeighborhood& currentLayer = OpenNeighborhood::Get();
+    OpenNeighborhood &currentLayer = OpenNeighborhood::Get();
     currentLayer.OnEvent(event);
 }

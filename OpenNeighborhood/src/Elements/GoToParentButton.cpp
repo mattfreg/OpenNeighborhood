@@ -7,6 +7,7 @@
 #include "Elements/File.h"
 #include "Render/UI.h"
 
+
 GoToParentButton::GoToParentButton()
     : Element("", "leftArrow")
 {
@@ -19,7 +20,7 @@ void GoToParentButton::OnRender()
 {
     auto texture = TextureManager::GetTexture(m_TextureName);
 
-    if (ImGui::ImageButton((void*)(intptr_t)texture->GetTextureID(), ImVec2((float)m_Width, (float)m_Height)))
+    if (ImGui::ImageButton((void *)(intptr_t)texture->GetTextureID(), ImVec2((float)m_Width, (float)m_Height)))
         OnClick();
 }
 
@@ -34,7 +35,7 @@ void GoToParentButton::OnClick()
     if (parentLocation[parentLocation.length() - 1] == ':')
         parentLocation += '\\';
 
-    XBDM::Console& xbox = XboxManager::GetConsole();
+    XBDM::Console &xbox = XboxManager::GetConsole();
     std::set<XBDM::File> files;
 
     bool success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(parentLocation); });
@@ -46,7 +47,7 @@ void GoToParentButton::OnClick()
 
     auto fileElements = CreateRef<std::vector<Ref<Element>>>();
 
-    for (auto& file : files)
+    for (auto &file : files)
         fileElements->emplace_back(CreateRef<File>(file));
 
     ContentsChangeEvent event(fileElements);

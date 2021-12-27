@@ -3,6 +3,7 @@
 
 #include "Core/Core.h"
 
+
 enum class EventType
 {
     None = 0,
@@ -39,7 +40,7 @@ public:
     bool m_Handled = false;
 
     virtual EventType GetEventType() const = 0;
-    virtual const char* GetName() const = 0;
+    virtual const char *GetName() const = 0;
     virtual int GetCategoryFlags() const = 0;
 
     inline bool IsInCategory(EventCategory category)
@@ -51,20 +52,20 @@ public:
 class EventDispatcher
 {
     template<typename T>
-    using EventFn = std::function<bool(T&)>;
+    using EventFn = std::function<bool(T &)>;
 public:
-    EventDispatcher(Event& event) : m_Event(event) {}
+    EventDispatcher(Event &event) : m_Event(event) {}
 
     template<typename T>
     bool Dispatch(EventFn<T> func)
     {
         if (m_Event.GetEventType() == T::GetStaticType())
         {
-            m_Event.m_Handled = func(*(T*)&m_Event);
+            m_Event.m_Handled = func(*(T *)&m_Event);
             return true;
         }
         return false;
     }
 private:
-    Event& m_Event;
+    Event &m_Event;
 };

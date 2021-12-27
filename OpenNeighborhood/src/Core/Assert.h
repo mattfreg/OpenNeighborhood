@@ -3,6 +3,7 @@
 #include "Core/Log.h"
 #include "Core/PlatformDetector.h"
 
+
 #ifdef DEBUG
     #ifdef PLATFORM_WINDOWS
         #define DEBUGBREAK() __debugbreak()

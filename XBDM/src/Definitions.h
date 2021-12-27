@@ -2,6 +2,7 @@
 
 #include "pch.h"
 
+
 #ifndef _WIN32
     typedef uint8_t     BYTE;
     typedef int16_t     SHORT;
@@ -35,6 +36,6 @@ namespace XBDM
         bool IsXEX;
         bool IsDirectory;
 
-        bool operator<(const File& rhs) const { return Name < rhs.Name; }
+        bool operator<(const File &rhs) const { return Name < rhs.Name; }
     };
 };
