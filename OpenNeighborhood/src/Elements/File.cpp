@@ -52,13 +52,14 @@ void File::Download()
      * Depending on the system, std::filesystem::path::native can return either
      * std::wstring or std::string. Since we don't know, we are just using auto.
      */
-    auto extension = std::filesystem::path(m_Data.Name).extension().native().substr(1);
-    auto filterName = extension;
+    auto filename = std::filesystem::path(m_Data.Name);
+    auto extension = filename.extension().native().substr(1);
+    auto &filterName = extension;
     std::transform(filterName.begin(), filterName.end(), filterName.begin(), [](auto c) { return std::toupper(c); });
 
     NFD::UniquePathN outPath;
     nfdnfilteritem_t filterItem[] = { { filterName.c_str(), extension.c_str() } };
-    nfdresult_t result = NFD::SaveDialog(outPath, filterItem, 1);
+    nfdresult_t result = NFD::SaveDialog(outPath, filterItem, 1, nullptr, filename.native().c_str());
 
     if (result == NFD_ERROR)
     {
