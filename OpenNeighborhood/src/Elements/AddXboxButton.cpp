@@ -102,8 +102,8 @@ void AddXboxButton::OnClick()
 
 void AddXboxButton::CreateXbox(const std::string &consoleName, const std::string &ipAddress)
 {
-    auto xboxElement = CreateRef<std::vector<Ref<Element>>>();
-    xboxElement->emplace_back(CreateRef<Xbox>(consoleName, ipAddress));
+    auto xboxElement = std::vector<Ref<Element>>();
+    xboxElement.emplace_back(CreateRef<Xbox>(consoleName, ipAddress));
     ContentsChangeEvent event(xboxElement, true);
     m_EventCallback(event);
 

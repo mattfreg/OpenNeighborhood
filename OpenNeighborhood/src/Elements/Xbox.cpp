@@ -29,10 +29,10 @@ void Xbox::OnClick()
     if (!success)
         return;
 
-    auto driveElements = CreateRef<std::vector<Ref<Element>>>();
+    auto driveElements = std::vector<Ref<Element>>();
 
     for (auto &drive : drives)
-        driveElements->emplace_back(CreateRef<Drive>(drive));
+        driveElements.emplace_back(CreateRef<Drive>(drive));
 
     ContentsChangeEvent event(driveElements);
     m_EventCallback(event);

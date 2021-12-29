@@ -96,11 +96,11 @@ void ContentsPanel::InjectNewElements()
     ContentsChangeEvent &event = m_ContentsChangeEventQueue.front();
     if (event.Append())
     {
-        m_Elements.reserve(m_Elements.size() + event.GetElements()->size());
-        m_Elements.insert(m_Elements.end(), event.GetElements()->begin(), event.GetElements()->end());
+        m_Elements.reserve(m_Elements.size() + event.GetElements().size());
+        m_Elements.insert(m_Elements.end(), event.GetElements().begin(), event.GetElements().end());
     }
     else
-        m_Elements = *event.GetElements();
+        m_Elements = event.GetElements();
 
     m_ContentsChangeEventQueue.pop();
 }
@@ -139,10 +139,10 @@ void ContentsPanel::UpdateContents()
     if (!success)
         return;
 
-    auto fileElements = CreateRef<std::vector<Ref<Element>>>();
+    auto fileElements = std::vector<Ref<Element>>();
 
     for (auto &file : files)
-        fileElements->emplace_back(CreateRef<File>(file));
+        fileElements.emplace_back(CreateRef<File>(file));
 
     ContentsChangeEvent event(fileElements);
     OnContentsChange(event);

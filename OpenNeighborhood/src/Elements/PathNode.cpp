@@ -39,10 +39,10 @@ void PathNode::OnClick()
 
     XboxManager::SetCurrentLocation(newXboxLocation);
 
-    auto fileElements = CreateRef<std::vector<Ref<Element>>>();
+    auto fileElements = std::vector<Ref<Element>>();
 
     for (auto &file : files)
-        fileElements->emplace_back(CreateRef<File>(file));
+        fileElements.emplace_back(CreateRef<File>(file));
 
     ContentsChangeEvent event(fileElements);
     m_EventCallback(event);
