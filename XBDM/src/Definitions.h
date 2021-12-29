@@ -36,6 +36,18 @@ namespace XBDM
         bool IsXEX;
         bool IsDirectory;
 
-        bool operator<(const File &rhs) const { return Name < rhs.Name; }
+        bool operator<(const File &other) const
+        {
+            // Compare the file names and store the comparaisons as integers (which will be either 0 or 1)
+            int thisNameGreaterThanOtherName = (int)(Name > other.Name);
+            int otherNameGreaterThanThisName = (int)(other.Name > Name);
+
+            // If the file is a directory, decrease the score by 2. The score is decreased because the lower the score the closer
+            // the element will be to the start of the set and we want directories to always be before files in sets.
+            int thisScore = thisNameGreaterThanOtherName - (int)IsDirectory * 2;
+            int otherScore = otherNameGreaterThanThisName - (int)other.IsDirectory * 2;
+
+            return thisScore < otherScore;
+        }
     };
 };
