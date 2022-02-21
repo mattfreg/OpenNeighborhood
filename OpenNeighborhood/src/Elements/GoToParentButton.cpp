@@ -20,7 +20,7 @@ void GoToParentButton::OnRender()
 {
     auto texture = TextureManager::GetTexture(m_TextureName);
 
-    if (ImGui::ImageButton(reinterpret_cast<void *>(texture->GetTextureID()), ImVec2(static_cast<float>(m_Width), static_cast<float>(m_Height))))
+    if (ImGui::ImageButton(reinterpret_cast<void *>(static_cast<intptr_t>(texture->GetTextureID())), ImVec2(static_cast<float>(m_Width), static_cast<float>(m_Height))))
         OnClick();
 }
 
