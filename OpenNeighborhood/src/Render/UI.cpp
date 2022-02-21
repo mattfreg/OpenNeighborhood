@@ -39,7 +39,7 @@ void UI::Init()
     SetDarkThemeColors();
 
     App &app = App::Get();
-    GLFWwindow *window = (GLFWwindow *)(app.GetWindow().GetNativeWindow());
+    GLFWwindow *window = reinterpret_cast<GLFWwindow *>(app.GetWindow().GetNativeWindow());
 
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 130");

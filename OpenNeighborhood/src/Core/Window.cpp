@@ -51,11 +51,11 @@ void Window::Init(const WindowProps &props)
         s_GLFWInitialized = true;
     }
 
-    m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+    m_Window = glfwCreateWindow(static_cast<int>(props.Width), static_cast<int>(props.Height), m_Data.Title.c_str(), nullptr, nullptr);
 
     glfwMakeContextCurrent(m_Window);
 
-    int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+    int status = gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress));
     ASSERT(status, "Failed to initialize Glad!");
 
     glfwSetWindowUserPointer(m_Window, &m_Data);
@@ -64,24 +64,24 @@ void Window::Init(const WindowProps &props)
     // Set GLFW callbacks
     glfwSetWindowSizeCallback(m_Window, [](GLFWwindow *window, int width, int height)
         {
-            WindowData &windowData = *(WindowData *)glfwGetWindowUserPointer(window);
-            windowData.Width = (float)width;
-            windowData.Height = (float)height;
+            WindowData &windowData = *reinterpret_cast<WindowData *>(glfwGetWindowUserPointer(window));
+            windowData.Width = static_cast<float>(width);
+            windowData.Height = static_cast<float>(height);
 
-            WindowResizeEvent event((float)width, (float)height);
+            WindowResizeEvent event(static_cast<float>(width), static_cast<float>(height));
             windowData.EventCallback(event);
         });
 
     glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *window)
         {
-            WindowData &windowData = *(WindowData *)glfwGetWindowUserPointer(window);
+            WindowData &windowData = *reinterpret_cast<WindowData *>(glfwGetWindowUserPointer(window));
             WindowCloseEvent event;
             windowData.EventCallback(event);
         });
 
     glfwSetKeyCallback(m_Window, [](GLFWwindow *window, int key, int scancode, int action, int mods)
         {
-            WindowData &windowData = *(WindowData *)glfwGetWindowUserPointer(window);
+            WindowData &windowData = *reinterpret_cast<WindowData *>(glfwGetWindowUserPointer(window));
 
             switch (action)
             {
@@ -108,7 +108,7 @@ void Window::Init(const WindowProps &props)
 
     glfwSetCharCallback(m_Window, [](GLFWwindow *window, unsigned int keyCode)
         {
-            WindowData &windowData = *(WindowData *)glfwGetWindowUserPointer(window);
+            WindowData &windowData = *reinterpret_cast<WindowData *>(glfwGetWindowUserPointer(window));
 
             KeyTypedEvent event(keyCode);
             windowData.EventCallback(event);
@@ -116,7 +116,7 @@ void Window::Init(const WindowProps &props)
 
     glfwSetMouseButtonCallback(m_Window, [](GLFWwindow *window, int button, int action, int mods)
         {
-            WindowData &windowData = *(WindowData *)glfwGetWindowUserPointer(window);
+            WindowData &windowData = *reinterpret_cast<WindowData *>(glfwGetWindowUserPointer(window));
 
             switch (action)
             {
@@ -137,17 +137,17 @@ void Window::Init(const WindowProps &props)
 
     glfwSetScrollCallback(m_Window, [](GLFWwindow *window, double xOffset, double yOffset)
         {
-            WindowData &windowData = *(WindowData *)glfwGetWindowUserPointer(window);
+            WindowData &windowData = *reinterpret_cast<WindowData *>(glfwGetWindowUserPointer(window));
 
-            MouseScrolledEvent event((float)xOffset, (float)yOffset);
+            MouseScrolledEvent event(static_cast<float>(xOffset), static_cast<float>(yOffset));
             windowData.EventCallback(event);
         });
 
     glfwSetCursorPosCallback(m_Window, [](GLFWwindow *window, double x, double y)
         {
-            WindowData &windowData = *(WindowData *)glfwGetWindowUserPointer(window);
+            WindowData &windowData = *reinterpret_cast<WindowData *>(glfwGetWindowUserPointer(window));
 
-            MouseMovedEvent event((float)x, (float)y);
+            MouseMovedEvent event(static_cast<float>(x), static_cast<float>(y));
             windowData.EventCallback(event);
         });
 }

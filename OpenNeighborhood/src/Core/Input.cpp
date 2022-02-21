@@ -6,7 +6,7 @@
 
 bool Input::IsKeyPressed(int keyCode)
 {
-    GLFWwindow *window = (GLFWwindow *)(App::Get().GetWindow().GetNativeWindow());
+    GLFWwindow *window = reinterpret_cast<GLFWwindow *>(App::Get().GetWindow().GetNativeWindow());
     int state = glfwGetKey(window, keyCode);
 
     return state == GLFW_PRESS || state == GLFW_REPEAT;
@@ -14,7 +14,7 @@ bool Input::IsKeyPressed(int keyCode)
 
 bool Input::IsMouseButtonPressed(int button)
 {
-    GLFWwindow *window = (GLFWwindow *)(App::Get().GetWindow().GetNativeWindow());
+    GLFWwindow *window = reinterpret_cast<GLFWwindow *>(App::Get().GetWindow().GetNativeWindow());
     int state = glfwGetMouseButton(window, button);
 
     return state == GLFW_PRESS;
@@ -22,7 +22,7 @@ bool Input::IsMouseButtonPressed(int button)
 
 std::pair<float, float> Input::GetMousePosition()
 {
-    GLFWwindow *window = (GLFWwindow *)(App::Get().GetWindow().GetNativeWindow());
+    GLFWwindow *window = reinterpret_cast<GLFWwindow *>(App::Get().GetWindow().GetNativeWindow());
     double xPos, yPos;
     glfwGetCursorPos(window, &xPos, &yPos);
 

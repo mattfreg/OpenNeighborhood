@@ -31,7 +31,7 @@ namespace ImGui
         bool pressed = ButtonBehavior(totalRect, id, &hovered, &held, flags);
 
         const ImU32 color = GetColorU32((held && hovered) ? ImGuiCol_ButtonActive : hovered ? ImGuiCol_ButtonHovered : ImGuiCol_Button);
-        RenderFrame(totalRect.Min, totalRect.Max, color, true, ImClamp((float)ImMin(padding.x, padding.y), 0.0f, 0.0f));
+        RenderFrame(totalRect.Min, totalRect.Max, color, true, ImClamp(static_cast<float>(ImMin(padding.x, padding.y)), 0.0f, 0.0f));
         window->DrawList->AddImage(userTextureID, imageRect.Min, imageRect.Max, ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), GetColorU32(ImVec4(1.0f, 1.0f, 1.0f, 1.0f)));
 
         ImRect offset = totalRect;

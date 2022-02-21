@@ -47,7 +47,7 @@ void PathPanel::OnRender()
     ImGuiStyle &style = ImGui::GetStyle();
     ImVec4 &borderColor = style.Colors[ImGuiCol_Border];
     auto texture = TextureManager::GetTexture(m_GoToParentButton.GetTextureName());
-    float lineX = m_Margin + (float)texture->GetWidth() + style.ItemSpacing.x * 3.0f;
+    float lineX = m_Margin + static_cast<float>(texture->GetWidth()) + style.ItemSpacing.x * 3.0f;
     ImDrawList *drawList = ImGui::GetWindowDrawList();
     drawList->AddLine(
         ImVec2(lineX, m_Margin),
@@ -59,7 +59,7 @@ void PathPanel::OnRender()
 
     for (size_t i = 0; i < m_PathNodes.size(); i++)
     {
-        ImGui::PushID((int)i);
+        ImGui::PushID(static_cast<int>(i));
 
         m_PathNodes[i].OnRender();
 

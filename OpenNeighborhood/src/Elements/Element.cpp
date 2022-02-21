@@ -26,7 +26,7 @@ void Element::OnRender()
 {
     auto texture = TextureManager::GetTexture(m_TextureName);
 
-    if (ImGui::ImageButtonWithText((void *)(intptr_t)texture->GetTextureID(), ImVec2(texture->GetWidth(), texture->GetHeight()), ImVec2(m_Width, m_Height), m_Label.c_str(), ImVec2(m_Padding, m_Padding)))
+    if (ImGui::ImageButtonWithText(reinterpret_cast<void *>(texture->GetTextureID()), ImVec2(texture->GetWidth(), texture->GetHeight()), ImVec2(m_Width, m_Height), m_Label.c_str(), ImVec2(m_Padding, m_Padding)))
         if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
             OnClick();
 

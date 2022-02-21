@@ -22,7 +22,7 @@ void PathNode::OnClick()
 
     for (size_t i = 0; i <= m_PosInPath; i++)
     {
-        newXboxLocation += ((PathPanel *)m_ParentPanel)->m_PathNodes[i].GetLabel();
+        newXboxLocation += reinterpret_cast<PathPanel *>(m_ParentPanel)->m_PathNodes[i].GetLabel();
 
         if (i < m_PosInPath)
             newXboxLocation += '\\';

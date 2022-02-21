@@ -46,9 +46,9 @@ namespace XBDM
 #else
         timeval tv = { 0, 10000 };
 #endif
-        setsockopt(m_Socket, SOL_SOCKET, SO_RCVTIMEO, (const char *)&tv, sizeof(timeval));
+        setsockopt(m_Socket, SOL_SOCKET, SO_RCVTIMEO, reinterpret_cast<const char *>(&tv), sizeof(timeval));
 
-        if (connect(m_Socket, addrInfo->ai_addr, (int)addrInfo->ai_addrlen) == SOCKET_ERROR)
+        if (connect(m_Socket, addrInfo->ai_addr, static_cast<int>(addrInfo->ai_addrlen)) == SOCKET_ERROR)
         {
             CloseSocket();
             return false;
@@ -144,14 +144,14 @@ namespace XBDM
             std::string spaceResponse = Receive();
 
             /**
-             * Creating 8-byte integers and making the value of 'XXXhi' properties their
-             * upper 4 bytes and the value of 'XXXlo' properties their lower 4 bytes.
+             * Creating 64-bit unsigned integers and making the value of 'XXXhi' properties
+             * their upper 32 bits and the value of 'XXXlo' properties their lower 32 bits.
              */
             try
             {
-                drive.FreeBytesAvailable = (UINT64)GetIntegerProperty(spaceResponse, "freetocallerhi") << 32 | (UINT64)GetIntegerProperty(spaceResponse, "freetocallerlo");
-                drive.TotalBytes = (UINT64)GetIntegerProperty(spaceResponse, "totalbyteshi") << 32 | (UINT64)GetIntegerProperty(spaceResponse, "totalbyteslo");
-                drive.TotalFreeBytes = (UINT64)GetIntegerProperty(spaceResponse, "totalfreebyteshi") << 32 | (UINT64)GetIntegerProperty(spaceResponse, "totalfreebyteslo");
+                drive.FreeBytesAvailable = static_cast<UINT64>(GetIntegerProperty(spaceResponse, "freetocallerhi")) << 32 | static_cast<UINT64>(GetIntegerProperty(spaceResponse, "freetocallerlo"));
+                drive.TotalBytes = static_cast<UINT64>(GetIntegerProperty(spaceResponse, "totalbyteshi")) << 32 | static_cast<UINT64>(GetIntegerProperty(spaceResponse, "totalbyteslo"));
+                drive.TotalFreeBytes = static_cast<UINT64>(GetIntegerProperty(spaceResponse, "totalfreebyteshi")) << 32 | static_cast<UINT64>(GetIntegerProperty(spaceResponse, "totalfreebyteslo"));
                 drive.TotalUsedBytes = drive.TotalBytes - drive.FreeBytesAvailable;
 
                 drives.push_back(drive);
@@ -205,7 +205,7 @@ namespace XBDM
             try
             {
                 file.Name = fileName;
-                file.Size = (UINT64)GetIntegerProperty(line, "sizehi") << 32 | (UINT64)GetIntegerProperty(line, "sizelo");
+                file.Size = static_cast<UINT64>(GetIntegerProperty(line, "sizehi")) << 32 | static_cast<UINT64>(GetIntegerProperty(line, "sizelo"));
                 file.IsDirectory = EndsWith(line, " directory");
 
                 std::filesystem::path filePath(file.Name);
@@ -238,7 +238,7 @@ namespace XBDM
         SendCommand("getfile name=\"" + remotePath + "\"");
 
         // Receiving the header
-        if (recv(m_Socket, headerBuffer, (int)header.length(), 0) == SOCKET_ERROR)
+        if (recv(m_Socket, headerBuffer, static_cast<int>(header.length()), 0) == SOCKET_ERROR)
             throw std::runtime_error("Couldn't receive the response header");
 
         if (strlen(headerBuffer) <= 4)
@@ -261,7 +261,7 @@ namespace XBDM
 
         // Receiving the file size (4-byte integer sent right after the header)
         int fileSize = 0;
-        if (recv(m_Socket, (char *)&fileSize, sizeof(int), 0) == SOCKET_ERROR)
+        if (recv(m_Socket, reinterpret_cast<char *>(&fileSize), sizeof(int), 0) == SOCKET_ERROR)
         {
             ClearSocket();
             throw std::runtime_error("Couldn't receive the file size");
@@ -323,7 +323,7 @@ namespace XBDM
         SendCommand(command.str());
 
         // Receiving the header
-        if (recv(m_Socket, headerBuffer, (int)header.length(), 0) == SOCKET_ERROR)
+        if (recv(m_Socket, headerBuffer, static_cast<int>(header.length()), 0) == SOCKET_ERROR)
             throw std::runtime_error("Couldn't receive the response header");
 
         if (strlen(headerBuffer) <= 4)
@@ -353,7 +353,7 @@ namespace XBDM
         {
             file.read(contentBuffer, sizeof(contentBuffer));
 
-            if (send(m_Socket, contentBuffer, (int)file.gcount(), 0) == SOCKET_ERROR)
+            if (send(m_Socket, contentBuffer, static_cast<int>(file.gcount()), 0) == SOCKET_ERROR)
             {
                 CloseSocket();
                 CleanupSocket();
@@ -451,7 +451,7 @@ namespace XBDM
     void Console::SendCommand(const std::string &command)
     {
         std::string fullCommand = command + "\r\n";
-        if (send(m_Socket, fullCommand.c_str(), (int)fullCommand.length(), 0) == SOCKET_ERROR)
+        if (send(m_Socket, fullCommand.c_str(), static_cast<int>(fullCommand.length()), 0) == SOCKET_ERROR)
         {
             CloseSocket();
             CleanupSocket();
