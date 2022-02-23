@@ -20,7 +20,7 @@ project "OpenNeighborhood"
     includedirs {
         "%{prj.location}/src",
         "%{prj.location}/vendor",
-        "%{wks.location}/XBDM/src",
+        "%{wks.location}/XBDM/include",
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.Glad}",
         "%{prj.location}/vendor/NativeFileDialogExtended/src/include",
