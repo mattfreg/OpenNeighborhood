@@ -3,12 +3,14 @@
 
 #include <glad/glad.h>
 #include <nfd.hpp>
+#include <stb_image/stb_image.h>
 
 #include "Events/AppEvent.h"
 #include "Events/MouseEvent.h"
 #include "Events/KeyEvent.h"
 #include "Core/Log.h"
 #include "Core/Assert.h"
+#include "Core/Core.h"
 
 
 static bool s_GLFWInitialized = false;
@@ -60,6 +62,19 @@ void Window::Init(const WindowProps &props)
 
     glfwSetWindowUserPointer(m_Window, &m_Data);
     SetVSync(true);
+
+    // Set the window icon
+    GLFWimage icons[2];
+    std::filesystem::path smallIconPath = GetExecDir().append("assets").append("icons").append("windowIcon48x48.png");
+    std::filesystem::path bigIconPath = GetExecDir().append("assets").append("icons").append("windowIcon32x32.png");
+
+    icons[0].pixels = stbi_load(smallIconPath.string().c_str(), &icons[0].width, &icons[0].height, nullptr, 4);
+    icons[1].pixels = stbi_load(bigIconPath.string().c_str(), &icons[1].width, &icons[1].height, nullptr, 4);
+
+    glfwSetWindowIcon(m_Window, 2, icons);
+
+    stbi_image_free(icons[0].pixels);
+    stbi_image_free(icons[1].pixels);
 
     // Set GLFW callbacks
     glfwSetWindowSizeCallback(m_Window, [](GLFWwindow *window, int width, int height)

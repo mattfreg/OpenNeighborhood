@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="32.0px"
+   height="32.0px"
+   viewBox="0 0 32.0 32.0"
+   version="1.1"
+   id="SVGRoot"
+   sodipodi:docname="windowIcon32x32.svg"
+   inkscape:version="1.1.1 (1:1.1+202109281949+c3084ef5ed)"
+   inkscape:export-filename="/home/dreptin/Projects/OpenNeighborhood/OpenNeighborhood/assets/icons/windowIcon32x32.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview45107"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="px"
+     showgrid="true"
+     inkscape:zoom="12.443434"
+     inkscape:cx="15.510188"
+     inkscape:cy="21.095462"
+     inkscape:window-width="1832"
+     inkscape:window-height="1129"
+     inkscape:window-x="2008"
+     inkscape:window-y="34"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     inkscape:lockguides="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid45170" />
+  </sodipodi:namedview>
+  <defs
+     id="defs45102" />
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#ffffff;stroke-width:0.0365411;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 0,16 V 0 H 15.945205 31.890411 V 16 32 H 15.945205 0 Z"
+       id="path961" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:12.4018px;line-height:1.25;font-family:sans-serif;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.664384"
+       x="15.845762"
+       y="10.959621"
+       id="text10792"><tspan
+         sodipodi:role="line"
+         id="tspan10790"
+         x="15.845762"
+         y="10.959621"
+         style="stroke-width:0.664384">TMP</tspan><tspan
+         sodipodi:role="line"
+         x="15.845762"
+         y="26.461931"
+         id="tspan33514"
+         style="stroke-width:0.664384">ICON</tspan></text>
+  </g>
+</svg>
