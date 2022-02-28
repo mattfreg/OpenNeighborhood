@@ -9,7 +9,7 @@ uint32_t TextureManager::s_TextureCount;
 
 void TextureManager::AddTexture(const std::string &textureName, const std::string &filePath)
 {
-    ASSERT(s_Textures.find(textureName) == s_Textures.end(), "Texture with name: ", textureName, " already exists!");
+    ASSERT(s_Textures.find(textureName) == s_Textures.end(), "Texture with name: %s already exists!", textureName.c_str());
 
     if (!s_TextureCount)
         s_TextureCount = 0;
