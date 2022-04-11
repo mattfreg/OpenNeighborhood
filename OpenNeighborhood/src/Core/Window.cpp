@@ -17,7 +17,7 @@ static bool s_GLFWInitialized = false;
 
 static void GLFWErrorCallback(int error, const char *desc)
 {
-    LOG_ERROR("GLFW Error code: (", error, ") | ", desc);
+    Log::Error("GLFW error code: (%i) | %s", error, desc);
 }
 
 Window *Window::Create(const WindowProps &props)

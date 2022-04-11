@@ -13,7 +13,7 @@
     #else
         #error "Platform doesn't support debugbreak yet!"
     #endif
-    #define ASSERT(check, ...) { if(!(check)) { LOG_ERROR("Assertion Failed: ", __VA_ARGS__); DEBUGBREAK(); } }
+    #define ASSERT(check, ...) { if(!(check)) { Log::Error("Assertion Failed: ", __VA_ARGS__); DEBUGBREAK(); } }
 #else
     #define DEBUGBREAK()
     #define ASSERT(...)
