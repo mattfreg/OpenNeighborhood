@@ -1,13 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<svg version="1.1" id="Calque_1" xmlns:svgjs="http://svgjs.com/svgjs" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
-    <style type="text/css">
-        .st0{fill:#9BC848;}
-        .st1{fill:#FFFFFF;}
-        .st2{font-family:'Gotham-Black';}
-        .st3{font-size:114px;}
-        .st4{letter-spacing:11;}
-    </style>
-    <path class="st0" d="M347.4,128c-10.1,0-18.3-8.2-18.3-18.3V0H109.7C79.4,0,54.9,24.6,54.9,54.9v402.3 c0,30.3,24.6,54.9,54.9,54.9h292.6c30.3,0,54.9-24.6,54.9-54.9V128C457.1,128,347.4,128,347.4,128z"/>
-    <polygon class="st0" points="365.7,10.7 365.7,91.4 446.4,91.4"/>
-    <text transform="matrix(1 0 0 1 119.4516 295.6452)" class="st1 st2 st3 st4">XEX</text>
-</svg>
+<svg enable-background="new 0 0 512 512" version="1.1" viewBox="0 0 512 512" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><path d="m347.4 128c-10.1 0-18.3-8.2-18.3-18.3v-109.7h-219.4c-30.3 0-54.8 24.6-54.8 54.9v402.3c0 30.3 24.6 54.9 54.9 54.9h292.6c30.3 0 54.9-24.6 54.9-54.9v-329.2h-109.9z" fill="#9bc848"/><polygon points="365.7 10.7 365.7 91.4 446.4 91.4" fill="#9bc848"/><text x="143.45" y="311.64999" fill="#f2f2f2" font-family="'Open Sans'" font-size="120px" font-weight="bold">XEX</text></svg>
