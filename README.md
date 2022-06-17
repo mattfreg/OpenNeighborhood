@@ -1,13 +1,19 @@
 [![Build status](https://github.com/ClementDreptin/OpenNeighborhood/actions/workflows/build.yml/badge.svg)](https://github.com/ClementDreptin/OpenNeighborhood/actions/workflows/build.yml)
 
 # OpenNeighborhood
+
+![OpenNeighborhood](./Resources/Logo/logo.png)
+
 Open-source and cross-platform clone of Xbox 360 Neighborhood.
+
+## Screenshots
 
 Home | Root of Hdd
 --- | ---
 <img src="./Resources/Screenshots/home.png" alt="Home"/> | <img src="./Resources/Screenshots/hdd-root.png" alt="Hdd root"/>
 
 ## Disclaimer
+
 **There are no prebuilt binaries for any platform at the moment, the only way to use OpenNeighborhood is to compile it from source.**
 
 
