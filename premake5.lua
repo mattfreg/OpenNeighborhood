@@ -61,7 +61,8 @@ workspace "OpenNeighborhood"
     } }
   }
 
-  systemversion "latest"
+  filter "system:not macosx"
+    systemversion "latest"
 
   filter "configurations:Debug"
     defines "DEBUG"
