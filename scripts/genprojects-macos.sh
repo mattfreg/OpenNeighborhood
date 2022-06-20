@@ -2,4 +2,4 @@
 
 SCRIPT_DIR=`dirname "$BASH_SOURCE"`
 
-$SCRIPT_DIR/../vendor/premake/bin/premake5_macos --file=$SCRIPT_DIR/../PremakeConfig/main.lua gmake2
+$SCRIPT_DIR/../tools/premake/bin/premake5_macos gmake2

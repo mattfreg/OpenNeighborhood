@@ -2,7 +2,7 @@
 
 # OpenNeighborhood
 
-![OpenNeighborhood](./Resources/Logo/logo.png)
+![OpenNeighborhood](./resources/logo/logo.png)
 
 Open-source and cross-platform clone of Xbox 360 Neighborhood.
 
@@ -10,7 +10,7 @@ Open-source and cross-platform clone of Xbox 360 Neighborhood.
 
 Home | Root of Hdd
 --- | ---
-<img src="./Resources/Screenshots/home.png" alt="Home"/> | <img src="./Resources/Screenshots/hdd-root.png" alt="Hdd root"/>
+<img src="./resources/screenshots/home.png" alt="Home"/> | <img src="./resources/screenshots/hdd-root.png" alt="Hdd root"/>
 
 ## Disclaimer
 
@@ -45,7 +45,7 @@ Linux
 Windows
 - Visual Studio
     ```
-    Open OpenNeighborhood.sln in Visual Studio
+    Open .\build\OpenNeighborhood.sln in Visual Studio
     ```
 - Cygwin / MinGW
     ```
