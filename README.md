@@ -49,9 +49,11 @@ Windows
     ```
 - Cygwin / MinGW
     ```
+    cd build
     make config=<debug|release>
     ```
 macOS / Linux
 ```
+cd build
 make config=<debug|release>
 ```

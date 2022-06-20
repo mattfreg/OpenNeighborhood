@@ -15,7 +15,9 @@ jobs:
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
       - run: .\tools\premake\bin\premake5.exe vs2019
-      - run: msbuild /p:Configuration=${{ matrix.config }}
+      - run: |
+          cd build
+          msbuild /p:Configuration=${{ matrix.config }}
       - name: Upload Artifacts
         if: matrix.config == 'release'
         uses: actions/upload-artifact@v2
@@ -36,7 +38,9 @@ jobs:
           sudo apt install -y xorg-dev
           sudo apt-get install libgtk-3-dev
       - run: ./tools/premake/bin/premake5 gmake2
-      - run: make config=${{ matrix.config }}
+      - run: |
+          cd build
+          make config=${{ matrix.config }}
       - name: Upload Artifacts
         if: matrix.config == 'release'
         uses: actions/upload-artifact@v2
@@ -52,7 +56,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: ./tools/premake/bin/premake5_macos gmake2
-      - run: make config=${{ matrix.config }}
+      - run: |
+          cd build
+          make config=${{ matrix.config }}
       - name: Upload Artifacts
         if: matrix.config == 'release'
         uses: actions/upload-artifact@v2
