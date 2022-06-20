@@ -1,0 +1,3 @@
+[submodule "deps/XBDM"]
+	path = deps/XBDM
+	url = https://github.com/ClementDreptin/XBDM.git
