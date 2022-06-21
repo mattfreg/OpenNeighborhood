@@ -21,12 +21,14 @@ function XBDM:project()
     language "C++"
     cppdialect "C++17"
 
+    local includedir = path.join(self.root, "include")
     local srcdir = path.join(self.root, "src")
 
     pchheader "pch.h"
     pchsource (path.join(srcdir, "pch.cpp"))
 
     files {
+      path.join(includedir, "**.h"),
       path.join(srcdir, "**.h"),
       path.join(srcdir, "**.cpp"),
     }
