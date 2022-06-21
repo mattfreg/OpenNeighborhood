@@ -29,17 +29,17 @@ function NativeFileDialogExtended:project()
 
   self:includes()
 
+  filter "system:windows"
+    files {
+      path.join(srcdir, "nfd_win.cpp"),
+    }
+
   filter "system:linux"
     files {
       path.join(srcdir, "nfd_gtk.cpp"),
     }
 
     buildoptions "`pkg-config --cflags gtk+-3.0`"
-
-  filter "system:windows"
-    files {
-      path.join(srcdir, "nfd_win.cpp"),
-    }
 
   filter "system:macosx"
     files {
