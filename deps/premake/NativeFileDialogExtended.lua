@@ -21,6 +21,7 @@ function NativeFileDialogExtended:project()
   project "NativeFileDialogExtended"
   kind "StaticLib"
   language "C++"
+  cppdialect "C++17"
 
   files {
     path.join(includedir, "nfd.h"),
