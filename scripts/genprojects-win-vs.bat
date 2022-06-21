@@ -1,5 +1,3 @@
 @echo off
-pushd ..\
-call tools\premake\bin\premake5.exe vs2019
-popd
-PAUSE
+SET rootDir=%~dp0..
+call %rootDir%\tools\premake\bin\premake5.exe --file=%rootDir%\premake5.lua vs2019
