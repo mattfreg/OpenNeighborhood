@@ -1,3 +1,6 @@
 [submodule "deps/XBDM"]
 	path = deps/XBDM
 	url = https://github.com/ClementDreptin/XBDM.git
+[submodule "deps/GLFW"]
+	path = deps/GLFW
+	url = https://github.com/glfw/glfw.git
