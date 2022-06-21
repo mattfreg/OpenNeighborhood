@@ -30,14 +30,15 @@ Windows
     ```
     .\scripts\genprojects-win.bat
     ```
-macOS
-```
-./scripts/genprojects-macos.sh
-```
 
 Linux
 ```
 ./scripts/genprojects-linux.sh
+```
+
+macOS
+```
+./scripts/genprojects-macos.sh
 ```
 
 ### Building
@@ -47,13 +48,16 @@ Windows
     ```
     Open .\build\OpenNeighborhood.sln in Visual Studio
     ```
+    or, if you have `msbuild` in your `PATH`
+    ```
+    msbuild /p:Configuration=<Debug|Release> .\build\OpenNeighborhood.sln
+    ```
 - Cygwin / MinGW
     ```
-    cd build
-    make config=<debug|release>
+    cd build && make config=<debug|release>
     ```
-macOS / Linux
+
+Linux / macOS
 ```
-cd build
-make config=<debug|release>
+cd build && make config=<debug|release>
 ```
