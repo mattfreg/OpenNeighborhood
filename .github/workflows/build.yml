@@ -22,7 +22,7 @@ jobs:
         uses: microsoft/setup-msbuild@v1.0.2
 
       - name: Generate project files
-        run: .\tools\premake\bin\premake5.exe vs2019
+        run: .\scripts\genprojects-win-vs.bat
 
       - name: Build ${{ matrix.config }} binaries
         run: cd build && msbuild /p:Configuration=${{ matrix.config }} OpenNeighborhood.sln
@@ -42,7 +42,7 @@ jobs:
         run: sudo apt update && sudo apt install -y xorg-dev libgtk-3-dev
 
       - name: Generate project files
-        run: ./tools/premake/bin/premake5 gmake2
+        run: ./scripts/genprojects-linux.sh
 
       - name: Build ${{ matrix.config }} binaries
         run: cd build && make config=${{ matrix.config }}
@@ -59,7 +59,7 @@ jobs:
           submodules: true
 
       - name: Generate project files
-        run: ./tools/premake/bin/premake5_macos gmake2
+        run: ./scripts/genprojects-macos.sh
 
       - name: Build ${{ matrix.config }} binaries
         run: cd build && make config=${{ matrix.config }}
