@@ -15,11 +15,11 @@ end
 function stb_image:project()
   project "stb_image"
     kind "StaticLib"
-    language "C++"
+    language "C"
 
     files {
       path.join(self.root, "stb_image.h"),
-      path.join(self.root, "stb_image.cpp"),
+      path.join(self.root, "stb_image.c"),
     }
 
     self:includes()
