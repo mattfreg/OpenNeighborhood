@@ -1,5 +1,7 @@
 #!/bin/bash
 
-SCRIPT_DIR=`dirname "$BASH_SOURCE"`
+SCRIPT_ABSOLUTE_PATH=`realpath "$BASH_SOURCE"`
+SCRIPT_DIR=`dirname "$SCRIPT_ABSOLUTE_PATH"`
+ROOT_DIR=`dirname "$SCRIPT_DIR"`
 
-$SCRIPT_DIR/../tools/premake/bin/premake5 gmake2
+$ROOT_DIR/tools/premake/bin/premake5 --file=$ROOT_DIR/premake5.lua gmake2
