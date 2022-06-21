@@ -34,9 +34,9 @@ jobs:
         config: [debug, release]
     steps:
       - name: Check out files
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
-          submodule: true
+          submodules: true
 
       - name: Install dependencies
         run: |
@@ -57,9 +57,9 @@ jobs:
         config: [debug, release]
     steps:
       - name: Check out files
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
-          submodule: true
+          submodules: true
 
       - name: Generate project files
         run: ./tools/premake/bin/premake5_macos gmake2
