@@ -63,6 +63,7 @@ function GLFW:project()
       path.join(srcdir, "glx_context.c"),
       path.join(srcdir, "linux_joystick.c"),
       path.join(srcdir, "posix_module.c"),
+      path.join(srcdir, "posix_poll.c"),
       path.join(srcdir, "posix_thread.c"),
       path.join(srcdir, "posix_time.c"),
       path.join(srcdir, "x11_init.c"),
