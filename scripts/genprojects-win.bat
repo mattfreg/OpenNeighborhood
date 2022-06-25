@@ -1,10 +1,11 @@
-@echo off
+@ECHO OFF
 
 SET RootDir=%~dp0..
 SET PremakeExecutablePath=%RootDir%\tools\premake\bin\premake5.exe
 
 IF NOT EXIST %PremakeExecutablePath% (
-    CALL .\download-premake-win.bat
+    ECHO Downloading premake...
+    CALL %~dp0download-premake-win.bat
 )
 
 CALL %RootDir%\tools\premake\bin\premake5.exe --file=%RootDir%\premake5.lua gmake2

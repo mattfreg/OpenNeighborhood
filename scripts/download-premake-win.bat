@@ -1,4 +1,4 @@
-@echo off
+@ECHO OFF
 
 SET RootDir=%~dp0..
 SET PremakeDir=%RootDir%\tools\premake\bin
@@ -6,10 +6,10 @@ SET PremakeArchivePath=%PremakeDir%\tmp.zip
 SET PremakeVersion=5.0.0-beta1
 
 REM Download the premake archive from GitHub
-powershell -Command "Invoke-WebRequest https://github.com/premake/premake-core/releases/download/v%PremakeVersion%/premake-%PremakeVersion%-windows.zip -OutFile %PremakeArchivePath%"
+POWERSHELL -Command "Invoke-WebRequest https://github.com/premake/premake-core/releases/download/v%PremakeVersion%/premake-%PremakeVersion%-windows.zip -OutFile %PremakeArchivePath%"
 
 REM Extract the executable from the archive
-powershell -Command "Expand-Archive %PremakeArchivePath% %PremakeDir%"
+POWERSHELL -Command "Expand-Archive %PremakeArchivePath% %PremakeDir%"
 
 REM Delete the premake archive
-del %PremakeArchivePath%
+DEL %PremakeArchivePath%
