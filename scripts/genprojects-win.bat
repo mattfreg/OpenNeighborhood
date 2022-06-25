@@ -8,4 +8,4 @@ IF NOT EXIST "%PremakeExecutablePath%" (
     CALL "%~dp0download-premake-win.bat"
 )
 
-CALL "%RootDir%\tools\premake\bin\premake5.exe" --file="%RootDir%\premake5.lua" gmake2
+CALL "%PremakeExecutablePath%" --file="%RootDir%\premake5.lua" gmake2
