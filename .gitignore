@@ -4,6 +4,9 @@ build/
 # Visual Studio Code settings
 .vscode/
 
+# premake binaries
+tools/premake/bin/premake*
+
 # OpenNeighborhood generated files
 imgui.ini
 OpenNeighborhood.ini

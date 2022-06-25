@@ -1,3 +1,11 @@
-@echo off
-SET rootDir=%~dp0..
-call %rootDir%\tools\premake\bin\premake5.exe --file=%rootDir%\premake5.lua vs2019
+@ECHO OFF
+
+SET RootDir=%~dp0..
+SET PremakeExecutablePath=%RootDir%\tools\premake\bin\premake5.exe
+
+IF NOT EXIST "%PremakeExecutablePath%" (
+    ECHO Downloading premake...
+    CALL "%~dp0download-premake-win.bat"
+)
+
+CALL "%PremakeExecutablePath%" --file="%RootDir%\premake5.lua" vs2019
