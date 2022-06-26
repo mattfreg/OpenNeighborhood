@@ -1,7 +1,7 @@
 @ECHO OFF
 
 SET RootDir=%~dp0..
-SET PremakeExecutablePath=%RootDir%\tools\premake\bin\premake5.exe
+SET PremakeExecutablePath=%RootDir%\tools\premake\premake5.exe
 
 IF NOT EXIST "%PremakeExecutablePath%" (
     ECHO Downloading premake...

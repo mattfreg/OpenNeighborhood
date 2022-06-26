@@ -3,7 +3,7 @@
 SCRIPT_ABSOLUTE_PATH=`realpath "$BASH_SOURCE"`
 SCRIPT_DIR=`dirname "$SCRIPT_ABSOLUTE_PATH"`
 ROOT_DIR=`dirname "$SCRIPT_DIR"`
-PREMAKE_DIR=$ROOT_DIR/tools/premake/bin
+PREMAKE_DIR=$ROOT_DIR/tools/premake
 PREMAKE_ARCHIVE_PATH=$PREMAKE_DIR/tmp.zip
 PREMAKE_VERSION=5.0.0-beta1
 OS_LABEL=""
@@ -20,7 +20,6 @@ if [[ $OS_LABEL == "" ]]; then
     echo "Operating system is not supported!"
     exit 1
 fi
-
 
 # Download the premake archive from GitHub
 wget -q -O "$PREMAKE_ARCHIVE_PATH" https://github.com/premake/premake-core/releases/download/v$PREMAKE_VERSION/premake-$PREMAKE_VERSION-$OS_LABEL.tar.gz

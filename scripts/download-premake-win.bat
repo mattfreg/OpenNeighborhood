@@ -1,7 +1,7 @@
 @ECHO OFF
 
 SET RootDir=%~dp0..
-SET PremakeDir=%RootDir%\tools\premake\bin
+SET PremakeDir=%RootDir%\tools\premake
 SET PremakeArchivePath=%PremakeDir%\tmp.zip
 SET PremakeVersion=5.0.0-beta1
 
