@@ -4,7 +4,6 @@
 #include "Core/Stack.h"
 #include "Panels/Panel.h"
 
-
 class OpenNeighborhood : public Layer
 {
 public:
@@ -17,6 +16,7 @@ public:
     virtual void OnEvent(Event &event) override;
 
     inline static OpenNeighborhood &Get() { return *s_Instance; }
+
 private:
     Stack<Panel *> m_PanelStack;
 

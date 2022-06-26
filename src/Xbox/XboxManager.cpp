@@ -3,7 +3,6 @@
 
 #include "Render/UI.h"
 
-
 XBDM::Console XboxManager::s_Console;
 std::string XboxManager::s_CurrentLocation;
 

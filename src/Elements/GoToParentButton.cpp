@@ -7,7 +7,6 @@
 #include "Elements/File.h"
 #include "Render/UI.h"
 
-
 GoToParentButton::GoToParentButton()
     : Element("", "leftArrow")
 {

@@ -5,7 +5,6 @@
 #include "Core/Stack.h"
 #include "Core/Layer.h"
 
-
 class App
 {
 public:
@@ -19,9 +18,11 @@ public:
     void PushLayer(Layer *layer);
 
     inline static App &Get() { return *s_Instance; }
+
     inline Window &GetWindow() { return *m_Window; }
 
     void Close();
+
 private:
     Window *m_Window;
     bool m_Running = true;

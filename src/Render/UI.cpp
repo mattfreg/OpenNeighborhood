@@ -8,7 +8,6 @@
 
 #include "Core/App.h"
 
-
 ImFont *UI::s_OpenSansBold = nullptr;
 ImFont *UI::s_OpenSansRegular = nullptr;
 ImFont *UI::s_OpenSansRegularBig = nullptr;
@@ -26,7 +25,8 @@ void UI::Init()
 {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO &io = ImGui::GetIO(); (void)io;
+    ImGuiIO &io = ImGui::GetIO();
+    (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
     std::string openSansBoldPath = GetExecDir().append("assets/fonts/opensans/OpenSans-Bold.ttf").string();

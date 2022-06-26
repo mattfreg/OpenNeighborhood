@@ -3,7 +3,6 @@
 
 #include "Core/App.h"
 
-
 Panel::Panel()
 {
     SetWindowWidthAndHeight();

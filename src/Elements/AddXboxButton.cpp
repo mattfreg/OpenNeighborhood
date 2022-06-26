@@ -9,9 +9,10 @@
 #include "Elements/Xbox.h"
 #include "Render/UI.h"
 
-
 AddXboxButton::AddXboxButton()
-    : Element("Add Xbox 360", "addXboxButton") {}
+    : Element("Add Xbox 360", "addXboxButton")
+{
+}
 
 void AddXboxButton::OnRender()
 {

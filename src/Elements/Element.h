@@ -3,7 +3,6 @@
 #include "Render/ImGuiCustomWidgets.h"
 #include "Events/Event.h"
 
-
 class Element
 {
 public:
@@ -17,9 +16,13 @@ public:
     virtual void OnClick() = 0;
 
     inline const std::string &GetLabel() const { return m_Label; }
+
     inline const std::string &GetTextureName() const { return m_TextureName; }
+
     inline float GetWidth() const { return m_Width; }
+
     inline float GetHeight() const { return m_Height; }
+
 protected:
     std::string m_Label;
     std::string m_TextureName;
@@ -29,5 +32,6 @@ protected:
     EventCallbackFn m_EventCallback;
 
     void OnEvent(Event &event);
+
     virtual void DisplayContextMenu() {}
 };

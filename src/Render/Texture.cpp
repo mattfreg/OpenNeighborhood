@@ -6,7 +6,6 @@
 
 #include "Core/Assert.h"
 
-
 Texture::Texture(const std::string &filePath)
     : m_RendererID(0), m_Width(0.0f), m_Height(0.0f)
 {

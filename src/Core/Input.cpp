@@ -3,7 +3,6 @@
 
 #include "Core/App.h"
 
-
 bool Input::IsKeyPressed(int keyCode)
 {
     GLFWwindow *window = reinterpret_cast<GLFWwindow *>(App::Get().GetWindow().GetNativeWindow());
@@ -26,7 +25,7 @@ std::pair<float, float> Input::GetMousePosition()
     double xPos, yPos;
     glfwGetCursorPos(window, &xPos, &yPos);
 
-    return { (float)xPos, (float)yPos };
+    return { static_cast<float>(xPos), static_cast<float>(yPos) };
 }
 
 float Input::GetMouseX()

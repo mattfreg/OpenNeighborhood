@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Panels/MainPanel.h"
 
-
 void MainPanel::OnRender()
 {
     ImGuiWindowFlags windowFlags =

@@ -2,7 +2,6 @@
 
 #include <ImGui/imgui.h>
 
-
 using ConfirmCallbackFn = std::function<void()>;
 using InputTextCallbackFn = std::function<void(const std::string &)>;
 
@@ -21,21 +20,31 @@ public:
     static void DisplayInputTextModal();
 
     inline static void SetConfirm(bool confirm) { s_Confirm = confirm; }
+
     inline static void SetConfirmMessage(const std::string &message) { s_ConfirmMessage = message; }
+
     inline static void SetConfirmCallback(const ConfirmCallbackFn &callback) { s_ConfirmCallback = callback; }
 
     inline static bool IsGood() { return s_Success; }
+
     inline static void SetSuccess(bool success) { s_Success = success; }
+
     inline static void SetErrorMessage(const std::string &message) { s_ErrorMessage = message; }
 
     inline static void DisplayInputText(bool display) { s_InputText = display; }
+
     inline static void SetInputTextHeader(const std::string &header) { s_InputTextHeader = header; }
+
     inline static void SetInputTextCallback(const InputTextCallbackFn &callback) { s_InputTextCallback = callback; }
+
     inline static void SetInputTextDefaultValue(const std::string &defaultValue) { strncpy(s_InputTextBuffer, defaultValue.c_str(), sizeof(s_InputTextBuffer)); }
 
     inline static ImFont *GetBoldFont() { return s_OpenSansBold; }
+
     inline static ImFont *GetRegularFont() { return s_OpenSansRegular; }
+
     inline static ImFont *GetRegularBigFont() { return s_OpenSansRegularBig; }
+
 private:
     static void SetDarkThemeColors();
 

@@ -4,7 +4,6 @@
 #include "Core/Assert.h"
 #include "Xbox/XboxManager.h"
 
-
 App *App::s_Instance = nullptr;
 
 App::App(const std::string &name)

@@ -48,7 +48,10 @@ workspace "OpenNeighborhood"
   local premakeconfigdir = path.join("..", "deps", "premake")
 
   solutionitems {
-    { ["EditorConfig"] = path.join("..", ".editorconfig") },
+    { ["FormatConfig"] = {
+      path.join("..", ".editorconfig"),
+      path.join("..", ".clang-format"),
+    } },
     { ["PremakeConfig"] = {
       path.join(premakeconfigdir, "Glad.lua"),
       path.join(premakeconfigdir, "GLFW.lua"),

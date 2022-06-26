@@ -12,7 +12,6 @@
 #include "Elements/File.h"
 #include "Render/UI.h"
 
-
 ContentsPanel::ContentsPanel()
 {
     m_Elements.emplace_back(CreateRef<AddXboxButton>());
@@ -160,13 +159,11 @@ void ContentsPanel::Upload()
     std::string fileName = localPath.filename().string();
     std::string remotePath = XboxManager::GetCurrentLocation() + '\\' + fileName;
 
-    /**
-     * It's important to capture remotePath and localPath by copy because they will
-     * be destroyed by the time upload is called if it's called as the confirm
-     * callback, capturing them by reference would create a crash.
-     */
-    auto upload = [this, remotePath, localPath]()
-    {
+    
+    // It's important to capture remotePath and localPath by copy because they will
+    // be destroyed by the time upload is called if it's called as the confirm
+    // callback, capturing them by reference would create a crash.
+    auto upload = [this, remotePath, localPath]() {
         XBDM::Console &xbox = XboxManager::GetConsole();
 
         bool success = XboxManager::Try([&]() { xbox.SendFile(remotePath, localPath.string()); });
@@ -177,8 +174,7 @@ void ContentsPanel::Upload()
 
     UI::SetConfirmCallback(upload);
 
-    auto fileAlreadyExists = std::find_if(m_Elements.begin(), m_Elements.end(), [&](const Ref<Element> &element)
-    {
+    auto fileAlreadyExists = std::find_if(m_Elements.begin(), m_Elements.end(), [&](const Ref<Element> &element) {
         return element->GetLabel() == fileName;
     });
 
@@ -194,8 +190,7 @@ void ContentsPanel::Upload()
 
 void ContentsPanel::CreateDirectory()
 {
-    auto createDirectory = [this](const std::string &name)
-    {
+    auto createDirectory = [this](const std::string &name) {
         XBDM::Console &xbox = XboxManager::GetConsole();
 
         bool success = XboxManager::Try([&]() { xbox.CreateDirectory(XboxManager::GetCurrentLocation() + '\\' + name); });

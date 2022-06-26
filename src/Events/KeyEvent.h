@@ -2,7 +2,6 @@
 
 #include "Events/Event.h"
 
-
 class KeyEvent : public Event
 {
 public:
@@ -10,7 +9,8 @@ public:
 
     EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 protected:
-    KeyEvent(int keyCode) : m_KeyCode(keyCode) {}
+    KeyEvent(int keyCode)
+        : m_KeyCode(keyCode) {}
 
     int m_KeyCode;
 };

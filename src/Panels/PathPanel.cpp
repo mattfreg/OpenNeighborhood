@@ -5,7 +5,6 @@
 #include "Render/UI.h"
 #include "Render/TextureManager.h"
 
-
 float PathPanel::s_Width;
 float PathPanel::s_Height;
 

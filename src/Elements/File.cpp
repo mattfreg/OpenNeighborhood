@@ -7,9 +7,11 @@
 #include "Events/AppEvent.h"
 #include "Render/UI.h"
 
-
 File::File(const XBDM::File &data)
-    : m_Data(data), Element(data.Name, data.IsDirectory ? "directory" : data.IsXEX ? "xex" : "file") {}
+    : m_Data(data), Element(data.Name, data.IsDirectory ? "directory" : data.IsXEX ? "xex"
+                                                                                   : "file")
+{
+}
 
 void File::OnClick()
 {
@@ -48,10 +50,8 @@ void File::LaunchXEX()
 
 void File::Download()
 {
-    /**
-     * Depending on the system, std::filesystem::path::native can return either
-     * std::wstring or std::string. Since we don't know, we are just using auto.
-     */
+    // Depending on the system, std::filesystem::path::native can return either
+    // std::wstring or std::string. Since we don't know, we are just using auto.
     auto filename = std::filesystem::path(m_Data.Name);
     auto extension = filename.extension().native().substr(1);
     auto &filterName = extension;
@@ -80,8 +80,7 @@ void File::Download()
 
 void File::Delete()
 {
-    auto Delete = [this]()
-    {
+    auto Delete = [this]() {
         XBDM::Console &xbox = XboxManager::GetConsole();
 
         bool success = XboxManager::Try([&]() { xbox.DeleteFile(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name, m_Data.IsDirectory); });
@@ -97,8 +96,7 @@ void File::Delete()
 
 void File::Rename()
 {
-    auto rename = [this](const std::string &name)
-    {
+    auto rename = [this](const std::string &name) {
         XBDM::Console &xbox = XboxManager::GetConsole();
         const std::string &location = XboxManager::GetCurrentLocation();
 

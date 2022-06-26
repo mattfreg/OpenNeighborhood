@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Core/Log.h"
 
-
 void Log::Info(const char *message, ...)
 {
     va_list argList;

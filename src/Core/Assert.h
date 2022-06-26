@@ -3,7 +3,6 @@
 #include "Core/Log.h"
 #include "Core/PlatformDetector.h"
 
-
 #ifdef DEBUG
     #ifdef PLATFORM_WINDOWS
         #define DEBUGBREAK() __debugbreak()
@@ -13,7 +12,9 @@
     #else
         #error "Platform doesn't support debugbreak yet!"
     #endif
+// clang-format off
     #define ASSERT(check, ...) { if(!(check)) { Log::Error("Assertion Failed: ", __VA_ARGS__); DEBUGBREAK(); } }
+// clang-format on
 #else
     #define DEBUGBREAK()
     #define ASSERT(...)

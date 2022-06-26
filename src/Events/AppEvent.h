@@ -3,7 +3,6 @@
 #include "Events/Event.h"
 #include "Elements/Element.h"
 
-
 class WindowResizeEvent : public Event
 {
 public:
@@ -11,6 +10,7 @@ public:
         : m_Width(width), m_Height(height) {}
 
     inline float GetWidth() const { return m_Width; }
+
     inline float GetHeight() const { return m_Height; }
 
     EVENT_CLASS_TYPE(WindowResize)
@@ -36,6 +36,7 @@ public:
         : m_Elements(elements), m_Append(append) {}
 
     inline const std::vector<Ref<Element>> &GetElements() const { return m_Elements; }
+
     inline bool Append() const { return m_Append; }
 
     EVENT_CLASS_TYPE(ContentsChange)

@@ -4,16 +4,13 @@
 
 #include "Events/Event.h"
 
-
 struct WindowProps
 {
     std::string Title;
     float Width;
     float Height;
 
-    WindowProps(const std::string &title = "OpenNeighborhood",
-        float width = 1280,
-        float height = 720)
+    WindowProps(const std::string &title = "OpenNeighborhood", float width = 1280, float height = 720)
         : Title(title), Width(width), Height(height) {}
 };
 
@@ -28,16 +25,20 @@ public:
     void OnUpdate();
 
     inline float GetWidth() const { return m_Data.Width; }
+
     inline float GetHeight() const { return m_Data.Height; }
 
     // Window attributes
     inline void SetEventCallback(const EventCallbackFn &callback) { m_Data.EventCallback = callback; }
+
     void SetVSync(bool enabled);
+
     bool IsVSync() const { return m_Data.VSync; }
 
     inline void *GetNativeWindow() const { return m_Window; }
 
     static Window *Create(const WindowProps &props = WindowProps());
+
 private:
     GLFWwindow *m_Window;
 

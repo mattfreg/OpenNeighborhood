@@ -1,9 +1,7 @@
 #pragma once
 
 
-/**
-* This class is only intended to be used with pointer types
-*/
+// This class is only intended to be used with pointer types
 
 template<typename T>
 class Stack
@@ -34,7 +32,9 @@ public:
     }
 
     typename std::vector<T>::iterator begin() { return m_Elements.begin(); }
+
     typename std::vector<T>::iterator end() { return m_Elements.end(); }
+
 private:
     std::vector<T> m_Elements;
     unsigned int m_ElementInsertIndex = 0;

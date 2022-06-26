@@ -5,7 +5,6 @@
 #include "OpenNeighborhood.h"
 #include "Render/UI.h"
 
-
 Element::Element(const std::string &label, const std::string &textureName)
     : m_Label(label), m_TextureName(textureName)
 {

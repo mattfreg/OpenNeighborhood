@@ -2,7 +2,6 @@
 
 #include "Elements/Element.h"
 
-
 class PathNode : public Element
 {
 public:
@@ -10,6 +9,7 @@ public:
 
     virtual void OnRender() override;
     virtual void OnClick() override;
+
 private:
     size_t m_PosInPath;
     void *m_ParentPanel;

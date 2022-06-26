@@ -7,7 +7,6 @@
 #include "Panels/ContentsPanel.h"
 #include "Core/Assert.h"
 
-
 OpenNeighborhood *OpenNeighborhood::s_Instance = nullptr;
 
 OpenNeighborhood::OpenNeighborhood()

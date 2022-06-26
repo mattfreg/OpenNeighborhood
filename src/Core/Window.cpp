@@ -12,7 +12,6 @@
 #include "Core/Assert.h"
 #include "Core/Core.h"
 
-
 static bool s_GLFWInitialized = false;
 
 static void GLFWErrorCallback(int error, const char *desc)
@@ -77,94 +76,82 @@ void Window::Init(const WindowProps &props)
     stbi_image_free(icons[1].pixels);
 
     // Set GLFW callbacks
-    glfwSetWindowSizeCallback(m_Window, [](GLFWwindow *window, int width, int height)
-        {
-            WindowData &windowData = *reinterpret_cast<WindowData *>(glfwGetWindowUserPointer(window));
-            windowData.Width = static_cast<float>(width);
-            windowData.Height = static_cast<float>(height);
+    glfwSetWindowSizeCallback(m_Window, [](GLFWwindow *window, int width, int height) {
+        WindowData &windowData = *reinterpret_cast<WindowData *>(glfwGetWindowUserPointer(window));
+        windowData.Width = static_cast<float>(width);
+        windowData.Height = static_cast<float>(height);
 
-            WindowResizeEvent event(static_cast<float>(width), static_cast<float>(height));
+        WindowResizeEvent event(static_cast<float>(width), static_cast<float>(height));
+        windowData.EventCallback(event);
+    });
+
+    glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *window) {
+        WindowData &windowData = *reinterpret_cast<WindowData *>(glfwGetWindowUserPointer(window));
+        WindowCloseEvent event;
+        windowData.EventCallback(event);
+    });
+
+    glfwSetKeyCallback(m_Window, [](GLFWwindow *window, int key, int, int action, int) {
+        WindowData &windowData = *reinterpret_cast<WindowData *>(glfwGetWindowUserPointer(window));
+
+        switch (action)
+        {
+        case GLFW_PRESS: {
+            KeyPressedEvent event(key, 0);
             windowData.EventCallback(event);
-        });
-
-    glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *window)
-        {
-            WindowData &windowData = *reinterpret_cast<WindowData *>(glfwGetWindowUserPointer(window));
-            WindowCloseEvent event;
+            break;
+        }
+        case GLFW_RELEASE: {
+            KeyReleasedEvent event(key);
             windowData.EventCallback(event);
-        });
-
-    glfwSetKeyCallback(m_Window, [](GLFWwindow *window, int key, int, int action, int)
-        {
-            WindowData &windowData = *reinterpret_cast<WindowData *>(glfwGetWindowUserPointer(window));
-
-            switch (action)
-            {
-            case GLFW_PRESS:
-            {
-                KeyPressedEvent event(key, 0);
-                windowData.EventCallback(event);
-                break;
-            }
-            case GLFW_RELEASE:
-            {
-                KeyReleasedEvent event(key);
-                windowData.EventCallback(event);
-                break;
-            }
-            case GLFW_REPEAT:
-            {
-                KeyPressedEvent event(key, 1);
-                windowData.EventCallback(event);
-                break;
-            }
-            }
-        });
-
-    glfwSetCharCallback(m_Window, [](GLFWwindow *window, unsigned int keyCode)
-        {
-            WindowData &windowData = *reinterpret_cast<WindowData *>(glfwGetWindowUserPointer(window));
-
-            KeyTypedEvent event(keyCode);
+            break;
+        }
+        case GLFW_REPEAT: {
+            KeyPressedEvent event(key, 1);
             windowData.EventCallback(event);
-        });
+            break;
+        }
+        }
+    });
 
-    glfwSetMouseButtonCallback(m_Window, [](GLFWwindow *window, int button, int action, int)
+    glfwSetCharCallback(m_Window, [](GLFWwindow *window, unsigned int keyCode) {
+        WindowData &windowData = *reinterpret_cast<WindowData *>(glfwGetWindowUserPointer(window));
+
+        KeyTypedEvent event(keyCode);
+        windowData.EventCallback(event);
+    });
+
+    glfwSetMouseButtonCallback(m_Window, [](GLFWwindow *window, int button, int action, int) {
+        WindowData &windowData = *reinterpret_cast<WindowData *>(glfwGetWindowUserPointer(window));
+
+        switch (action)
         {
-            WindowData &windowData = *reinterpret_cast<WindowData *>(glfwGetWindowUserPointer(window));
-
-            switch (action)
-            {
-            case GLFW_PRESS:
-            {
-                MouseButtonPressedEvent event(button);
-                windowData.EventCallback(event);
-                break;
-            }
-            case GLFW_RELEASE:
-            {
-                MouseButtonReleasedEvent event(button);
-                windowData.EventCallback(event);
-                break;
-            }
-            }
-        });
-
-    glfwSetScrollCallback(m_Window, [](GLFWwindow *window, double xOffset, double yOffset)
-        {
-            WindowData &windowData = *reinterpret_cast<WindowData *>(glfwGetWindowUserPointer(window));
-
-            MouseScrolledEvent event(static_cast<float>(xOffset), static_cast<float>(yOffset));
+        case GLFW_PRESS: {
+            MouseButtonPressedEvent event(button);
             windowData.EventCallback(event);
-        });
-
-    glfwSetCursorPosCallback(m_Window, [](GLFWwindow *window, double x, double y)
-        {
-            WindowData &windowData = *reinterpret_cast<WindowData *>(glfwGetWindowUserPointer(window));
-
-            MouseMovedEvent event(static_cast<float>(x), static_cast<float>(y));
+            break;
+        }
+        case GLFW_RELEASE: {
+            MouseButtonReleasedEvent event(button);
             windowData.EventCallback(event);
-        });
+            break;
+        }
+        }
+    });
+
+    glfwSetScrollCallback(m_Window, [](GLFWwindow *window, double xOffset, double yOffset) {
+        WindowData &windowData = *reinterpret_cast<WindowData *>(glfwGetWindowUserPointer(window));
+
+        MouseScrolledEvent event(static_cast<float>(xOffset), static_cast<float>(yOffset));
+        windowData.EventCallback(event);
+    });
+
+    glfwSetCursorPosCallback(m_Window, [](GLFWwindow *window, double x, double y) {
+        WindowData &windowData = *reinterpret_cast<WindowData *>(glfwGetWindowUserPointer(window));
+
+        MouseMovedEvent event(static_cast<float>(x), static_cast<float>(y));
+        windowData.EventCallback(event);
+    });
 }
 
 void Window::Shutdown()

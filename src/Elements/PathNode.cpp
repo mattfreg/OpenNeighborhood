@@ -6,9 +6,10 @@
 #include "Elements/File.h"
 #include "Render/UI.h"
 
-
 PathNode::PathNode(const std::string &label, size_t posInPath, void *parentPanel)
-    : m_PosInPath(posInPath), m_ParentPanel(parentPanel), Element(label, "") {}
+    : m_PosInPath(posInPath), m_ParentPanel(parentPanel), Element(label, "")
+{
+}
 
 void PathNode::OnRender()
 {

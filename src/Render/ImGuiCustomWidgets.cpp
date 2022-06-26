@@ -4,40 +4,42 @@
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <ImGui/imgui_internal.h>
 
-
 namespace ImGui
 {
-    bool ImageButtonWithText(ImTextureID userTextureID, const ImVec2 &imageSize, const ImVec2 &totalSize, const char *label, const ImVec2 &padding)
-    {
-        ImGuiWindow *window = GetCurrentWindow();
-        if (window->SkipItems)
-            return false;
 
-        const ImGuiID id = window->GetID(label);
+bool ImageButtonWithText(ImTextureID userTextureID, const ImVec2 &imageSize, const ImVec2 &totalSize, const char *label, const ImVec2 &padding)
+{
+    ImGuiWindow *window = GetCurrentWindow();
+    if (window->SkipItems)
+        return false;
 
-        const ImRect totalRect(window->DC.CursorPos, window->DC.CursorPos + totalSize + padding * 2);
-        const ImRect imageRect(window->DC.CursorPos + padding, window->DC.CursorPos + imageSize + padding);
+    const ImGuiID id = window->GetID(label);
 
-        ItemSize(totalRect);
-        if (!ItemAdd(totalRect, id))
-            return false;
+    const ImRect totalRect(window->DC.CursorPos, window->DC.CursorPos + totalSize + padding * 2);
+    const ImRect imageRect(window->DC.CursorPos + padding, window->DC.CursorPos + imageSize + padding);
 
-        bool hovered, held;
-        int flags = ImGuiButtonFlags_PressedOnClick |
-            ImGuiButtonFlags_PressedOnDoubleClick |
-            ImGuiButtonFlags_MouseButtonLeft |
-            ImGuiButtonFlags_MouseButtonRight;
+    ItemSize(totalRect);
+    if (!ItemAdd(totalRect, id))
+        return false;
 
-        bool pressed = ButtonBehavior(totalRect, id, &hovered, &held, flags);
+    bool hovered, held;
+    int flags = ImGuiButtonFlags_PressedOnClick |
+                ImGuiButtonFlags_PressedOnDoubleClick |
+                ImGuiButtonFlags_MouseButtonLeft |
+                ImGuiButtonFlags_MouseButtonRight;
 
-        const ImU32 color = GetColorU32((held && hovered) ? ImGuiCol_ButtonActive : hovered ? ImGuiCol_ButtonHovered : ImGuiCol_Button);
-        RenderFrame(totalRect.Min, totalRect.Max, color, true, ImClamp(static_cast<float>(ImMin(padding.x, padding.y)), 0.0f, 0.0f));
-        window->DrawList->AddImage(userTextureID, imageRect.Min, imageRect.Max, ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), GetColorU32(ImVec4(1.0f, 1.0f, 1.0f, 1.0f)));
+    bool pressed = ButtonBehavior(totalRect, id, &hovered, &held, flags);
 
-        ImRect offset = totalRect;
-        offset.Min.x = imageRect.Max.x + padding.x;
-        RenderTextWrapped(offset.Min + padding * 2.0f, label, NULL, totalSize.x - imageSize.x - padding.x * 2.0f);
+    const ImU32 color = GetColorU32((held && hovered) ? ImGuiCol_ButtonActive : hovered ? ImGuiCol_ButtonHovered
+                                                                                        : ImGuiCol_Button);
+    RenderFrame(totalRect.Min, totalRect.Max, color, true, ImClamp(static_cast<float>(ImMin(padding.x, padding.y)), 0.0f, 0.0f));
+    window->DrawList->AddImage(userTextureID, imageRect.Min, imageRect.Max, ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), GetColorU32(ImVec4(1.0f, 1.0f, 1.0f, 1.0f)));
 
-        return pressed;
-    }
+    ImRect offset = totalRect;
+    offset.Min.x = imageRect.Max.x + padding.x;
+    RenderTextWrapped(offset.Min + padding * 2.0f, label, NULL, totalSize.x - imageSize.x - padding.x * 2.0f);
+
+    return pressed;
+}
+
 }
