@@ -1,7 +1,6 @@
 #!/bin/bash
 
-SCRIPT_ABSOLUTE_PATH=`realpath "$BASH_SOURCE"`
-SCRIPT_DIR=`dirname "$SCRIPT_ABSOLUTE_PATH"`
+SCRIPT_DIR=`cd \`dirname "$BASH_SOURCE"\` && pwd -P`
 ROOT_DIR=`dirname "$SCRIPT_DIR"`
 PREMAKE_EXECUTABLE_PATH=$ROOT_DIR/tools/premake/premake5
 
