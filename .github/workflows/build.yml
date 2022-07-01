@@ -11,7 +11,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        config: [Debug, Release]
+        config: [debug, release]
     steps:
       - name: Check out files
         uses: actions/checkout@v3

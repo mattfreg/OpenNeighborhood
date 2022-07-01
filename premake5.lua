@@ -41,8 +41,8 @@ workspace "OpenNeighborhood"
   architecture "x86_64"
 
   configurations {
-    "Debug",
-    "Release",
+    "debug",
+    "release",
   }
 
   local premakeconfigdir = path.join("..", "deps", "premake")
@@ -67,12 +67,12 @@ workspace "OpenNeighborhood"
   filter "system:not macosx"
     systemversion "latest"
 
-  filter "configurations:Debug"
+  filter "configurations:debug"
     defines "DEBUG"
     runtime "Debug"
     symbols "on"
 
-  filter "configurations:Release"
+  filter "configurations:release"
     defines "RELEASE"
     runtime "Release"
     optimize "on"
@@ -136,10 +136,10 @@ project "OpenNeighborhood"
       "-framework CoreFoundation",
     }
 
-  filter { "configurations:Debug", "system:windows" }
+  filter { "configurations:debug", "system:windows" }
     kind "ConsoleApp"
 
-  filter { "configurations:Release", "system:windows" }
+  filter { "configurations:release", "system:windows" }
     kind "WindowedApp"
     linkoptions "/entry:mainCRTStartup"
 
