@@ -4,7 +4,7 @@
 
 ![OpenNeighborhood](./resources/logo/logo.png)
 
-Open-source and cross-platform clone of Xbox 360 Neighborhood.
+Cross-platform clone of Xbox 360 Neighborhood.
 
 ## Screenshots
 
