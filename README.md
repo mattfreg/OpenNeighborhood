@@ -31,14 +31,9 @@ Windows
     .\scripts\genprojects-win.bat
     ```
 
-Linux
+Linux / macOS
 ```
-./scripts/genprojects-linux.sh
-```
-
-macOS
-```
-./scripts/genprojects-macos.sh
+./scripts/genprojects-posix.sh
 ```
 
 ### Building
