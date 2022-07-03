@@ -2,7 +2,7 @@
 
 # OpenNeighborhood
 
-<div style="text-align:center"><img src="./resources/logo/logo.png" alt="OpenNeighborhood"></div>
+<div align="center"><img src="./resources/logo/logo.png" alt="OpenNeighborhood"></div>
 
 Cross-platform clone of Xbox 360 Neighborhood.
 
