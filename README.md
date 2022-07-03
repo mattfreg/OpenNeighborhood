@@ -2,7 +2,7 @@
 
 # OpenNeighborhood
 
-![OpenNeighborhood](./resources/logo/logo.png)
+<div style="text-align:center"><img src="./resources/logo/logo.png" alt="OpenNeighborhood"></div>
 
 Cross-platform clone of Xbox 360 Neighborhood.
 
@@ -45,7 +45,7 @@ Windows
     ```
     or, if you have `msbuild` in your `PATH`
     ```
-    msbuild /p:Configuration=<Debug|Release> .\build\OpenNeighborhood.sln
+    msbuild /p:Configuration=<debug|release> .\build\OpenNeighborhood.sln
     ```
 - Cygwin / MinGW
     ```
