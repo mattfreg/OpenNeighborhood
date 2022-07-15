@@ -6,7 +6,7 @@
 class TextureManager
 {
 public:
-    static void AddTexture(const std::string &textureName, const std::string &filePath);
+    static void AddTexture(const std::string &textureName, const std::filesystem::path &filePath);
     static Ref<Texture> GetTexture(const std::string &textureName);
     static bool TextureExists(const std::string &textureName);
 

@@ -3,7 +3,7 @@
 class Texture
 {
 public:
-    Texture(const std::string &filePath);
+    Texture(const std::filesystem::path &filePath);
     ~Texture();
 
     void Bind(uint32_t slot = 0) const;

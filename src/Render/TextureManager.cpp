@@ -6,7 +6,7 @@
 std::unordered_map<std::string, Ref<Texture>> TextureManager::s_Textures;
 uint32_t TextureManager::s_TextureCount;
 
-void TextureManager::AddTexture(const std::string &textureName, const std::string &filePath)
+void TextureManager::AddTexture(const std::string &textureName, const std::filesystem::path &filePath)
 {
     ASSERT(s_Textures.find(textureName) == s_Textures.end(), "Texture with name: %s already exists!", textureName.c_str());
 
