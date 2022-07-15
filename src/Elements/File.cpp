@@ -8,7 +8,7 @@
 #include "Render/UI.h"
 
 File::File(const XBDM::File &data)
-    : m_Data(data), Element(data.Name, data.IsDirectory ? "directory" : data.IsXEX ? "xex"
+    : m_Data(data), Element(data.Name, data.IsDirectory ? "directory" : data.IsXex ? "xex"
                                                                                    : "file")
 {
 }
@@ -17,8 +17,8 @@ void File::OnClick()
 {
     if (m_Data.IsDirectory)
         OpenDirectory();
-    else if (m_Data.IsXEX)
-        LaunchXEX();
+    else if (m_Data.IsXex)
+        LaunchXex();
 }
 
 void File::OpenDirectory()
@@ -42,10 +42,10 @@ void File::OpenDirectory()
     m_EventCallback(event);
 }
 
-void File::LaunchXEX()
+void File::LaunchXex()
 {
     XBDM::Console &xbox = XboxManager::GetConsole();
-    xbox.LaunchXEX(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name);
+    xbox.LaunchXex(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name);
 }
 
 void File::Download()

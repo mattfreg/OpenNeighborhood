@@ -15,7 +15,7 @@ private:
     XBDM::File m_Data;
 
     void OpenDirectory();
-    void LaunchXEX();
+    void LaunchXex();
     void Download();
     void Delete();
     void Rename();
