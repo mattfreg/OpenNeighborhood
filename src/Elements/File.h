@@ -21,5 +21,5 @@ private:
     void Rename();
     void UpdateContents();
 
-    void DisplayContextMenu() override;
+    virtual void DisplayContextMenu() override;
 };

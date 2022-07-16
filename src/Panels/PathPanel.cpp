@@ -41,7 +41,7 @@ void PathPanel::OnRender()
     m_GoToParentButton.OnRender();
 
     ImGui::SameLine();
-    ImGui::Text("%s", "");
+    ImGui::TextUnformatted("");
 
     ImGuiStyle &style = ImGui::GetStyle();
     ImVec4 &borderColor = style.Colors[ImGuiCol_Border];
@@ -65,7 +65,7 @@ void PathPanel::OnRender()
         if (i + 1 < m_PathNodes.size())
         {
             ImGui::SameLine();
-            ImGui::Text("%s", ">");
+            ImGui::TextUnformatted(">");
             ImGui::SameLine();
         }
 
