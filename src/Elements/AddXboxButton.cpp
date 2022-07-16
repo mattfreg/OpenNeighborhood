@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Elements/AddXboxButton.h"
 
+#define MINI_CASE_SENSITIVE
 #include <mINI/ini.h>
 
 #include "Render/TextureManager.h"
