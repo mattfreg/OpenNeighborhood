@@ -21,3 +21,7 @@
 #include <set>
 #include <string.h>
 #include <stdarg.h>
+
+#ifdef DEBUG
+    #include "Core/Log.h"
+#endif
