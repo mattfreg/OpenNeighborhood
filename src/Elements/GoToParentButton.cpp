@@ -31,7 +31,7 @@ void GoToParentButton::OnClick()
     if (currentLocation == parentLocation)
         return;
 
-    if (parentLocation[parentLocation.length() - 1] == ':')
+    if (parentLocation.back() == ':')
         parentLocation += '\\';
 
     XBDM::Console &xbox = XboxManager::GetConsole();

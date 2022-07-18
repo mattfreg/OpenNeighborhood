@@ -159,7 +159,6 @@ void ContentsPanel::Upload()
     std::string fileName = localPath.filename().string();
     std::string remotePath = XboxManager::GetCurrentLocation() + '\\' + fileName;
 
-    
     // It's important to capture remotePath and localPath by copy because they will
     // be destroyed by the time upload is called if it's called as the confirm
     // callback, capturing them by reference would create a crash.
