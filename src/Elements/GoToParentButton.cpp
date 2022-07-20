@@ -25,7 +25,7 @@ void GoToParentButton::OnRender()
 
 void GoToParentButton::OnClick()
 {
-    std::string currentLocation = XboxManager::GetCurrentLocation();
+    const std::string &currentLocation = XboxManager::GetCurrentLocation();
     std::string parentLocation = XboxManager::GetParent();
 
     if (currentLocation == parentLocation)

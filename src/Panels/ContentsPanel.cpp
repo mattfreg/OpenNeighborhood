@@ -128,12 +128,10 @@ void ContentsPanel::UpdateContents()
 {
     XBDM::Console &xbox = XboxManager::GetConsole();
     std::set<XBDM::File> files;
-    std::string location = XboxManager::GetCurrentLocation();
+    const std::string &location = XboxManager::GetCurrentLocation();
 
     // If the current location is a drive (e.g hdd:), we need to append '\' to it
-    location = location.back() == ':' ? location + '\\' : location;
-
-    bool success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(location); });
+    bool success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(location.back() == ':' ? location + '\\' : location); });
 
     if (!success)
         return;
