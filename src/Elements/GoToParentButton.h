@@ -9,4 +9,8 @@ public:
 
     virtual void OnRender() override;
     virtual void OnClick() override;
+
+private:
+    void GoToDrives();
+    void GoToRoot();
 };

@@ -30,6 +30,8 @@ void Xbox::OnClick()
     if (!success)
         return;
 
+    XboxManager::SetCurrentPosition(XboxManager::Position::DriveList);
+
     auto driveElements = std::vector<Ref<Element>>();
 
     for (auto &drive : drives)

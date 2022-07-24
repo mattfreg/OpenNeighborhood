@@ -4,7 +4,8 @@
 #include "Render/UI.h"
 
 XBDM::Console XboxManager::s_Console;
-std::string XboxManager::s_CurrentLocation;
+std::string XboxManager::s_CurrentLocation = "\\";
+XboxManager::Position XboxManager::s_CurrentPosition = XboxManager::Position::Root;
 
 bool XboxManager::CreateConsole(const std::string &ipAddress, std::string &consoleName, bool keepConnectionOpen)
 {
@@ -31,26 +32,22 @@ bool XboxManager::CreateConsole(const std::string &ipAddress, std::string &conso
 
 const std::string &XboxManager::GoToDirectory(const std::string &directory)
 {
-    if (directory.front() != '\\' && !s_CurrentLocation.empty())
+    if (directory.front() != '\\' && s_CurrentLocation != "\\")
         s_CurrentLocation += '\\';
 
-    if (s_CurrentLocation.empty())
-        s_CurrentLocation += (directory + ':');
-    else
-        s_CurrentLocation += directory;
+    s_CurrentLocation += directory;
 
     return s_CurrentLocation;
 }
 
 std::string XboxManager::GetParent()
 {
-    std::string path = s_CurrentLocation;
-    size_t lastSeparatorIndex = path.find_last_of('\\');
+    size_t lastSeparatorIndex = s_CurrentLocation.find_last_of('\\');
 
-    if (lastSeparatorIndex != std::string::npos)
-        path = path.substr(0, lastSeparatorIndex);
+    if (lastSeparatorIndex == 0)
+        return "\\";
 
-    return path;
+    return s_CurrentLocation.substr(0, lastSeparatorIndex);
 }
 
 const std::string &XboxManager::GoToParent()

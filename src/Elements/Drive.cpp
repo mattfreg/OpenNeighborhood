@@ -18,12 +18,13 @@ void Drive::OnClick()
     XBDM::Console &xbox = XboxManager::GetConsole();
     std::set<XBDM::File> files;
 
-    bool success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(XboxManager::GetCurrentLocation() + m_Data.Name + ":\\"); });
+    bool success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(XboxManager::GetCurrentLocation() + m_Data.Name + '\\'); });
 
     if (!success)
         return;
 
     XboxManager::GoToDirectory(m_Data.Name);
+    XboxManager::SetCurrentPosition(XboxManager::Position::DriveContents);
 
     auto fileElements = std::vector<Ref<Element>>();
 
