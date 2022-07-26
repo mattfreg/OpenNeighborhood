@@ -14,6 +14,8 @@ PathPanel::PathPanel()
 
     m_Width = m_WindowWidth - m_Margin * 2.0f;
     m_Height = m_Margin * 2.4f;
+
+    m_PathNodes.emplace_back("OpenNeighborhood", std::string::npos, this);
 }
 
 void PathPanel::OnRender()
@@ -71,7 +73,10 @@ void PathPanel::OnRender()
     ImGui::End();
 
     if (!m_ContentsChangeEventQueue.empty())
+    {
         UpdateDirectories();
+        m_ContentsChangeEventQueue.pop();
+    }
 }
 
 void PathPanel::OnEvent(Event &event)
@@ -91,7 +96,14 @@ bool PathPanel::OnCurrentXboxLocationChange(ContentsChangeEvent &event)
 
 void PathPanel::UpdateDirectories()
 {
-    m_PathNodes.clear();
+    m_PathNodes.erase(m_PathNodes.begin() + 1, m_PathNodes.end());
+
+    if (XboxManager::GetCurrentPosition() >= XboxManager::Position::DriveList)
+        m_PathNodes.emplace_back(XboxManager::GetConsole().GetName(), std::string::npos, this);
+
+    if (XboxManager::GetCurrentPosition() < XboxManager::Position::DriveContents)
+        return;
+
     std::string locationCopy = XboxManager::GetCurrentLocation() + '\\';
     size_t pos = 0;
 
@@ -100,10 +112,8 @@ void PathPanel::UpdateDirectories()
         std::string directory = locationCopy.substr(0, pos);
 
         if (!directory.empty())
-            m_PathNodes.emplace_back(directory, m_PathNodes.size(), *this);
+            m_PathNodes.emplace_back(directory, m_PathNodes.size(), this);
 
         locationCopy.erase(0, pos + 1);
     }
-
-    m_ContentsChangeEventQueue.pop();
 }
