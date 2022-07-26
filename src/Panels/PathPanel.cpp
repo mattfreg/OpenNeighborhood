@@ -30,8 +30,6 @@ void PathPanel::OnRender()
         ImGuiWindowFlags_NoNavFocus |
         ImGuiWindowFlags_HorizontalScrollbar;
 
-    s_Width = m_WindowWidth - m_Margin * 2.0f;
-
     ImGui::SetNextWindowPos(ImVec2(m_Margin, m_Margin));
     ImGui::SetNextWindowSize(ImVec2(s_Width, s_Height));
 
@@ -103,7 +101,9 @@ void PathPanel::UpdateDirectories()
     while ((pos = locationCopy.find('\\')) != std::string::npos)
     {
         std::string directory = locationCopy.substr(0, pos);
-        m_PathNodes.push_back(PathNode(directory, m_PathNodes.size(), this));
+
+        if (!directory.empty())
+            m_PathNodes.emplace_back(directory, m_PathNodes.size(), this);
 
         locationCopy.erase(0, pos + 1);
     }
