@@ -100,7 +100,7 @@ void PathPanel::UpdateDirectories()
         std::string directory = locationCopy.substr(0, pos);
 
         if (!directory.empty())
-            m_PathNodes.emplace_back(directory, m_PathNodes.size(), this);
+            m_PathNodes.emplace_back(directory, m_PathNodes.size(), *this);
 
         locationCopy.erase(0, pos + 1);
     }

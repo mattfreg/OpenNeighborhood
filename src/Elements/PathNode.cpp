@@ -6,8 +6,8 @@
 #include "Elements/File.h"
 #include "Render/UI.h"
 
-PathNode::PathNode(const std::string &label, size_t posInPath, void *parentPanel)
-    : m_PosInPath(posInPath), m_ParentPanel(parentPanel), Element(label, "")
+PathNode::PathNode(const std::string &label, size_t posInPath, PathPanel &pathPanel)
+    : m_PosInPath(posInPath), m_PathPanel(pathPanel), Element(label, "")
 {
 }
 
@@ -23,7 +23,7 @@ void PathNode::OnClick()
 
     for (size_t i = 0; i <= m_PosInPath; i++)
     {
-        newXboxLocation += reinterpret_cast<PathPanel *>(m_ParentPanel)->m_PathNodes[i].GetLabel();
+        newXboxLocation += m_PathPanel.m_PathNodes[i].GetLabel();
 
         if (i < m_PosInPath)
             newXboxLocation += '\\';

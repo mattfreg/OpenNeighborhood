@@ -2,15 +2,17 @@
 
 #include "Elements/Element.h"
 
+class PathPanel;
+
 class PathNode : public Element
 {
 public:
-    PathNode(const std::string &label, size_t posInPath, void *parentPanel);
+    PathNode(const std::string &label, size_t posInPath, PathPanel &pathPanel);
 
     virtual void OnRender() override;
     virtual void OnClick() override;
 
 private:
     size_t m_PosInPath;
-    void *m_ParentPanel;
+    PathPanel &m_PathPanel;
 };

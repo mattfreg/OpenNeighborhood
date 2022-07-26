@@ -7,7 +7,6 @@
 
 #include "Elements/AddXboxButton.h"
 #include "Elements/Xbox.h"
-#include "Panels/PathPanel.h"
 #include "Xbox/XboxManager.h"
 #include "Elements/File.h"
 #include "Render/UI.h"
