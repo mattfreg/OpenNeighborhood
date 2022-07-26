@@ -33,7 +33,7 @@ public:
 
     void SetVSync(bool enabled);
 
-    bool IsVSync() const { return m_Data.VSync; }
+    inline bool IsVSync() const { return m_Data.VSync; }
 
     inline void *GetNativeWindow() const { return m_Window; }
 

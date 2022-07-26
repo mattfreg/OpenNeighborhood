@@ -19,9 +19,9 @@ public:
 
     inline float GetHeight() { return m_Height; }
 
-    void SetWidth(float width) { m_Width = width; }
+    inline void SetWidth(float width) { m_Width = width; }
 
-    void SetHeight(float height) { m_Height = height; }
+    inline void SetHeight(float height) { m_Height = height; }
 
 private:
     std::vector<PathNode> m_PathNodes;

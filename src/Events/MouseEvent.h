@@ -33,7 +33,8 @@ public:
     EVENT_CLASS_TYPE(MouseScrolled)
     EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 private:
-    float m_XOffset, m_YOffset;
+    float m_XOffset;
+    float m_YOffset;
 };
 
 class MouseButtonEvent : public Event
