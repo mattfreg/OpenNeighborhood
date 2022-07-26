@@ -15,19 +15,19 @@ public:
     virtual void OnRender() override;
     virtual void OnEvent(Event &event) override;
 
-    inline static float GetWidth() { return s_Width; }
+    inline float GetWidth() { return m_Width; }
 
-    inline static float GetHeight() { return s_Height; }
+    inline float GetHeight() { return m_Height; }
 
-    static void SetWidth(float width) { s_Width = width; }
+    void SetWidth(float width) { m_Width = width; }
 
-    static void SetHeight(float height) { s_Height = height; }
+    void SetHeight(float height) { m_Height = height; }
 
 private:
     std::vector<PathNode> m_PathNodes;
     std::queue<ContentsChangeEvent> m_ContentsChangeEventQueue;
-    static float s_Width;
-    static float s_Height;
+    float m_Width;
+    float m_Height;
     GoToParentButton m_GoToParentButton;
 
     bool OnCurrentXboxLocationChange(ContentsChangeEvent &event);

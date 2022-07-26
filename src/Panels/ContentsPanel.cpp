@@ -38,7 +38,7 @@ ContentsPanel::ContentsPanel()
 
 void ContentsPanel::OnRender()
 {
-    float pathPanelHeight = PathPanel::GetHeight();
+    float pathPanelHeight = m_Margin * 2.4f;
 
     ImGuiWindowFlags windowFlags =
         ImGuiWindowFlags_NoTitleBar |

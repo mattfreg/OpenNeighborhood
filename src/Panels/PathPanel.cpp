@@ -5,9 +5,6 @@
 #include "Render/UI.h"
 #include "Render/TextureManager.h"
 
-float PathPanel::s_Width;
-float PathPanel::s_Height;
-
 PathPanel::PathPanel()
 {
     std::string textureName = "leftArrow";
@@ -15,8 +12,8 @@ PathPanel::PathPanel()
     if (!TextureManager::TextureExists(textureName))
         TextureManager::AddTexture(textureName, GetExecDir().append("assets/icons/").append(textureName + ".png"));
 
-    s_Width = m_WindowWidth - m_Margin * 2.0f;
-    s_Height = m_Margin * 2.4f;
+    m_Width = m_WindowWidth - m_Margin * 2.0f;
+    m_Height = m_Margin * 2.4f;
 }
 
 void PathPanel::OnRender()
@@ -31,7 +28,7 @@ void PathPanel::OnRender()
         ImGuiWindowFlags_HorizontalScrollbar;
 
     ImGui::SetNextWindowPos(ImVec2(m_Margin, m_Margin));
-    ImGui::SetNextWindowSize(ImVec2(s_Width, s_Height));
+    ImGui::SetNextWindowSize(ImVec2(m_Width, m_Height));
 
     ImGui::Begin("Path Window", nullptr, windowFlags);
     ImGui::PushFont(UI::GetRegularBigFont());
@@ -48,7 +45,7 @@ void PathPanel::OnRender()
     ImDrawList *drawList = ImGui::GetWindowDrawList();
     drawList->AddLine(
         ImVec2(lineX, m_Margin),
-        ImVec2(lineX, m_Margin + s_Height),
+        ImVec2(lineX, m_Margin + m_Height),
         IM_COL32(borderColor.x * 255.0f, borderColor.y * 255.0f, borderColor.z * 255.0f, borderColor.w * 255.0f)
     );
 
