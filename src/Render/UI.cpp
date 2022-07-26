@@ -29,8 +29,8 @@ void UI::Init()
     (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
-    std::string openSansBoldPath = GetExecDir().append("assets/fonts/opensans/OpenSans-Bold.ttf").string();
-    std::string openSansRegularPath = GetExecDir().append("assets/fonts/opensans/OpenSans-Regular.ttf").string();
+    std::string openSansBoldPath = GetExecDir().append("assets").append("fonts").append("opensans").append("OpenSans-Bold.ttf").string();
+    std::string openSansRegularPath = GetExecDir().append("assets").append("fonts").append("opensans").append("OpenSans-Regular.ttf").string();
     s_OpenSansBold = io.Fonts->AddFontFromFileTTF(openSansBoldPath.c_str(), 20.0f);
     s_OpenSansRegular = io.Fonts->AddFontFromFileTTF(openSansRegularPath.c_str(), 20.0f);
     s_OpenSansRegularBig = io.Fonts->AddFontFromFileTTF(openSansRegularPath.c_str(), 24.0f);
