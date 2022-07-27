@@ -75,11 +75,10 @@ void AddXboxButton::OnRender()
             std::stringstream ipAddress;
             ipAddress << bytes[0] << "." << bytes[1] << "." << bytes[2] << "." << bytes[3];
 
-            std::string consoleName;
-            UI::SetSuccess(XboxManager::CreateConsole(ipAddress.str(), consoleName));
+            UI::SetSuccess(XboxManager::CreateConsole(ipAddress.str()));
 
             if (UI::IsGood())
-                CreateXbox(consoleName, ipAddress.str());
+                CreateXbox(XboxManager::GetConsole().GetName(), ipAddress.str());
             else
                 UI::SetErrorMessage("Couldn't find console");
 

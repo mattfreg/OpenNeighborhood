@@ -13,8 +13,7 @@ Xbox::Xbox(const std::string &label, const std::string &ipAddress)
 
 void Xbox::OnClick()
 {
-    std::string consoleName;
-    UI::SetSuccess(XboxManager::CreateConsole(m_IpAddress, consoleName, true));
+    UI::SetSuccess(XboxManager::CreateConsole(m_IpAddress, true));
 
     if (!UI::IsGood())
     {
