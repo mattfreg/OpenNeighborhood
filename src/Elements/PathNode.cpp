@@ -29,16 +29,10 @@ void PathNode::OnClick()
     {
         XboxManager::SetCurrentLocation("\\");
 
-        XboxManager::Position currentPosition = XboxManager::GetCurrentPosition();
-        switch (currentPosition)
-        {
-        case XboxManager::Position::DriveContents:
+        if (m_Label == XboxManager::GetConsole().GetName())
             GoToDrives();
-            break;
-        case XboxManager::Position::DriveList:
+        else if (m_Label == "OpenNeighborhood")
             GoToRoot();
-            break;
-        }
 
         return;
     }
