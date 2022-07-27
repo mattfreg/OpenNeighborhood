@@ -58,13 +58,16 @@ class Event
 public:
     virtual ~Event() = default;
 
-    bool m_Handled = false;
-
     virtual EventType GetEventType() const = 0;
     virtual const char *GetName() const = 0;
     virtual int GetCategoryFlags() const = 0;
 
     inline bool IsInCategory(EventCategory category) { return GetCategoryFlags() & category; }
+
+    inline bool IsHandled() const { return m_Handled; }
+
+private:
+    bool m_Handled = false;
 };
 
 class EventDispatcher
