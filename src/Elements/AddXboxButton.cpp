@@ -112,7 +112,7 @@ void AddXboxButton::CreateXbox(const std::string &consoleName, const std::string
     mINI::INIFile configFile(configFilePath.string());
     mINI::INIStructure config;
 
-    if (std::filesystem::exists(configFilePath))
+    if (!std::filesystem::exists(configFilePath))
     {
         config[consoleName]["ip_address"] = ipAddress;
         configFile.generate(config, true);

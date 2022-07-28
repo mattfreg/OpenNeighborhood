@@ -13,15 +13,21 @@ Xbox::Xbox(const std::string &label, const std::string &ipAddress)
 
 void Xbox::OnClick()
 {
-    UI::SetSuccess(XboxManager::CreateConsole(m_IpAddress, true));
+    XBDM::Console &xbox = XboxManager::GetConsole();
 
-    if (!UI::IsGood())
+    // If the current xbox was created by clicking on the AddXboxButton, the connection is
+    // already open so no need to recreate it
+    if (!xbox.IsConnected())
     {
-        UI::SetErrorMessage("Couldn't find console");
-        return;
+        UI::SetSuccess(XboxManager::CreateConsole(m_IpAddress));
+
+        if (!UI::IsGood())
+        {
+            UI::SetErrorMessage("Couldn't find console");
+            return;
+        }
     }
 
-    XBDM::Console &xbox = XboxManager::GetConsole();
     std::vector<XBDM::Drive> drives;
 
     bool success = XboxManager::Try([&]() { drives = xbox.GetDrives(); });

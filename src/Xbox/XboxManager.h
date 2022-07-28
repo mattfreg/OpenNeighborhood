@@ -14,7 +14,7 @@ public:
 
     using TryCallbackFn = std::function<void()>;
 
-    static bool CreateConsole(const std::string &ipAddress, bool keepConnectionOpen = false);
+    static bool CreateConsole(const std::string &ipAddress);
 
     inline static XBDM::Console &GetConsole() { return s_Console; }
 
