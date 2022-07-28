@@ -11,7 +11,9 @@ struct WindowProps
     float Height;
 
     WindowProps(const std::string &title = "OpenNeighborhood", float width = 1280, float height = 720)
-        : Title(title), Width(width), Height(height) {}
+        : Title(title), Width(width), Height(height)
+    {
+    }
 };
 
 class Window
@@ -28,7 +30,6 @@ public:
 
     inline float GetHeight() const { return m_Data.Height; }
 
-    // Window attributes
     inline void SetEventCallback(const EventCallbackFn &callback) { m_Data.EventCallback = callback; }
 
     void SetVSync(bool enabled);

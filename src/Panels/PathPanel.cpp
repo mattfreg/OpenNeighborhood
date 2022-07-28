@@ -59,6 +59,7 @@ void PathPanel::OnRender()
 
         m_PathNodes[i].OnRender();
 
+        // Render all PathNodes on the same line and add a '>' between them
         if (i + 1 < m_PathNodes.size())
         {
             ImGui::SameLine();
@@ -98,6 +99,8 @@ void PathPanel::UpdateDirectories()
 {
     m_PathNodes.erase(m_PathNodes.begin() + 1, m_PathNodes.end());
 
+    // If the current position is at the drive list or further (inside of a drive),
+    // add a PathNode with the console name
     if (XboxManager::GetCurrentPosition() >= XboxManager::Position::DriveList)
         m_PathNodes.emplace_back(XboxManager::GetConsole().GetName(), std::string::npos, this);
 
@@ -107,6 +110,7 @@ void PathPanel::UpdateDirectories()
     std::string locationCopy = XboxManager::GetCurrentLocation() + '\\';
     size_t pos = 0;
 
+    // Split the current location with '\' and create a PathNode for each directory
     while ((pos = locationCopy.find('\\')) != std::string::npos)
     {
         std::string directory = locationCopy.substr(0, pos);

@@ -2,7 +2,10 @@
 #include "Core/Window.h"
 
 #include <glad/glad.h>
+
+#define NFD_THROWS_EXCEPTIONS
 #include <nfd.hpp>
+
 #include <stb_image/stb_image.h>
 
 #include "Events/AppEvent.h"
@@ -10,7 +13,7 @@
 #include "Events/KeyEvent.h"
 #include "Core/Log.h"
 #include "Core/Assert.h"
-#include "Core/Core.h"
+#include "Core/Utils.h"
 
 static bool s_GLFWInitialized = false;
 
@@ -45,6 +48,7 @@ void Window::Init(const WindowProps &props)
         int success = glfwInit();
         ASSERT(success, "Could not initialize GLFW!");
 
+        // Creating this object initializes the whole library
         NFD::Guard nfdGuard;
 
         glfwSetErrorCallback(GLFWErrorCallback);
@@ -167,10 +171,7 @@ void Window::OnUpdate()
 
 void Window::SetVSync(bool enabled)
 {
-    if (enabled)
-        glfwSwapInterval(1);
-    else
-        glfwSwapInterval(0);
+    glfwSwapInterval(static_cast<int>(enabled));
 
     m_Data.VSync = enabled;
 }

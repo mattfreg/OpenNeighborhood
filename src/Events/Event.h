@@ -1,7 +1,7 @@
 #pragma once
 #include "pch.h"
 
-#include "Core/Core.h"
+#include "Core/Utils.h"
 
 enum class EventType
 {

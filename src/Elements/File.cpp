@@ -55,8 +55,11 @@ void File::Download()
     auto filename = std::filesystem::path(m_Data.Name);
     auto extension = filename.extension().native().substr(1);
     auto &filterName = extension;
+
+    // Convert the filter name to lower case
     std::transform(filterName.begin(), filterName.end(), filterName.begin(), [](auto c) { return std::toupper(c); });
 
+    // Oven the save dialog that will get a path to where to save the current file
     NFD::UniquePathN outPath;
     nfdnfilteritem_t filterItem[] = { { filterName.c_str(), extension.c_str() } };
     nfdresult_t result = NFD::SaveDialog(outPath, filterItem, 1, nullptr, filename.native().c_str());
@@ -80,7 +83,7 @@ void File::Download()
 
 void File::Delete()
 {
-    auto Delete = [this]() {
+    auto Delete = [&]() {
         XBDM::Console &xbox = XboxManager::GetConsole();
 
         bool success = XboxManager::Try([&]() { xbox.DeleteFile(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name, m_Data.IsDirectory); });
@@ -96,7 +99,7 @@ void File::Delete()
 
 void File::Rename()
 {
-    auto rename = [this](const std::string &name) {
+    auto rename = [&](const std::string &name) {
         XBDM::Console &xbox = XboxManager::GetConsole();
         const std::string &location = XboxManager::GetCurrentLocation();
 

@@ -12,6 +12,8 @@ OpenNeighborhood *OpenNeighborhood::s_Instance = nullptr;
 OpenNeighborhood::OpenNeighborhood()
     : Layer("OpenNeighborhood")
 {
+    // The OpenNeighborhood layer is a singleton so make sure only one instance can
+    // exist at a time
     ASSERT(!s_Instance, "OpenNeighborhood layer already exists!");
     s_Instance = this;
 }
@@ -32,7 +34,7 @@ void OpenNeighborhood::OnDetach()
 
 void OpenNeighborhood::OnEvent(Event &event)
 {
-    for (Panel *panel : m_PanelStack)
+    for (auto panel : m_PanelStack)
         panel->OnEvent(event);
 }
 

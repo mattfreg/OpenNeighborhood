@@ -4,14 +4,11 @@
 #include "Core/Assert.h"
 
 std::unordered_map<std::string, Ref<Texture>> TextureManager::s_Textures;
-uint32_t TextureManager::s_TextureCount;
+uint32_t TextureManager::s_TextureCount = 0;
 
 void TextureManager::AddTexture(const std::string &textureName, const std::filesystem::path &filePath)
 {
     ASSERT(s_Textures.find(textureName) == s_Textures.end(), "Texture with name: %s already exists!", textureName.c_str());
-
-    if (!s_TextureCount)
-        s_TextureCount = 0;
 
     s_Textures[textureName] = CreateRef<Texture>(filePath);
     s_Textures[textureName]->Bind(s_TextureCount);

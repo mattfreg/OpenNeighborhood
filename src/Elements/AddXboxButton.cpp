@@ -55,6 +55,7 @@ void AddXboxButton::OnRender()
                 ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 0.0f, 1.0f));
             }
 
+            // We set the step and step_fast to 0 to remove the '-' and '+' button to the right of each int input
             ImGui::InputInt("##v", &bytes[i], 0, 0, ImGuiInputTextFlags_CharsDecimal);
 
             if (invalidByte)
@@ -107,12 +108,11 @@ void AddXboxButton::CreateXbox(const std::string &consoleName, const std::string
     ContentsChangeEvent event(xboxElement, true);
     m_EventCallback(event);
 
-    std::string configFilePath = GetExecDir().append("OpenNeighborhood.ini").string();
-    mINI::INIFile configFile(configFilePath);
+    std::filesystem::path configFilePath = GetExecDir().append("OpenNeighborhood.ini");
+    mINI::INIFile configFile(configFilePath.string());
     mINI::INIStructure config;
 
-    struct stat buffer;
-    if (stat(configFilePath.c_str(), &buffer) == -1)
+    if (std::filesystem::exists(configFilePath))
     {
         config[consoleName]["ip_address"] = ipAddress;
         configFile.generate(config, true);

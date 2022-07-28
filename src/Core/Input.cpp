@@ -22,7 +22,9 @@ bool Input::IsMouseButtonPressed(int button)
 std::pair<float, float> Input::GetMousePosition()
 {
     GLFWwindow *window = reinterpret_cast<GLFWwindow *>(App::Get().GetWindow().GetNativeWindow());
-    double xPos, yPos;
+    double xPos;
+    double yPos;
+
     glfwGetCursorPos(window, &xPos, &yPos);
 
     return { static_cast<float>(xPos), static_cast<float>(yPos) };
@@ -31,11 +33,13 @@ std::pair<float, float> Input::GetMousePosition()
 float Input::GetMouseX()
 {
     auto [x, y] = GetMousePosition();
+
     return x;
 }
 
 float Input::GetMouseY()
 {
     auto [x, y] = GetMousePosition();
+
     return y;
 }

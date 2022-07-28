@@ -8,17 +8,17 @@
 Element::Element(const std::string &label, const std::string &textureName)
     : m_Label(label), m_TextureName(textureName)
 {
-    if (textureName != "")
-    {
-        if (!TextureManager::TextureExists(textureName))
-            TextureManager::AddTexture(textureName, GetExecDir().append("assets").append("icons").append(textureName + ".png"));
-
-        auto texture = TextureManager::GetTexture(textureName);
-        m_Width = texture->GetWidth() * 3;
-        m_Height = texture->GetHeight();
-    }
-
     m_EventCallback = BIND_EVENT_FN(Element::OnEvent);
+
+    if (textureName.empty())
+        return;
+
+    if (!TextureManager::TextureExists(textureName))
+        TextureManager::AddTexture(textureName, GetExecDir().append("assets").append("icons").append(textureName + ".png"));
+
+    auto texture = TextureManager::GetTexture(textureName);
+    m_Width = texture->GetWidth() * 3;
+    m_Height = texture->GetHeight();
 }
 
 void Element::OnRender()

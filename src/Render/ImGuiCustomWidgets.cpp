@@ -9,6 +9,8 @@ namespace ImGui
 
 bool ImageButtonWithText(ImTextureID userTextureID, const ImVec2 &imageSize, const ImVec2 &totalSize, const char *label, const ImVec2 &padding)
 {
+    // Very much inspired from this: https://github.com/ocornut/imgui/issues/1096#issuecomment-293544142
+
     ImGuiWindow *window = GetCurrentWindow();
     if (window->SkipItems)
         return false;
@@ -22,11 +24,13 @@ bool ImageButtonWithText(ImTextureID userTextureID, const ImVec2 &imageSize, con
     if (!ItemAdd(totalRect, id))
         return false;
 
-    bool hovered, held;
-    int flags = ImGuiButtonFlags_PressedOnClick |
-                ImGuiButtonFlags_PressedOnDoubleClick |
-                ImGuiButtonFlags_MouseButtonLeft |
-                ImGuiButtonFlags_MouseButtonRight;
+    bool hovered;
+    bool held;
+    int flags =
+        ImGuiButtonFlags_PressedOnClick |
+        ImGuiButtonFlags_PressedOnDoubleClick |
+        ImGuiButtonFlags_MouseButtonLeft |
+        ImGuiButtonFlags_MouseButtonRight;
 
     bool pressed = ButtonBehavior(totalRect, id, &hovered, &held, flags);
 
@@ -37,7 +41,7 @@ bool ImageButtonWithText(ImTextureID userTextureID, const ImVec2 &imageSize, con
 
     ImRect offset = totalRect;
     offset.Min.x = imageRect.Max.x + padding.x;
-    RenderTextWrapped(offset.Min + padding * 2.0f, label, NULL, totalSize.x - imageSize.x - padding.x * 2.0f);
+    RenderTextWrapped(offset.Min + padding * 2.0f, label, nullptr, totalSize.x - imageSize.x - padding.x * 2.0f);
 
     return pressed;
 }

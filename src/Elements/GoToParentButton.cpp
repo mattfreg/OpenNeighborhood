@@ -36,6 +36,8 @@ void GoToParentButton::OnClick()
 
     if (parentLocation == "\\")
     {
+        // If currentLocation is not the drive root yet we need to call GoToParent to set it to the current
+        // drive root but we don't want to do it the next times we click on the GoToParentButton
         if (currentLocation != "\\")
             XboxManager::GoToParent();
 
@@ -53,13 +55,11 @@ void GoToParentButton::OnClick()
         return;
     }
 
-    if (parentLocation.back() == ':')
-        parentLocation += '\\';
-
     XBDM::Console &xbox = XboxManager::GetConsole();
     std::set<XBDM::File> files;
 
-    bool success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(parentLocation); });
+    // If the parent location ends with ':', then it's a drive and we need to add '\' at the end
+    bool success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(parentLocation.back() == ':' ? parentLocation + '\\' : parentLocation); });
 
     if (!success)
         return;
@@ -102,11 +102,10 @@ void GoToParentButton::GoToRoot()
 
     elements.emplace_back(CreateRef<AddXboxButton>());
 
-    struct stat buffer;
-    std::string configFilePath = GetExecDir().append("OpenNeighborhood.ini").string();
-    if (stat(configFilePath.c_str(), &buffer) != -1)
+    std::filesystem::path configFilePath = GetExecDir().append("OpenNeighborhood.ini").string();
+    if (std::filesystem::exists(configFilePath))
     {
-        mINI::INIFile configFile(configFilePath);
+        mINI::INIFile configFile(configFilePath.string());
         mINI::INIStructure config;
         configFile.read(config);
 

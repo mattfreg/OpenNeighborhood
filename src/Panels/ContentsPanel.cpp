@@ -15,11 +15,10 @@ ContentsPanel::ContentsPanel()
 {
     m_Elements.emplace_back(CreateRef<AddXboxButton>());
 
-    struct stat buffer;
-    std::string configFilePath = GetExecDir().append("OpenNeighborhood.ini").string();
-    if (stat(configFilePath.c_str(), &buffer) != -1)
+    std::filesystem::path configFilePath = GetExecDir().append("OpenNeighborhood.ini");
+    if (std::filesystem::exists(configFilePath))
     {
-        mINI::INIFile configFile(configFilePath);
+        mINI::INIFile configFile(configFilePath.string());
         mINI::INIStructure config;
         configFile.read(config);
 
@@ -52,7 +51,7 @@ void ContentsPanel::OnRender()
 
     ImGui::Begin("Contents Window", nullptr, windowFlags);
 
-    if (XboxManager::GetCurrentLocation() != "")
+    if (!XboxManager::GetCurrentLocation().empty())
         DisplayContextMenu();
 
     ImGuiStyle &style = ImGui::GetStyle();
@@ -63,15 +62,22 @@ void ContentsPanel::OnRender()
         m_Elements[i]->OnRender();
         float lastButtonX = ImGui::GetItemRectMax().x;
         float nextButtonX = lastButtonX + style.ItemSpacing.x + m_Elements[i]->GetWidth(); // Expected position if next button was on same line
+
+        // Place elements on the same line as long as they are not the last element and that there is
+        // enough space for them
         if (i + 1 < m_Elements.size() && nextButtonX < panelWidth)
             ImGui::SameLine();
+
         ImGui::PopID();
     }
 
     ImGui::End();
 
     if (!m_ContentsChangeEventQueue.empty())
+    {
         InjectNewElements();
+        m_ContentsChangeEventQueue.pop();
+    }
 }
 
 void ContentsPanel::OnEvent(Event &event)
@@ -99,8 +105,6 @@ void ContentsPanel::InjectNewElements()
     }
     else
         m_Elements = event.GetElements();
-
-    m_ContentsChangeEventQueue.pop();
 }
 
 void ContentsPanel::DisplayContextMenu()

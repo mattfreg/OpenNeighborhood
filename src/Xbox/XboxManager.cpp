@@ -22,6 +22,8 @@ bool XboxManager::CreateConsole(const std::string &ipAddress, bool keepConnectio
 
 const std::string &XboxManager::GoToDirectory(const std::string &directory)
 {
+    // If the directory doesn't already start with '\' and if we are not at the root,
+    // append '\' at the end of the current location
     if (directory.front() != '\\' && s_CurrentLocation != "\\")
         s_CurrentLocation += '\\';
 
@@ -37,6 +39,7 @@ std::string XboxManager::GetParent()
     if (lastSeparatorIndex == 0)
         return "\\";
 
+    // Only keep what was before the last '\', so the parent directory
     return s_CurrentLocation.substr(0, lastSeparatorIndex);
 }
 

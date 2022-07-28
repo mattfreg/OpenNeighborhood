@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Core.h"
+#include "Core/Utils.h"
 #include "Render/Texture.h"
 
 class TextureManager

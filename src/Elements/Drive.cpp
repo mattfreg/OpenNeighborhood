@@ -13,6 +13,7 @@ Drive::Drive(const XBDM::Drive &data)
 
 void Drive::OnClick()
 {
+    // Convert the drive name to lower case
     std::transform(m_Data.Name.begin(), m_Data.Name.end(), m_Data.Name.begin(), [](unsigned char c) { return std::tolower(c); });
 
     XBDM::Console &xbox = XboxManager::GetConsole();
@@ -23,7 +24,9 @@ void Drive::OnClick()
     if (!success)
         return;
 
+    // Set the current location in the console to be the root of the current drive
     XboxManager::GoToDirectory(m_Data.Name);
+
     XboxManager::SetCurrentPosition(XboxManager::Position::DriveContents);
 
     auto fileElements = std::vector<Ref<Element>>();

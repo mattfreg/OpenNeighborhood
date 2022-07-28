@@ -25,6 +25,8 @@ void PathNode::OnRender()
 
 void PathNode::OnClick()
 {
+    // If m_PosInPath is std::string::npos, then the PathNode is not a directory on the console
+    // but the console itself or the App root (OpenNeighborhood)
     if (m_PosInPath == std::string::npos)
     {
         XboxManager::SetCurrentLocation("\\");
@@ -39,6 +41,7 @@ void PathNode::OnClick()
 
     std::string newXboxLocation;
 
+    // We start at index 2 because the first 2 PathNodes are "OpenNeighborhood" and the console name
     for (size_t i = 2; i <= m_PosInPath; i++)
     {
         newXboxLocation += m_PathPanel->m_PathNodes[i].GetLabel();
@@ -94,11 +97,10 @@ void PathNode::GoToRoot()
 
     elements.emplace_back(CreateRef<AddXboxButton>());
 
-    struct stat buffer;
-    std::string configFilePath = GetExecDir().append("OpenNeighborhood.ini").string();
-    if (stat(configFilePath.c_str(), &buffer) != -1)
+    std::filesystem::path configFilePath = GetExecDir().append("OpenNeighborhood.ini");
+    if (std::filesystem::exists(configFilePath))
     {
-        mINI::INIFile configFile(configFilePath);
+        mINI::INIFile configFile(configFilePath.string());
         mINI::INIStructure config;
         configFile.read(config);
 

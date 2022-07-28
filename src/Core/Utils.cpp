@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Core/Core.h"
+#include "Core/Utils.h"
 
 #include "Core/Assert.h"
 
@@ -16,5 +16,6 @@ std::filesystem::path GetExecDir()
 #endif
 
     std::filesystem::path execFilePath(path);
+
     return execFilePath.parent_path();
 }

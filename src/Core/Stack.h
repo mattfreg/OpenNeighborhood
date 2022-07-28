@@ -1,6 +1,5 @@
 #pragma once
 
-
 // This class is only intended to be used with pointer types
 
 template<typename T>
@@ -37,5 +36,5 @@ public:
 
 private:
     std::vector<T> m_Elements;
-    unsigned int m_ElementInsertIndex = 0;
+    uint32_t m_ElementInsertIndex = 0;
 };
