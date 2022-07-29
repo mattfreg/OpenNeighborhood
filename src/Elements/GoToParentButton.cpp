@@ -67,6 +67,7 @@ void GoToParentButton::OnClick()
     XboxManager::GoToParent();
 
     auto fileElements = std::vector<Ref<Element>>();
+    fileElements.reserve(files.size());
 
     for (auto &file : files)
         fileElements.emplace_back(CreateRef<File>(file));
@@ -88,6 +89,7 @@ void GoToParentButton::GoToDrives()
     XboxManager::SetCurrentPosition(XboxManager::Position::DriveList);
 
     auto driveElements = std::vector<Ref<Element>>();
+    driveElements.reserve(drives.size());
 
     for (auto &drive : drives)
         driveElements.emplace_back(CreateRef<Drive>(drive));

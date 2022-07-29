@@ -144,6 +144,7 @@ void ContentsPanel::UpdateContents()
         return;
 
     auto fileElements = std::vector<Ref<Element>>();
+    fileElements.reserve(files.size());
 
     for (auto &file : files)
         fileElements.emplace_back(CreateRef<File>(file));

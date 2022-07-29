@@ -34,6 +34,7 @@ void File::OpenDirectory()
     XboxManager::GoToDirectory(m_Data.Name);
 
     auto fileElements = std::vector<Ref<Element>>();
+    fileElements.reserve(files.size());
 
     for (auto &file : files)
         fileElements.emplace_back(CreateRef<File>(file));
@@ -128,6 +129,7 @@ void File::UpdateContents()
         return;
 
     auto fileElements = std::vector<Ref<Element>>();
+    fileElements.reserve(files.size());
 
     for (auto &file : files)
         fileElements.emplace_back(CreateRef<File>(file));

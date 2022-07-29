@@ -62,6 +62,7 @@ void PathNode::OnClick()
     XboxManager::SetCurrentLocation(newXboxLocation);
 
     auto fileElements = std::vector<Ref<Element>>();
+    fileElements.reserve(files.size());
 
     for (auto &file : files)
         fileElements.emplace_back(CreateRef<File>(file));
@@ -83,6 +84,7 @@ void PathNode::GoToDrives()
     XboxManager::SetCurrentPosition(XboxManager::Position::DriveList);
 
     auto driveElements = std::vector<Ref<Element>>();
+    driveElements.reserve(drives.size());
 
     for (auto &drive : drives)
         driveElements.emplace_back(CreateRef<Drive>(drive));
