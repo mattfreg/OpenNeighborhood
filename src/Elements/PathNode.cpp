@@ -1,10 +1,8 @@
 #include "pch.h"
 #include "Elements/PathNode.h"
 
-#define MINI_CASE_SENSITIVE
-#include <mINI/ini.h>
-
 #include "Xbox/XboxManager.h"
+#include "Core/ConfigManager.h"
 #include "Panels/PathPanel.h"
 #include "Elements/File.h"
 #include "Elements/Drive.h"
@@ -99,23 +97,11 @@ void PathNode::GoToRoot()
 
     elements.emplace_back(CreateRef<AddXboxButton>());
 
-    std::filesystem::path configFilePath = GetExecDir().append("OpenNeighborhood.ini");
-    if (std::filesystem::exists(configFilePath))
-    {
-        mINI::INIFile configFile(configFilePath.string());
-        mINI::INIStructure config;
-        configFile.read(config);
+    ConfigManager::Config config = ConfigManager::GetConfig();
 
-        for (const auto &it : config)
-        {
-            const std::string &consoleName = it.first;
-            if (config.get(consoleName).has("ip_address"))
-            {
-                std::string ipAddress = config.get(consoleName).get("ip_address");
-                elements.emplace_back(CreateRef<Xbox>(consoleName, ipAddress));
-            }
-        }
-    }
+    for (auto &[consoleName, _] : config)
+        if (config.get(consoleName).has("ip_address"))
+            elements.emplace_back(CreateRef<Xbox>(consoleName, config.get(consoleName).get("ip_address")));
 
     XboxManager::SetCurrentPosition(XboxManager::Position::Root);
 

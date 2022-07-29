@@ -1,11 +1,9 @@
 #include "pch.h"
 #include "Elements/AddXboxButton.h"
 
-#define MINI_CASE_SENSITIVE
-#include <mINI/ini.h>
-
 #include "Render/TextureManager.h"
 #include "Xbox/XboxManager.h"
+#include "Core/ConfigManager.h"
 #include "Events/AppEvent.h"
 #include "Elements/Xbox.h"
 #include "Render/UI.h"
@@ -103,24 +101,13 @@ void AddXboxButton::OnClick()
 
 void AddXboxButton::CreateXbox(const std::string &consoleName, const std::string &ipAddress)
 {
-    auto xboxElement = std::vector<Ref<Element>>();
-    xboxElement.emplace_back(CreateRef<Xbox>(consoleName, ipAddress));
-    ContentsChangeEvent event(xboxElement, true);
+    auto elements = std::vector<Ref<Element>>();
+    Xbox xbox(consoleName, ipAddress);
+
+    elements.emplace_back(CreateRef<Xbox>(xbox));
+
+    ContentsChangeEvent event(elements, true);
     m_EventCallback(event);
 
-    std::filesystem::path configFilePath = GetExecDir().append("OpenNeighborhood.ini");
-    mINI::INIFile configFile(configFilePath.string());
-    mINI::INIStructure config;
-
-    if (!std::filesystem::exists(configFilePath))
-    {
-        config[consoleName]["ip_address"] = ipAddress;
-        configFile.generate(config, true);
-    }
-    else
-    {
-        configFile.read(config);
-        config[consoleName]["ip_address"] = ipAddress;
-        configFile.write(config, true);
-    }
+    ConfigManager::AddXbox(xbox);
 }
