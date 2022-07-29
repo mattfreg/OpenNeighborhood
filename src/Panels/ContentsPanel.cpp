@@ -51,8 +51,8 @@ void ContentsPanel::OnRender()
 
     ImGui::Begin("Contents Window", nullptr, windowFlags);
 
-    if (!XboxManager::GetCurrentLocation().empty())
-        DisplayContextMenu();
+    // Display the right click menu
+    DisplayContextMenu();
 
     ImGuiStyle &style = ImGui::GetStyle();
     float panelWidth = ImGui::GetWindowPos().x + ImGui::GetWindowContentRegionMax().x;
@@ -109,6 +109,10 @@ void ContentsPanel::InjectNewElements()
 
 void ContentsPanel::DisplayContextMenu()
 {
+    // If we are not inside of a drive yet, we don't want to allow uploading nor creating a directory
+    if (XboxManager::GetCurrentPosition() != XboxManager::Position::DriveContents)
+        return;
+
     if (ImGui::BeginPopupContextWindow())
     {
         if (ImGui::Button("Upload Here"))
