@@ -2,12 +2,15 @@
 
 #include <ImGui/imgui.h>
 
-using ConfirmCallbackFn = std::function<void()>;
-using InputTextCallbackFn = std::function<void(const std::string &)>;
+#include "Helpers/Utils.h"
+#include "Elements/Element.h"
 
 class UI
 {
 public:
+    using ConfirmCallbackFn = std::function<void()>;
+    using InputTextCallbackFn = std::function<void(const std::string &)>;
+
     static void Init();
 
     static void BeginFrame();
@@ -15,9 +18,12 @@ public:
 
     static void Cleanup();
 
-    static void DisplayErrorModal();
     static void DisplayConfirmModal();
     static void DisplayInputTextModal();
+    static void DisplayErrorModal();
+
+    static std::vector<Ref<Element>> CreateDriveElements();
+    static std::vector<Ref<Element>> CreateRootElements();
 
     inline static void SetConfirm(bool confirm) { s_Confirm = confirm; }
 

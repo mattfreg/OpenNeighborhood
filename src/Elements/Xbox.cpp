@@ -29,20 +29,10 @@ void Xbox::OnClick()
         }
     }
 
-    std::vector<XBDM::Drive> drives;
+    auto driveElements = UI::CreateDriveElements();
 
-    bool success = ConsoleStore::Try([&]() { drives = console.GetDrives(); });
-
-    if (!success)
+    if (driveElements.empty())
         return;
-
-    LocationMover::SetCurrentAppLocation(LocationMover::AppLocation::DriveList);
-
-    auto driveElements = std::vector<Ref<Element>>();
-    driveElements.reserve(drives.size());
-
-    for (auto &drive : drives)
-        driveElements.emplace_back(CreateRef<Drive>(drive));
 
     ContentsChangeEvent event(driveElements);
     m_EventCallback(event);

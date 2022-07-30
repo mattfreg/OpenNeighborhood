@@ -30,35 +30,43 @@ void PathNode::OnClick()
     {
         LocationMover::SetCurrentConsoleLocation("\\");
 
+        std::vector<Ref<Element>> elements;
+
         if (m_Label == ConsoleStore::GetConsole().GetName())
-            GoToDrives();
+            elements = UI::CreateDriveElements();
         else if (m_Label == "OpenNeighborhood")
-            GoToRoot();
+            elements = UI::CreateRootElements();
+
+        if (elements.empty())
+            return;
+
+        ContentsChangeEvent event(elements);
+        m_EventCallback(event);
 
         return;
     }
 
-    std::string newXboxLocation;
+    std::string newConsoleLocation;
 
     // We start at index 2 because the first 2 PathNodes are "OpenNeighborhood" and the console name
     for (size_t i = 2; i <= m_PosInPath; i++)
     {
-        newXboxLocation += m_PathPanel->m_PathNodes[i].GetLabel();
+        newConsoleLocation += m_PathPanel->m_PathNodes[i].GetLabel();
 
         if (i < m_PosInPath)
-            newXboxLocation += '\\';
+            newConsoleLocation += '\\';
     }
 
     XBDM::Console &console = ConsoleStore::GetConsole();
     std::set<XBDM::File> files;
 
     // If the new location ends with ':', then it's a drive and we need to add '\' at the end
-    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(newXboxLocation.back() == ':' ? newXboxLocation + '\\' : newXboxLocation); });
+    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(newConsoleLocation.back() == ':' ? newConsoleLocation + '\\' : newConsoleLocation); });
 
     if (!success)
         return;
 
-    LocationMover::SetCurrentConsoleLocation(newXboxLocation);
+    LocationMover::SetCurrentConsoleLocation(newConsoleLocation);
 
     auto fileElements = std::vector<Ref<Element>>();
     fileElements.reserve(files.size());
@@ -69,43 +77,3 @@ void PathNode::OnClick()
     ContentsChangeEvent event(fileElements);
     m_EventCallback(event);
 };
-
-void PathNode::GoToDrives()
-{
-    XBDM::Console &console = ConsoleStore::GetConsole();
-    std::vector<XBDM::Drive> drives;
-
-    bool success = ConsoleStore::Try([&]() { drives = console.GetDrives(); });
-
-    if (!success)
-        return;
-
-    LocationMover::SetCurrentAppLocation(LocationMover::AppLocation::DriveList);
-
-    auto driveElements = std::vector<Ref<Element>>();
-    driveElements.reserve(drives.size());
-
-    for (auto &drive : drives)
-        driveElements.emplace_back(CreateRef<Drive>(drive));
-
-    ContentsChangeEvent event(driveElements);
-    m_EventCallback(event);
-}
-
-void PathNode::GoToRoot()
-{
-    auto elements = std::vector<Ref<Element>>();
-
-    elements.emplace_back(CreateRef<AddXboxButton>());
-
-    ConfigManager::Config config = ConfigManager::GetConfig();
-
-    for (auto &[xboxName, _] : config)
-        if (config.get(xboxName).has("ip_address"))
-            elements.emplace_back(CreateRef<Xbox>(xboxName, config.get(xboxName).get("ip_address")));
-
-    LocationMover::SetCurrentAppLocation(LocationMover::AppLocation::Root);
-
-    ContentsChangeEvent event(elements);
-    m_EventCallback(event);
-}

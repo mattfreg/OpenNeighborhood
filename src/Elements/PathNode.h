@@ -15,7 +15,4 @@ public:
 private:
     size_t m_PosInPath;
     PathPanel *m_PathPanel;
-
-    void GoToDrives();
-    void GoToRoot();
 };

@@ -8,18 +8,23 @@
 
 #include "Core/App.h"
 #include "Helpers/Utils.h"
+#include "Helpers/ConsoleStore.h"
+#include "Helpers/LocationMover.h"
+#include "Helpers/ConfigManager.h"
+#include "Elements/Drive.h"
+#include "Elements/AddXboxButton.h"
 
 ImFont *UI::s_OpenSansBold = nullptr;
 ImFont *UI::s_OpenSansRegular = nullptr;
 ImFont *UI::s_OpenSansRegularBig = nullptr;
 bool UI::s_Confirm = false;
 std::string UI::s_ConfirmMessage;
-ConfirmCallbackFn UI::s_ConfirmCallback;
+UI::ConfirmCallbackFn UI::s_ConfirmCallback;
 bool UI::s_Success = true;
 std::string UI::s_ErrorMessage;
 bool UI::s_InputText;
 std::string UI::s_InputTextHeader;
-InputTextCallbackFn UI::s_InputTextCallback;
+UI::InputTextCallbackFn UI::s_InputTextCallback;
 char UI::s_InputTextBuffer[50] = { 0 };
 
 void UI::Init()
@@ -163,6 +168,44 @@ void UI::DisplayErrorModal()
 
         ImGui::EndPopup();
     }
+}
+
+std::vector<Ref<Element>> UI::CreateDriveElements()
+{
+    XBDM::Console &console = ConsoleStore::GetConsole();
+    std::vector<XBDM::Drive> drives;
+    auto driveElements = std::vector<Ref<Element>>();
+
+    bool success = ConsoleStore::Try([&]() { drives = console.GetDrives(); });
+
+    if (!success)
+        return driveElements;
+
+    LocationMover::SetCurrentAppLocation(LocationMover::AppLocation::DriveList);
+
+    driveElements.reserve(drives.size());
+
+    for (auto &drive : drives)
+        driveElements.emplace_back(CreateRef<Drive>(drive));
+
+    return driveElements;
+}
+
+std::vector<Ref<Element>> UI::CreateRootElements()
+{
+    auto rootElements = std::vector<Ref<Element>>();
+
+    rootElements.emplace_back(CreateRef<AddXboxButton>());
+
+    ConfigManager::Config config = ConfigManager::GetConfig();
+
+    for (auto &[xboxName, _] : config)
+        if (config.get(xboxName).has("ip_address"))
+            rootElements.emplace_back(CreateRef<Xbox>(xboxName, config.get(xboxName).get("ip_address")));
+
+    LocationMover::SetCurrentAppLocation(LocationMover::AppLocation::Root);
+
+    return rootElements;
 }
 
 void UI::SetDarkThemeColors()

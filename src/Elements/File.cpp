@@ -103,9 +103,9 @@ void File::Rename()
 {
     auto rename = [&](const std::string &name) {
         XBDM::Console &console = ConsoleStore::GetConsole();
-        const std::string &location = LocationMover::GetCurrentConsoleLocation();
+        const std::string &consoleLocation = LocationMover::GetCurrentConsoleLocation();
 
-        bool success = ConsoleStore::Try([&]() { console.RenameFile(location + '\\' + m_Data.Name, location + '\\' + name); });
+        bool success = ConsoleStore::Try([&]() { console.RenameFile(consoleLocation + '\\' + m_Data.Name, consoleLocation + '\\' + name); });
 
         if (success)
             UpdateContents();
@@ -121,10 +121,10 @@ void File::UpdateContents()
 {
     XBDM::Console &console = ConsoleStore::GetConsole();
     std::set<XBDM::File> files;
-    const std::string &location = LocationMover::GetCurrentConsoleLocation();
+    const std::string &consoleLocation = LocationMover::GetCurrentConsoleLocation();
 
     // If the current location is a drive (e.g hdd:), we need to append '\' to it
-    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(location.back() == ':' ? location + '\\' : location); });
+    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(consoleLocation.back() == ':' ? consoleLocation + '\\' : consoleLocation); });
 
     if (!success)
         return;

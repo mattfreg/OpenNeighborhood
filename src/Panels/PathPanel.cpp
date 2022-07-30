@@ -100,7 +100,7 @@ void PathPanel::UpdateDirectories()
 {
     m_PathNodes.erase(m_PathNodes.begin() + 1, m_PathNodes.end());
 
-    // If the current position is at the drive list or further (inside of a drive),
+    // If the current app location is at the drive list or further (inside of a drive),
     // add a PathNode with the console name
     if (LocationMover::GetCurrentAppLocation() >= LocationMover::AppLocation::DriveList)
         m_PathNodes.emplace_back(ConsoleStore::GetConsole().GetName(), std::string::npos, this);
@@ -108,17 +108,17 @@ void PathPanel::UpdateDirectories()
     if (LocationMover::GetCurrentAppLocation() < LocationMover::AppLocation::DriveContents)
         return;
 
-    std::string locationCopy = LocationMover::GetCurrentConsoleLocation() + '\\';
+    std::string consoleLocationCopy = LocationMover::GetCurrentConsoleLocation() + '\\';
     size_t pos = 0;
 
     // Split the current location with '\' and create a PathNode for each directory
-    while ((pos = locationCopy.find('\\')) != std::string::npos)
+    while ((pos = consoleLocationCopy.find('\\')) != std::string::npos)
     {
-        std::string directory = locationCopy.substr(0, pos);
+        std::string directory = consoleLocationCopy.substr(0, pos);
 
         if (!directory.empty())
             m_PathNodes.emplace_back(directory, m_PathNodes.size(), this);
 
-        locationCopy.erase(0, pos + 1);
+        consoleLocationCopy.erase(0, pos + 1);
     }
 }

@@ -30,26 +30,34 @@ void GoToParentButton::OnRender()
 
 void GoToParentButton::OnClick()
 {
-    const std::string &currentLocation = LocationMover::GetCurrentConsoleLocation();
-    std::string parentLocation = LocationMover::GetParent();
+    const std::string &currentConsoleLocation = LocationMover::GetCurrentConsoleLocation();
+    std::string parentConsoleLocation = LocationMover::GetParent();
 
-    if (parentLocation == "\\")
+    if (parentConsoleLocation == "\\")
     {
         // If currentLocation is not the drive root yet we need to call GoToParent to set it to the current
         // drive root but we don't want to do it the next times we click on the GoToParentButton
-        if (currentLocation != "\\")
+        if (currentConsoleLocation != "\\")
             LocationMover::GoToParent();
 
-        LocationMover::AppLocation currentPosition = LocationMover::GetCurrentAppLocation();
-        switch (currentPosition)
+        std::vector<Ref<Element>> elements;
+
+        LocationMover::AppLocation currentAppLocation = LocationMover::GetCurrentAppLocation();
+        switch (currentAppLocation)
         {
         case LocationMover::AppLocation::DriveContents:
-            GoToDrives();
+            elements = UI::CreateDriveElements();
             break;
         case LocationMover::AppLocation::DriveList:
-            GoToRoot();
+            elements = UI::CreateRootElements();
             break;
         }
+
+        if (elements.empty())
+            return;
+
+        ContentsChangeEvent event(elements);
+        m_EventCallback(event);
 
         return;
     }
@@ -58,7 +66,7 @@ void GoToParentButton::OnClick()
     std::set<XBDM::File> files;
 
     // If the parent location ends with ':', then it's a drive and we need to add '\' at the end
-    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(parentLocation.back() == ':' ? parentLocation + '\\' : parentLocation); });
+    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(parentConsoleLocation.back() == ':' ? parentConsoleLocation + '\\' : parentConsoleLocation); });
 
     if (!success)
         return;
@@ -72,45 +80,5 @@ void GoToParentButton::OnClick()
         fileElements.emplace_back(CreateRef<File>(file));
 
     ContentsChangeEvent event(fileElements);
-    m_EventCallback(event);
-}
-
-void GoToParentButton::GoToDrives()
-{
-    XBDM::Console &console = ConsoleStore::GetConsole();
-    std::vector<XBDM::Drive> drives;
-
-    bool success = ConsoleStore::Try([&]() { drives = console.GetDrives(); });
-
-    if (!success)
-        return;
-
-    LocationMover::SetCurrentAppLocation(LocationMover::AppLocation::DriveList);
-
-    auto driveElements = std::vector<Ref<Element>>();
-    driveElements.reserve(drives.size());
-
-    for (auto &drive : drives)
-        driveElements.emplace_back(CreateRef<Drive>(drive));
-
-    ContentsChangeEvent event(driveElements);
-    m_EventCallback(event);
-}
-
-void GoToParentButton::GoToRoot()
-{
-    auto elements = std::vector<Ref<Element>>();
-
-    elements.emplace_back(CreateRef<AddXboxButton>());
-
-    ConfigManager::Config config = ConfigManager::GetConfig();
-
-    for (auto &[xboxName, _] : config)
-        if (config.get(xboxName).has("ip_address"))
-            elements.emplace_back(CreateRef<Xbox>(xboxName, config.get(xboxName).get("ip_address")));
-
-    LocationMover::SetCurrentAppLocation(LocationMover::AppLocation::Root);
-
-    ContentsChangeEvent event(elements);
     m_EventCallback(event);
 }
