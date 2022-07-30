@@ -30,7 +30,7 @@ void GoToParentButton::OnRender()
 
 void GoToParentButton::OnClick()
 {
-    const std::string &currentLocation = LocationMover::GetCurrentLocation();
+    const std::string &currentLocation = LocationMover::GetCurrentConsoleLocation();
     std::string parentLocation = LocationMover::GetParent();
 
     if (parentLocation == "\\")
@@ -40,13 +40,13 @@ void GoToParentButton::OnClick()
         if (currentLocation != "\\")
             LocationMover::GoToParent();
 
-        LocationMover::Position currentPosition = LocationMover::GetCurrentPosition();
+        LocationMover::AppLocation currentPosition = LocationMover::GetCurrentAppLocation();
         switch (currentPosition)
         {
-        case LocationMover::Position::DriveContents:
+        case LocationMover::AppLocation::DriveContents:
             GoToDrives();
             break;
-        case LocationMover::Position::DriveList:
+        case LocationMover::AppLocation::DriveList:
             GoToRoot();
             break;
         }
@@ -85,7 +85,7 @@ void GoToParentButton::GoToDrives()
     if (!success)
         return;
 
-    LocationMover::SetCurrentPosition(LocationMover::Position::DriveList);
+    LocationMover::SetCurrentAppLocation(LocationMover::AppLocation::DriveList);
 
     auto driveElements = std::vector<Ref<Element>>();
     driveElements.reserve(drives.size());
@@ -109,7 +109,7 @@ void GoToParentButton::GoToRoot()
         if (config.get(xboxName).has("ip_address"))
             elements.emplace_back(CreateRef<Xbox>(xboxName, config.get(xboxName).get("ip_address")));
 
-    LocationMover::SetCurrentPosition(LocationMover::Position::Root);
+    LocationMover::SetCurrentAppLocation(LocationMover::AppLocation::Root);
 
     ContentsChangeEvent event(elements);
     m_EventCallback(event);

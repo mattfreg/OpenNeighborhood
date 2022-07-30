@@ -27,7 +27,7 @@ void File::OpenDirectory()
     XBDM::Console &console = ConsoleStore::GetConsole();
     std::set<XBDM::File> files;
 
-    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(LocationMover::GetCurrentLocation() + '\\' + m_Data.Name); });
+    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(LocationMover::GetCurrentConsoleLocation() + '\\' + m_Data.Name); });
 
     if (!success)
         return;
@@ -47,7 +47,7 @@ void File::OpenDirectory()
 void File::LaunchXex()
 {
     XBDM::Console &console = ConsoleStore::GetConsole();
-    console.LaunchXex(LocationMover::GetCurrentLocation() + '\\' + m_Data.Name);
+    console.LaunchXex(LocationMover::GetCurrentConsoleLocation() + '\\' + m_Data.Name);
 }
 
 void File::Download()
@@ -80,7 +80,7 @@ void File::Download()
 
     XBDM::Console &console = ConsoleStore::GetConsole();
 
-    ConsoleStore::Try([&]() { console.ReceiveFile(LocationMover::GetCurrentLocation() + '\\' + m_Data.Name, localPath.string()); });
+    ConsoleStore::Try([&]() { console.ReceiveFile(LocationMover::GetCurrentConsoleLocation() + '\\' + m_Data.Name, localPath.string()); });
 }
 
 void File::Delete()
@@ -88,7 +88,7 @@ void File::Delete()
     auto Delete = [&]() {
         XBDM::Console &console = ConsoleStore::GetConsole();
 
-        bool success = ConsoleStore::Try([&]() { console.DeleteFile(LocationMover::GetCurrentLocation() + '\\' + m_Data.Name, m_Data.IsDirectory); });
+        bool success = ConsoleStore::Try([&]() { console.DeleteFile(LocationMover::GetCurrentConsoleLocation() + '\\' + m_Data.Name, m_Data.IsDirectory); });
 
         if (success)
             UpdateContents();
@@ -103,7 +103,7 @@ void File::Rename()
 {
     auto rename = [&](const std::string &name) {
         XBDM::Console &console = ConsoleStore::GetConsole();
-        const std::string &location = LocationMover::GetCurrentLocation();
+        const std::string &location = LocationMover::GetCurrentConsoleLocation();
 
         bool success = ConsoleStore::Try([&]() { console.RenameFile(location + '\\' + m_Data.Name, location + '\\' + name); });
 
@@ -121,7 +121,7 @@ void File::UpdateContents()
 {
     XBDM::Console &console = ConsoleStore::GetConsole();
     std::set<XBDM::File> files;
-    const std::string &location = LocationMover::GetCurrentLocation();
+    const std::string &location = LocationMover::GetCurrentConsoleLocation();
 
     // If the current location is a drive (e.g hdd:), we need to append '\' to it
     bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(location.back() == ':' ? location + '\\' : location); });

@@ -1,35 +1,35 @@
 #include "pch.h"
 #include "Helpers/LocationMover.h"
 
-std::string LocationMover::s_CurrentLocation = "\\";
-LocationMover::Position LocationMover::s_CurrentPosition = LocationMover::Position::Root;
+std::string LocationMover::s_CurrentConsoleLocation = "\\";
+LocationMover::AppLocation LocationMover::s_CurrentAppLocation = LocationMover::AppLocation::Root;
 
 const std::string &LocationMover::GoToDirectory(const std::string &directory)
 {
     // If the directory doesn't already start with '\' and if we are not at the root,
     // append '\' at the end of the current location
-    if (directory.front() != '\\' && s_CurrentLocation != "\\")
-        s_CurrentLocation += '\\';
+    if (directory.front() != '\\' && s_CurrentConsoleLocation != "\\")
+        s_CurrentConsoleLocation += '\\';
 
-    s_CurrentLocation += directory;
+    s_CurrentConsoleLocation += directory;
 
-    return s_CurrentLocation;
+    return s_CurrentConsoleLocation;
 }
 
 std::string LocationMover::GetParent()
 {
-    size_t lastSeparatorIndex = s_CurrentLocation.find_last_of('\\');
+    size_t lastSeparatorIndex = s_CurrentConsoleLocation.find_last_of('\\');
 
     if (lastSeparatorIndex == 0)
         return "\\";
 
     // Only keep what was before the last '\', so the parent directory
-    return s_CurrentLocation.substr(0, lastSeparatorIndex);
+    return s_CurrentConsoleLocation.substr(0, lastSeparatorIndex);
 }
 
 const std::string &LocationMover::GoToParent()
 {
-    s_CurrentLocation = GetParent();
+    s_CurrentConsoleLocation = GetParent();
 
-    return s_CurrentLocation;
+    return s_CurrentConsoleLocation;
 }

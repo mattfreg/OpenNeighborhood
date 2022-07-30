@@ -36,7 +36,7 @@ void Xbox::OnClick()
     if (!success)
         return;
 
-    LocationMover::SetCurrentPosition(LocationMover::Position::DriveList);
+    LocationMover::SetCurrentAppLocation(LocationMover::AppLocation::DriveList);
 
     auto driveElements = std::vector<Ref<Element>>();
     driveElements.reserve(drives.size());

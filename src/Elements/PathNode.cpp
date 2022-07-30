@@ -28,7 +28,7 @@ void PathNode::OnClick()
     // but the console itself or the App root (OpenNeighborhood)
     if (m_PosInPath == std::string::npos)
     {
-        LocationMover::SetCurrentLocation("\\");
+        LocationMover::SetCurrentConsoleLocation("\\");
 
         if (m_Label == ConsoleStore::GetConsole().GetName())
             GoToDrives();
@@ -58,7 +58,7 @@ void PathNode::OnClick()
     if (!success)
         return;
 
-    LocationMover::SetCurrentLocation(newXboxLocation);
+    LocationMover::SetCurrentConsoleLocation(newXboxLocation);
 
     auto fileElements = std::vector<Ref<Element>>();
     fileElements.reserve(files.size());
@@ -80,7 +80,7 @@ void PathNode::GoToDrives()
     if (!success)
         return;
 
-    LocationMover::SetCurrentPosition(LocationMover::Position::DriveList);
+    LocationMover::SetCurrentAppLocation(LocationMover::AppLocation::DriveList);
 
     auto driveElements = std::vector<Ref<Element>>();
     driveElements.reserve(drives.size());
@@ -104,7 +104,7 @@ void PathNode::GoToRoot()
         if (config.get(xboxName).has("ip_address"))
             elements.emplace_back(CreateRef<Xbox>(xboxName, config.get(xboxName).get("ip_address")));
 
-    LocationMover::SetCurrentPosition(LocationMover::Position::Root);
+    LocationMover::SetCurrentAppLocation(LocationMover::AppLocation::Root);
 
     ContentsChangeEvent event(elements);
     m_EventCallback(event);

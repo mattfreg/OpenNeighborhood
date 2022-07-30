@@ -98,7 +98,7 @@ void ContentsPanel::InjectNewElements()
 void ContentsPanel::DisplayContextMenu()
 {
     // If we are not inside of a drive yet, we don't want to allow uploading nor creating a directory
-    if (LocationMover::GetCurrentPosition() != LocationMover::Position::DriveContents)
+    if (LocationMover::GetCurrentAppLocation() != LocationMover::AppLocation::DriveContents)
         return;
 
     if (ImGui::BeginPopupContextWindow())
@@ -123,7 +123,7 @@ void ContentsPanel::UpdateContents()
 {
     XBDM::Console &console = ConsoleStore::GetConsole();
     std::set<XBDM::File> files;
-    const std::string &location = LocationMover::GetCurrentLocation();
+    const std::string &location = LocationMover::GetCurrentConsoleLocation();
 
     // If the current location is a drive (e.g hdd:), we need to append '\' to it
     bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(location.back() == ':' ? location + '\\' : location); });
@@ -151,7 +151,7 @@ void ContentsPanel::Upload()
 
     std::filesystem::path localPath = outPath.get();
     std::string fileName = localPath.filename().string();
-    std::string remotePath = LocationMover::GetCurrentLocation() + '\\' + fileName;
+    std::string remotePath = LocationMover::GetCurrentConsoleLocation() + '\\' + fileName;
 
     // It's important to capture remotePath and localPath by copy because they will
     // be destroyed by the time upload is called if it's called as the confirm
@@ -186,7 +186,7 @@ void ContentsPanel::CreateDirectory()
     auto createDirectory = [this](const std::string &name) {
         XBDM::Console &console = ConsoleStore::GetConsole();
 
-        bool success = ConsoleStore::Try([&]() { console.CreateDirectory(LocationMover::GetCurrentLocation() + '\\' + name); });
+        bool success = ConsoleStore::Try([&]() { console.CreateDirectory(LocationMover::GetCurrentConsoleLocation() + '\\' + name); });
 
         if (success)
             UpdateContents();
