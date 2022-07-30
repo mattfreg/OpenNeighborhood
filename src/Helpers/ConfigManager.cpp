@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "Helpers/ConfigManager.h"
 
-#include "Core/Utils.h"
+#include "Helpers/Utils.h"
 
 namespace fs = std::filesystem;
 
-fs::path ConfigManager::s_ConfigFilePath = GetExecDir() /= "OpenNeighborhood.ini";
+fs::path ConfigManager::s_ConfigFilePath = Utils::GetExecDir() /= "OpenNeighborhood.ini";
 ConfigManager::ConfigFile ConfigManager::s_ConfigFile = ConfigManager::ConfigFile(ConfigManager::s_ConfigFilePath);
 ConfigManager::Config ConfigManager::s_Config;
 

@@ -13,7 +13,7 @@
 #include "Events/KeyEvent.h"
 #include "Core/Log.h"
 #include "Core/Assert.h"
-#include "Core/Utils.h"
+#include "Helpers/Utils.h"
 
 static bool s_GLFWInitialized = false;
 
@@ -68,8 +68,8 @@ void Window::Init(const WindowProps &props)
 
     // Set the window icon
     GLFWimage icons[2];
-    std::filesystem::path smallIconPath = GetExecDir().append("assets").append("icons").append("windowIcon32x32.png");
-    std::filesystem::path bigIconPath = GetExecDir().append("assets").append("icons").append("windowIcon48x48.png");
+    std::filesystem::path smallIconPath = Utils::GetExecDir().append("assets").append("icons").append("windowIcon32x32.png");
+    std::filesystem::path bigIconPath = Utils::GetExecDir().append("assets").append("icons").append("windowIcon48x48.png");
 
     icons[0].pixels = stbi_load(smallIconPath.string().c_str(), &icons[0].width, &icons[0].height, nullptr, 4);
     icons[1].pixels = stbi_load(bigIconPath.string().c_str(), &icons[1].width, &icons[1].height, nullptr, 4);

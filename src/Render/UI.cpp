@@ -7,6 +7,7 @@
 #include <glad/glad.h>
 
 #include "Core/App.h"
+#include "Helpers/Utils.h"
 
 ImFont *UI::s_OpenSansBold = nullptr;
 ImFont *UI::s_OpenSansRegular = nullptr;
@@ -29,8 +30,8 @@ void UI::Init()
     (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
-    std::string openSansBoldPath = GetExecDir().append("assets").append("fonts").append("opensans").append("OpenSans-Bold.ttf").string();
-    std::string openSansRegularPath = GetExecDir().append("assets").append("fonts").append("opensans").append("OpenSans-Regular.ttf").string();
+    std::string openSansBoldPath = Utils::GetExecDir().append("assets").append("fonts").append("opensans").append("OpenSans-Bold.ttf").string();
+    std::string openSansRegularPath = Utils::GetExecDir().append("assets").append("fonts").append("opensans").append("OpenSans-Regular.ttf").string();
     s_OpenSansBold = io.Fonts->AddFontFromFileTTF(openSansBoldPath.c_str(), 20.0f);
     s_OpenSansRegular = io.Fonts->AddFontFromFileTTF(openSansRegularPath.c_str(), 20.0f);
     s_OpenSansRegularBig = io.Fonts->AddFontFromFileTTF(openSansRegularPath.c_str(), 24.0f);

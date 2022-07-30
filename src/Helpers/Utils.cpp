@@ -1,7 +1,10 @@
 #include "pch.h"
-#include "Core/Utils.h"
+#include "Helpers/Utils.h"
 
 #include "Core/Assert.h"
+
+namespace Utils
+{
 
 std::filesystem::path GetExecDir()
 {
@@ -18,4 +21,6 @@ std::filesystem::path GetExecDir()
     std::filesystem::path execFilePath(path);
 
     return execFilePath.parent_path();
+}
+
 }

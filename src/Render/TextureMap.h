@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Utils.h"
+#include "Helpers/Utils.h"
 #include "Render/Texture.h"
 
 class TextureMap

@@ -11,7 +11,7 @@ PathPanel::PathPanel()
     std::string textureName = "leftArrow";
 
     if (!TextureMap::TextureExists(textureName))
-        TextureMap::AddTexture(textureName, GetExecDir().append("assets").append("icons").append(textureName + ".png"));
+        TextureMap::AddTexture(textureName, Utils::GetExecDir().append("assets").append("icons").append(textureName + ".png"));
 
     m_Width = m_WindowWidth - m_Margin * 2.0f;
     m_Height = m_Margin * 2.4f;
