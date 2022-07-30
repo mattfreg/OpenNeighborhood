@@ -2,7 +2,7 @@
 
 #include <XBDM.h>
 
-class ConsoleHolder
+class ConsoleStore
 {
 public:
     using TryCallbackFn = std::function<void()>;

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Elements/Xbox.h"
 
-#include "Helpers/ConsoleHolder.h"
+#include "Helpers/ConsoleStore.h"
 #include "Helpers/LocationMover.h"
 #include "Events/AppEvent.h"
 #include "Elements/Drive.h"
@@ -14,13 +14,13 @@ Xbox::Xbox(const std::string &label, const std::string &ipAddress)
 
 void Xbox::OnClick()
 {
-    XBDM::Console &console = ConsoleHolder::GetConsole();
+    XBDM::Console &console = ConsoleStore::GetConsole();
 
     // If the current console was created by clicking on the AddXboxButton, the connection is
     // already open so no need to recreate it
     if (!console.IsConnected())
     {
-        UI::SetSuccess(ConsoleHolder::CreateConsole(m_IpAddress));
+        UI::SetSuccess(ConsoleStore::CreateConsole(m_IpAddress));
 
         if (!UI::IsGood())
         {
@@ -31,7 +31,7 @@ void Xbox::OnClick()
 
     std::vector<XBDM::Drive> drives;
 
-    bool success = ConsoleHolder::Try([&]() { drives = console.GetDrives(); });
+    bool success = ConsoleStore::Try([&]() { drives = console.GetDrives(); });
 
     if (!success)
         return;

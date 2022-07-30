@@ -3,7 +3,7 @@
 
 #include "Render/TextureMap.h"
 #include "Events/AppEvent.h"
-#include "Helpers/ConsoleHolder.h"
+#include "Helpers/ConsoleStore.h"
 #include "Helpers/LocationMover.h"
 #include "Helpers/ConfigManager.h"
 #include "Elements/File.h"
@@ -54,11 +54,11 @@ void GoToParentButton::OnClick()
         return;
     }
 
-    XBDM::Console &console = ConsoleHolder::GetConsole();
+    XBDM::Console &console = ConsoleStore::GetConsole();
     std::set<XBDM::File> files;
 
     // If the parent location ends with ':', then it's a drive and we need to add '\' at the end
-    bool success = ConsoleHolder::Try([&]() { files = console.GetDirectoryContents(parentLocation.back() == ':' ? parentLocation + '\\' : parentLocation); });
+    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(parentLocation.back() == ':' ? parentLocation + '\\' : parentLocation); });
 
     if (!success)
         return;
@@ -77,10 +77,10 @@ void GoToParentButton::OnClick()
 
 void GoToParentButton::GoToDrives()
 {
-    XBDM::Console &console = ConsoleHolder::GetConsole();
+    XBDM::Console &console = ConsoleStore::GetConsole();
     std::vector<XBDM::Drive> drives;
 
-    bool success = ConsoleHolder::Try([&]() { drives = console.GetDrives(); });
+    bool success = ConsoleStore::Try([&]() { drives = console.GetDrives(); });
 
     if (!success)
         return;

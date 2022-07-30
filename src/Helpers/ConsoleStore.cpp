@@ -1,18 +1,18 @@
 #include "pch.h"
-#include "ConsoleHolder.h"
+#include "ConsoleStore.h"
 
 #include "Render/UI.h"
 
-XBDM::Console ConsoleHolder::s_Console;
+XBDM::Console ConsoleStore::s_Console;
 
-bool ConsoleHolder::CreateConsole(const std::string &ipAddress)
+bool ConsoleStore::CreateConsole(const std::string &ipAddress)
 {
     s_Console = XBDM::Console(ipAddress);
 
     return s_Console.OpenConnection();
 }
 
-bool ConsoleHolder::Try(const TryCallbackFn &function)
+bool ConsoleStore::Try(const TryCallbackFn &function)
 {
     try
     {

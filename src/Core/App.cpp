@@ -2,7 +2,7 @@
 #include "Core/App.h"
 
 #include "Core/Assert.h"
-#include "Helpers/ConsoleHolder.h"
+#include "Helpers/ConsoleStore.h"
 
 App *App::s_Instance = nullptr;
 
@@ -30,7 +30,7 @@ void App::PushLayer(Layer *layer)
 
 void App::Close()
 {
-    XBDM::Console &console = ConsoleHolder::GetConsole();
+    XBDM::Console &console = ConsoleStore::GetConsole();
     if (console.IsConnected())
         console.CloseConnection();
 

@@ -2,7 +2,7 @@
 #include "Elements/AddXboxButton.h"
 
 #include "Render/TextureMap.h"
-#include "Helpers/ConsoleHolder.h"
+#include "Helpers/ConsoleStore.h"
 #include "Helpers/ConfigManager.h"
 #include "Events/AppEvent.h"
 #include "Elements/Xbox.h"
@@ -74,10 +74,10 @@ void AddXboxButton::OnRender()
             std::stringstream ipAddress;
             ipAddress << bytes[0] << "." << bytes[1] << "." << bytes[2] << "." << bytes[3];
 
-            UI::SetSuccess(ConsoleHolder::CreateConsole(ipAddress.str()));
+            UI::SetSuccess(ConsoleStore::CreateConsole(ipAddress.str()));
 
             if (UI::IsGood())
-                CreateXbox(ConsoleHolder::GetConsole().GetName(), ipAddress.str());
+                CreateXbox(ConsoleStore::GetConsole().GetName(), ipAddress.str());
             else
                 UI::SetErrorMessage("Couldn't find console");
 

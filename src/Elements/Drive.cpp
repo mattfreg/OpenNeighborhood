@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Elements/Drive.h"
 
-#include "Helpers/ConsoleHolder.h"
+#include "Helpers/ConsoleStore.h"
 #include "Helpers/LocationMover.h"
 #include "Events/AppEvent.h"
 #include "Elements/File.h"
@@ -17,10 +17,10 @@ void Drive::OnClick()
     // Convert the drive name to lower case
     std::transform(m_Data.Name.begin(), m_Data.Name.end(), m_Data.Name.begin(), [](unsigned char c) { return std::tolower(c); });
 
-    XBDM::Console &console = ConsoleHolder::GetConsole();
+    XBDM::Console &console = ConsoleStore::GetConsole();
     std::set<XBDM::File> files;
 
-    bool success = ConsoleHolder::Try([&]() { files = console.GetDirectoryContents(LocationMover::GetCurrentLocation() + m_Data.Name + '\\'); });
+    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(LocationMover::GetCurrentLocation() + m_Data.Name + '\\'); });
 
     if (!success)
         return;

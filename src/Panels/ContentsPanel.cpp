@@ -5,7 +5,7 @@
 
 #include "Elements/AddXboxButton.h"
 #include "Elements/Xbox.h"
-#include "Helpers/ConsoleHolder.h"
+#include "Helpers/ConsoleStore.h"
 #include "Helpers/LocationMover.h"
 #include "Helpers/ConfigManager.h"
 #include "Elements/File.h"
@@ -121,12 +121,12 @@ void ContentsPanel::DisplayContextMenu()
 
 void ContentsPanel::UpdateContents()
 {
-    XBDM::Console &console = ConsoleHolder::GetConsole();
+    XBDM::Console &console = ConsoleStore::GetConsole();
     std::set<XBDM::File> files;
     const std::string &location = LocationMover::GetCurrentLocation();
 
     // If the current location is a drive (e.g hdd:), we need to append '\' to it
-    bool success = ConsoleHolder::Try([&]() { files = console.GetDirectoryContents(location.back() == ':' ? location + '\\' : location); });
+    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(location.back() == ':' ? location + '\\' : location); });
 
     if (!success)
         return;
@@ -157,9 +157,9 @@ void ContentsPanel::Upload()
     // be destroyed by the time upload is called if it's called as the confirm
     // callback, capturing them by reference would create a crash.
     auto upload = [this, remotePath, localPath]() {
-        XBDM::Console &console = ConsoleHolder::GetConsole();
+        XBDM::Console &console = ConsoleStore::GetConsole();
 
-        bool success = ConsoleHolder::Try([&]() { console.SendFile(remotePath, localPath.string()); });
+        bool success = ConsoleStore::Try([&]() { console.SendFile(remotePath, localPath.string()); });
 
         if (success)
             UpdateContents();
@@ -184,9 +184,9 @@ void ContentsPanel::Upload()
 void ContentsPanel::CreateDirectory()
 {
     auto createDirectory = [this](const std::string &name) {
-        XBDM::Console &console = ConsoleHolder::GetConsole();
+        XBDM::Console &console = ConsoleStore::GetConsole();
 
-        bool success = ConsoleHolder::Try([&]() { console.CreateDirectory(LocationMover::GetCurrentLocation() + '\\' + name); });
+        bool success = ConsoleStore::Try([&]() { console.CreateDirectory(LocationMover::GetCurrentLocation() + '\\' + name); });
 
         if (success)
             UpdateContents();

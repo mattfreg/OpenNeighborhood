@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Elements/PathNode.h"
 
-#include "Helpers/ConsoleHolder.h"
+#include "Helpers/ConsoleStore.h"
 #include "Helpers/LocationMover.h"
 #include "Helpers/ConfigManager.h"
 #include "Panels/PathPanel.h"
@@ -30,7 +30,7 @@ void PathNode::OnClick()
     {
         LocationMover::SetCurrentLocation("\\");
 
-        if (m_Label == ConsoleHolder::GetConsole().GetName())
+        if (m_Label == ConsoleStore::GetConsole().GetName())
             GoToDrives();
         else if (m_Label == "OpenNeighborhood")
             GoToRoot();
@@ -49,11 +49,11 @@ void PathNode::OnClick()
             newXboxLocation += '\\';
     }
 
-    XBDM::Console &console = ConsoleHolder::GetConsole();
+    XBDM::Console &console = ConsoleStore::GetConsole();
     std::set<XBDM::File> files;
 
     // If the new location ends with ':', then it's a drive and we need to add '\' at the end
-    bool success = ConsoleHolder::Try([&]() { files = console.GetDirectoryContents(newXboxLocation.back() == ':' ? newXboxLocation + '\\' : newXboxLocation); });
+    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(newXboxLocation.back() == ':' ? newXboxLocation + '\\' : newXboxLocation); });
 
     if (!success)
         return;
@@ -72,10 +72,10 @@ void PathNode::OnClick()
 
 void PathNode::GoToDrives()
 {
-    XBDM::Console &console = ConsoleHolder::GetConsole();
+    XBDM::Console &console = ConsoleStore::GetConsole();
     std::vector<XBDM::Drive> drives;
 
-    bool success = ConsoleHolder::Try([&]() { drives = console.GetDrives(); });
+    bool success = ConsoleStore::Try([&]() { drives = console.GetDrives(); });
 
     if (!success)
         return;

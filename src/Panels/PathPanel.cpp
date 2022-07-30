@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Panels/PathPanel.h"
 
-#include "Helpers/ConsoleHolder.h"
+#include "Helpers/ConsoleStore.h"
 #include "Helpers/LocationMover.h"
 #include "Render/UI.h"
 #include "Render/TextureMap.h"
@@ -103,7 +103,7 @@ void PathPanel::UpdateDirectories()
     // If the current position is at the drive list or further (inside of a drive),
     // add a PathNode with the console name
     if (LocationMover::GetCurrentPosition() >= LocationMover::Position::DriveList)
-        m_PathNodes.emplace_back(ConsoleHolder::GetConsole().GetName(), std::string::npos, this);
+        m_PathNodes.emplace_back(ConsoleStore::GetConsole().GetName(), std::string::npos, this);
 
     if (LocationMover::GetCurrentPosition() < LocationMover::Position::DriveContents)
         return;
