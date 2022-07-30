@@ -6,7 +6,7 @@
 namespace fs = std::filesystem;
 
 fs::path ConfigManager::s_ConfigFilePath = Utils::GetExecDir() /= "OpenNeighborhood.ini";
-ConfigManager::ConfigFile ConfigManager::s_ConfigFile = ConfigManager::ConfigFile(ConfigManager::s_ConfigFilePath);
+ConfigManager::ConfigFile ConfigManager::s_ConfigFile = ConfigManager::ConfigFile(ConfigManager::s_ConfigFilePath.string());
 ConfigManager::Config ConfigManager::s_Config;
 
 void ConfigManager::AddXbox(const Xbox &xbox)
