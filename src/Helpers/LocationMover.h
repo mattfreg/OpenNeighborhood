@@ -1,8 +1,6 @@
 #pragma once
 
-#include <XBDM.h>
-
-class XboxManager
+class LocationMover
 {
 public:
     enum class Position
@@ -11,12 +9,6 @@ public:
         DriveList,
         DriveContents,
     };
-
-    using TryCallbackFn = std::function<void()>;
-
-    static bool CreateConsole(const std::string &ipAddress);
-
-    inline static XBDM::Console &GetConsole() { return s_Console; }
 
     inline static const std::string &GetCurrentLocation() { return s_CurrentLocation; }
 
@@ -30,10 +22,7 @@ public:
 
     inline static void SetCurrentPosition(Position position) { s_CurrentPosition = position; }
 
-    static bool Try(const TryCallbackFn &function);
-
 private:
-    static XBDM::Console s_Console;
     static std::string s_CurrentLocation;
     static Position s_CurrentPosition;
 };

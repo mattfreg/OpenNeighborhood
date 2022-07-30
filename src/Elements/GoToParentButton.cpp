@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "Elements/GoToParentButton.h"
 
-#include "Render/TextureManager.h"
+#include "Render/TextureMap.h"
 #include "Events/AppEvent.h"
-#include "Xbox/XboxManager.h"
-#include "Core/ConfigManager.h"
+#include "Helpers/ConsoleHolder.h"
+#include "Helpers/LocationMover.h"
+#include "Helpers/ConfigManager.h"
 #include "Elements/File.h"
 #include "Elements/Drive.h"
 #include "Elements/AddXboxButton.h"
@@ -14,14 +15,14 @@
 GoToParentButton::GoToParentButton()
     : Element("", "leftArrow")
 {
-    auto texture = TextureManager::GetTexture(m_TextureName);
+    auto texture = TextureMap::GetTexture(m_TextureName);
     m_Width = texture->GetWidth();
     m_Height = texture->GetHeight();
 }
 
 void GoToParentButton::OnRender()
 {
-    auto texture = TextureManager::GetTexture(m_TextureName);
+    auto texture = TextureMap::GetTexture(m_TextureName);
 
     if (ImGui::ImageButton(reinterpret_cast<void *>(static_cast<intptr_t>(texture->GetTextureID())), ImVec2(static_cast<float>(m_Width), static_cast<float>(m_Height))))
         OnClick();
@@ -29,23 +30,23 @@ void GoToParentButton::OnRender()
 
 void GoToParentButton::OnClick()
 {
-    const std::string &currentLocation = XboxManager::GetCurrentLocation();
-    std::string parentLocation = XboxManager::GetParent();
+    const std::string &currentLocation = LocationMover::GetCurrentLocation();
+    std::string parentLocation = LocationMover::GetParent();
 
     if (parentLocation == "\\")
     {
         // If currentLocation is not the drive root yet we need to call GoToParent to set it to the current
         // drive root but we don't want to do it the next times we click on the GoToParentButton
         if (currentLocation != "\\")
-            XboxManager::GoToParent();
+            LocationMover::GoToParent();
 
-        XboxManager::Position currentPosition = XboxManager::GetCurrentPosition();
+        LocationMover::Position currentPosition = LocationMover::GetCurrentPosition();
         switch (currentPosition)
         {
-        case XboxManager::Position::DriveContents:
+        case LocationMover::Position::DriveContents:
             GoToDrives();
             break;
-        case XboxManager::Position::DriveList:
+        case LocationMover::Position::DriveList:
             GoToRoot();
             break;
         }
@@ -53,16 +54,16 @@ void GoToParentButton::OnClick()
         return;
     }
 
-    XBDM::Console &xbox = XboxManager::GetConsole();
+    XBDM::Console &console = ConsoleHolder::GetConsole();
     std::set<XBDM::File> files;
 
     // If the parent location ends with ':', then it's a drive and we need to add '\' at the end
-    bool success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(parentLocation.back() == ':' ? parentLocation + '\\' : parentLocation); });
+    bool success = ConsoleHolder::Try([&]() { files = console.GetDirectoryContents(parentLocation.back() == ':' ? parentLocation + '\\' : parentLocation); });
 
     if (!success)
         return;
 
-    XboxManager::GoToParent();
+    LocationMover::GoToParent();
 
     auto fileElements = std::vector<Ref<Element>>();
     fileElements.reserve(files.size());
@@ -76,15 +77,15 @@ void GoToParentButton::OnClick()
 
 void GoToParentButton::GoToDrives()
 {
-    XBDM::Console &xbox = XboxManager::GetConsole();
+    XBDM::Console &console = ConsoleHolder::GetConsole();
     std::vector<XBDM::Drive> drives;
 
-    bool success = XboxManager::Try([&]() { drives = xbox.GetDrives(); });
+    bool success = ConsoleHolder::Try([&]() { drives = console.GetDrives(); });
 
     if (!success)
         return;
 
-    XboxManager::SetCurrentPosition(XboxManager::Position::DriveList);
+    LocationMover::SetCurrentPosition(LocationMover::Position::DriveList);
 
     auto driveElements = std::vector<Ref<Element>>();
     driveElements.reserve(drives.size());
@@ -104,11 +105,11 @@ void GoToParentButton::GoToRoot()
 
     ConfigManager::Config config = ConfigManager::GetConfig();
 
-    for (auto &[consoleName, _] : config)
-        if (config.get(consoleName).has("ip_address"))
-            elements.emplace_back(CreateRef<Xbox>(consoleName, config.get(consoleName).get("ip_address")));
+    for (auto &[xboxName, _] : config)
+        if (config.get(xboxName).has("ip_address"))
+            elements.emplace_back(CreateRef<Xbox>(xboxName, config.get(xboxName).get("ip_address")));
 
-    XboxManager::SetCurrentPosition(XboxManager::Position::Root);
+    LocationMover::SetCurrentPosition(LocationMover::Position::Root);
 
     ContentsChangeEvent event(elements);
     m_EventCallback(event);

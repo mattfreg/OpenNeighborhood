@@ -5,8 +5,9 @@
 
 #include "Elements/AddXboxButton.h"
 #include "Elements/Xbox.h"
-#include "Xbox/XboxManager.h"
-#include "Core/ConfigManager.h"
+#include "Helpers/ConsoleHolder.h"
+#include "Helpers/LocationMover.h"
+#include "Helpers/ConfigManager.h"
 #include "Elements/File.h"
 #include "Render/UI.h"
 
@@ -16,9 +17,9 @@ ContentsPanel::ContentsPanel()
 
     ConfigManager::Config config = ConfigManager::GetConfig();
 
-    for (auto &[consoleName, _] : config)
-        if (config.get(consoleName).has("ip_address"))
-            m_Elements.emplace_back(CreateRef<Xbox>(consoleName, config.get(consoleName).get("ip_address")));
+    for (auto &[xboxName, _] : config)
+        if (config.get(xboxName).has("ip_address"))
+            m_Elements.emplace_back(CreateRef<Xbox>(xboxName, config.get(xboxName).get("ip_address")));
 }
 
 void ContentsPanel::OnRender()
@@ -97,7 +98,7 @@ void ContentsPanel::InjectNewElements()
 void ContentsPanel::DisplayContextMenu()
 {
     // If we are not inside of a drive yet, we don't want to allow uploading nor creating a directory
-    if (XboxManager::GetCurrentPosition() != XboxManager::Position::DriveContents)
+    if (LocationMover::GetCurrentPosition() != LocationMover::Position::DriveContents)
         return;
 
     if (ImGui::BeginPopupContextWindow())
@@ -120,12 +121,12 @@ void ContentsPanel::DisplayContextMenu()
 
 void ContentsPanel::UpdateContents()
 {
-    XBDM::Console &xbox = XboxManager::GetConsole();
+    XBDM::Console &console = ConsoleHolder::GetConsole();
     std::set<XBDM::File> files;
-    const std::string &location = XboxManager::GetCurrentLocation();
+    const std::string &location = LocationMover::GetCurrentLocation();
 
     // If the current location is a drive (e.g hdd:), we need to append '\' to it
-    bool success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(location.back() == ':' ? location + '\\' : location); });
+    bool success = ConsoleHolder::Try([&]() { files = console.GetDirectoryContents(location.back() == ':' ? location + '\\' : location); });
 
     if (!success)
         return;
@@ -150,15 +151,15 @@ void ContentsPanel::Upload()
 
     std::filesystem::path localPath = outPath.get();
     std::string fileName = localPath.filename().string();
-    std::string remotePath = XboxManager::GetCurrentLocation() + '\\' + fileName;
+    std::string remotePath = LocationMover::GetCurrentLocation() + '\\' + fileName;
 
     // It's important to capture remotePath and localPath by copy because they will
     // be destroyed by the time upload is called if it's called as the confirm
     // callback, capturing them by reference would create a crash.
     auto upload = [this, remotePath, localPath]() {
-        XBDM::Console &xbox = XboxManager::GetConsole();
+        XBDM::Console &console = ConsoleHolder::GetConsole();
 
-        bool success = XboxManager::Try([&]() { xbox.SendFile(remotePath, localPath.string()); });
+        bool success = ConsoleHolder::Try([&]() { console.SendFile(remotePath, localPath.string()); });
 
         if (success)
             UpdateContents();
@@ -183,9 +184,9 @@ void ContentsPanel::Upload()
 void ContentsPanel::CreateDirectory()
 {
     auto createDirectory = [this](const std::string &name) {
-        XBDM::Console &xbox = XboxManager::GetConsole();
+        XBDM::Console &console = ConsoleHolder::GetConsole();
 
-        bool success = XboxManager::Try([&]() { xbox.CreateDirectory(XboxManager::GetCurrentLocation() + '\\' + name); });
+        bool success = ConsoleHolder::Try([&]() { console.CreateDirectory(LocationMover::GetCurrentLocation() + '\\' + name); });
 
         if (success)
             UpdateContents();

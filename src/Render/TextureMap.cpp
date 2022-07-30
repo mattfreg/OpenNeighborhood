@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "Render/TextureManager.h"
+#include "Render/TextureMap.h"
 
 #include "Core/Assert.h"
 
-std::unordered_map<std::string, Ref<Texture>> TextureManager::s_Textures;
-uint32_t TextureManager::s_TextureCount = 0;
+std::unordered_map<std::string, Ref<Texture>> TextureMap::s_Textures;
+uint32_t TextureMap::s_TextureCount = 0;
 
-void TextureManager::AddTexture(const std::string &textureName, const std::filesystem::path &filePath)
+void TextureMap::AddTexture(const std::string &textureName, const std::filesystem::path &filePath)
 {
     ASSERT(s_Textures.find(textureName) == s_Textures.end(), "Texture with name: %s already exists!", textureName.c_str());
 
@@ -15,7 +15,7 @@ void TextureManager::AddTexture(const std::string &textureName, const std::files
     s_TextureCount++;
 }
 
-Ref<Texture> TextureManager::GetTexture(const std::string &textureName)
+Ref<Texture> TextureMap::GetTexture(const std::string &textureName)
 {
     auto texture = s_Textures.find(textureName);
 
@@ -24,7 +24,7 @@ Ref<Texture> TextureManager::GetTexture(const std::string &textureName)
     return texture->second;
 }
 
-bool TextureManager::TextureExists(const std::string &textureName)
+bool TextureMap::TextureExists(const std::string &textureName)
 {
     return s_Textures.find(textureName) != s_Textures.end();
 }

@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "Elements/Xbox.h"
 
-#include "Xbox/XboxManager.h"
+#include "Helpers/ConsoleHolder.h"
+#include "Helpers/LocationMover.h"
 #include "Events/AppEvent.h"
 #include "Elements/Drive.h"
 #include "Render/UI.h"
@@ -13,13 +14,13 @@ Xbox::Xbox(const std::string &label, const std::string &ipAddress)
 
 void Xbox::OnClick()
 {
-    XBDM::Console &xbox = XboxManager::GetConsole();
+    XBDM::Console &console = ConsoleHolder::GetConsole();
 
-    // If the current xbox was created by clicking on the AddXboxButton, the connection is
+    // If the current console was created by clicking on the AddXboxButton, the connection is
     // already open so no need to recreate it
-    if (!xbox.IsConnected())
+    if (!console.IsConnected())
     {
-        UI::SetSuccess(XboxManager::CreateConsole(m_IpAddress));
+        UI::SetSuccess(ConsoleHolder::CreateConsole(m_IpAddress));
 
         if (!UI::IsGood())
         {
@@ -30,12 +31,12 @@ void Xbox::OnClick()
 
     std::vector<XBDM::Drive> drives;
 
-    bool success = XboxManager::Try([&]() { drives = xbox.GetDrives(); });
+    bool success = ConsoleHolder::Try([&]() { drives = console.GetDrives(); });
 
     if (!success)
         return;
 
-    XboxManager::SetCurrentPosition(XboxManager::Position::DriveList);
+    LocationMover::SetCurrentPosition(LocationMover::Position::DriveList);
 
     auto driveElements = std::vector<Ref<Element>>();
     driveElements.reserve(drives.size());

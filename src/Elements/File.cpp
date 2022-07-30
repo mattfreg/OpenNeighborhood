@@ -3,7 +3,8 @@
 
 #include <nfd.hpp>
 
-#include "Xbox/XboxManager.h"
+#include "Helpers/ConsoleHolder.h"
+#include "Helpers/LocationMover.h"
 #include "Events/AppEvent.h"
 #include "Render/UI.h"
 
@@ -23,15 +24,15 @@ void File::OnClick()
 
 void File::OpenDirectory()
 {
-    XBDM::Console &xbox = XboxManager::GetConsole();
+    XBDM::Console &console = ConsoleHolder::GetConsole();
     std::set<XBDM::File> files;
 
-    bool success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name); });
+    bool success = ConsoleHolder::Try([&]() { files = console.GetDirectoryContents(LocationMover::GetCurrentLocation() + '\\' + m_Data.Name); });
 
     if (!success)
         return;
 
-    XboxManager::GoToDirectory(m_Data.Name);
+    LocationMover::GoToDirectory(m_Data.Name);
 
     auto fileElements = std::vector<Ref<Element>>();
     fileElements.reserve(files.size());
@@ -45,8 +46,8 @@ void File::OpenDirectory()
 
 void File::LaunchXex()
 {
-    XBDM::Console &xbox = XboxManager::GetConsole();
-    xbox.LaunchXex(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name);
+    XBDM::Console &console = ConsoleHolder::GetConsole();
+    console.LaunchXex(LocationMover::GetCurrentLocation() + '\\' + m_Data.Name);
 }
 
 void File::Download()
@@ -77,17 +78,17 @@ void File::Download()
 
     std::filesystem::path localPath = outPath.get();
 
-    XBDM::Console &xbox = XboxManager::GetConsole();
+    XBDM::Console &console = ConsoleHolder::GetConsole();
 
-    XboxManager::Try([&]() { xbox.ReceiveFile(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name, localPath.string()); });
+    ConsoleHolder::Try([&]() { console.ReceiveFile(LocationMover::GetCurrentLocation() + '\\' + m_Data.Name, localPath.string()); });
 }
 
 void File::Delete()
 {
     auto Delete = [&]() {
-        XBDM::Console &xbox = XboxManager::GetConsole();
+        XBDM::Console &console = ConsoleHolder::GetConsole();
 
-        bool success = XboxManager::Try([&]() { xbox.DeleteFile(XboxManager::GetCurrentLocation() + '\\' + m_Data.Name, m_Data.IsDirectory); });
+        bool success = ConsoleHolder::Try([&]() { console.DeleteFile(LocationMover::GetCurrentLocation() + '\\' + m_Data.Name, m_Data.IsDirectory); });
 
         if (success)
             UpdateContents();
@@ -101,10 +102,10 @@ void File::Delete()
 void File::Rename()
 {
     auto rename = [&](const std::string &name) {
-        XBDM::Console &xbox = XboxManager::GetConsole();
-        const std::string &location = XboxManager::GetCurrentLocation();
+        XBDM::Console &console = ConsoleHolder::GetConsole();
+        const std::string &location = LocationMover::GetCurrentLocation();
 
-        bool success = XboxManager::Try([&]() { xbox.RenameFile(location + '\\' + m_Data.Name, location + '\\' + name); });
+        bool success = ConsoleHolder::Try([&]() { console.RenameFile(location + '\\' + m_Data.Name, location + '\\' + name); });
 
         if (success)
             UpdateContents();
@@ -118,12 +119,12 @@ void File::Rename()
 
 void File::UpdateContents()
 {
-    XBDM::Console &xbox = XboxManager::GetConsole();
+    XBDM::Console &console = ConsoleHolder::GetConsole();
     std::set<XBDM::File> files;
-    const std::string &location = XboxManager::GetCurrentLocation();
+    const std::string &location = LocationMover::GetCurrentLocation();
 
     // If the current location is a drive (e.g hdd:), we need to append '\' to it
-    bool success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(location.back() == ':' ? location + '\\' : location); });
+    bool success = ConsoleHolder::Try([&]() { files = console.GetDirectoryContents(location.back() == ':' ? location + '\\' : location); });
 
     if (!success)
         return;

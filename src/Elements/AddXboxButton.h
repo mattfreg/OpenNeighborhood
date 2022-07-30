@@ -11,5 +11,5 @@ public:
     virtual void OnClick() override;
 
 private:
-    void CreateXbox(const std::string &consoleName, const std::string &ipAddress);
+    void CreateXbox(const std::string &xboxName, const std::string &ipAddress);
 };

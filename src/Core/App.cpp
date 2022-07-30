@@ -2,7 +2,7 @@
 #include "Core/App.h"
 
 #include "Core/Assert.h"
-#include "Xbox/XboxManager.h"
+#include "Helpers/ConsoleHolder.h"
 
 App *App::s_Instance = nullptr;
 
@@ -30,9 +30,9 @@ void App::PushLayer(Layer *layer)
 
 void App::Close()
 {
-    XBDM::Console &xbox = XboxManager::GetConsole();
-    if (xbox.IsConnected())
-        xbox.CloseConnection();
+    XBDM::Console &console = ConsoleHolder::GetConsole();
+    if (console.IsConnected())
+        console.CloseConnection();
 
     m_Running = false;
 }

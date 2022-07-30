@@ -3,7 +3,7 @@
 #include "Core/Utils.h"
 #include "Render/Texture.h"
 
-class TextureManager
+class TextureMap
 {
 public:
     static void AddTexture(const std::string &textureName, const std::filesystem::path &filePath);

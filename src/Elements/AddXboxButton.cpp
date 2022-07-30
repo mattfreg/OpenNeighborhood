@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "Elements/AddXboxButton.h"
 
-#include "Render/TextureManager.h"
-#include "Xbox/XboxManager.h"
-#include "Core/ConfigManager.h"
+#include "Render/TextureMap.h"
+#include "Helpers/ConsoleHolder.h"
+#include "Helpers/ConfigManager.h"
 #include "Events/AppEvent.h"
 #include "Elements/Xbox.h"
 #include "Render/UI.h"
@@ -15,7 +15,7 @@ AddXboxButton::AddXboxButton()
 
 void AddXboxButton::OnRender()
 {
-    auto texture = TextureManager::GetTexture(m_TextureName);
+    auto texture = TextureMap::GetTexture(m_TextureName);
 
     if (ImGui::ImageButtonWithText(reinterpret_cast<void *>(static_cast<intptr_t>(texture->GetTextureID())), ImVec2(texture->GetWidth(), texture->GetHeight()), ImVec2(m_Width, m_Height), m_Label.c_str(), ImVec2(m_Padding, m_Padding)))
         if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
@@ -74,10 +74,10 @@ void AddXboxButton::OnRender()
             std::stringstream ipAddress;
             ipAddress << bytes[0] << "." << bytes[1] << "." << bytes[2] << "." << bytes[3];
 
-            UI::SetSuccess(XboxManager::CreateConsole(ipAddress.str()));
+            UI::SetSuccess(ConsoleHolder::CreateConsole(ipAddress.str()));
 
             if (UI::IsGood())
-                CreateXbox(XboxManager::GetConsole().GetName(), ipAddress.str());
+                CreateXbox(ConsoleHolder::GetConsole().GetName(), ipAddress.str());
             else
                 UI::SetErrorMessage("Couldn't find console");
 
@@ -99,10 +99,10 @@ void AddXboxButton::OnClick()
     ImGui::OpenPopup("Add Xbox 360?");
 }
 
-void AddXboxButton::CreateXbox(const std::string &consoleName, const std::string &ipAddress)
+void AddXboxButton::CreateXbox(const std::string &xboxName, const std::string &ipAddress)
 {
     auto elements = std::vector<Ref<Element>>();
-    Xbox xbox(consoleName, ipAddress);
+    Xbox xbox(xboxName, ipAddress);
 
     elements.emplace_back(CreateRef<Xbox>(xbox));
 

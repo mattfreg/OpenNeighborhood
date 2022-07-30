@@ -1,16 +1,17 @@
 #include "pch.h"
 #include "Panels/PathPanel.h"
 
-#include "Xbox/XboxManager.h"
+#include "Helpers/ConsoleHolder.h"
+#include "Helpers/LocationMover.h"
 #include "Render/UI.h"
-#include "Render/TextureManager.h"
+#include "Render/TextureMap.h"
 
 PathPanel::PathPanel()
 {
     std::string textureName = "leftArrow";
 
-    if (!TextureManager::TextureExists(textureName))
-        TextureManager::AddTexture(textureName, GetExecDir().append("assets").append("icons").append(textureName + ".png"));
+    if (!TextureMap::TextureExists(textureName))
+        TextureMap::AddTexture(textureName, GetExecDir().append("assets").append("icons").append(textureName + ".png"));
 
     m_Width = m_WindowWidth - m_Margin * 2.0f;
     m_Height = m_Margin * 2.4f;
@@ -42,7 +43,7 @@ void PathPanel::OnRender()
 
     ImGuiStyle &style = ImGui::GetStyle();
     ImVec4 &borderColor = style.Colors[ImGuiCol_Border];
-    auto texture = TextureManager::GetTexture(m_GoToParentButton.GetTextureName());
+    auto texture = TextureMap::GetTexture(m_GoToParentButton.GetTextureName());
     float lineX = m_Margin + static_cast<float>(texture->GetWidth()) + style.ItemSpacing.x * 3.0f;
     ImDrawList *drawList = ImGui::GetWindowDrawList();
     drawList->AddLine(
@@ -101,13 +102,13 @@ void PathPanel::UpdateDirectories()
 
     // If the current position is at the drive list or further (inside of a drive),
     // add a PathNode with the console name
-    if (XboxManager::GetCurrentPosition() >= XboxManager::Position::DriveList)
-        m_PathNodes.emplace_back(XboxManager::GetConsole().GetName(), std::string::npos, this);
+    if (LocationMover::GetCurrentPosition() >= LocationMover::Position::DriveList)
+        m_PathNodes.emplace_back(ConsoleHolder::GetConsole().GetName(), std::string::npos, this);
 
-    if (XboxManager::GetCurrentPosition() < XboxManager::Position::DriveContents)
+    if (LocationMover::GetCurrentPosition() < LocationMover::Position::DriveContents)
         return;
 
-    std::string locationCopy = XboxManager::GetCurrentLocation() + '\\';
+    std::string locationCopy = LocationMover::GetCurrentLocation() + '\\';
     size_t pos = 0;
 
     // Split the current location with '\' and create a PathNode for each directory

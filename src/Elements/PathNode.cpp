@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "Elements/PathNode.h"
 
-#include "Xbox/XboxManager.h"
-#include "Core/ConfigManager.h"
+#include "Helpers/ConsoleHolder.h"
+#include "Helpers/LocationMover.h"
+#include "Helpers/ConfigManager.h"
 #include "Panels/PathPanel.h"
 #include "Elements/File.h"
 #include "Elements/Drive.h"
@@ -27,9 +28,9 @@ void PathNode::OnClick()
     // but the console itself or the App root (OpenNeighborhood)
     if (m_PosInPath == std::string::npos)
     {
-        XboxManager::SetCurrentLocation("\\");
+        LocationMover::SetCurrentLocation("\\");
 
-        if (m_Label == XboxManager::GetConsole().GetName())
+        if (m_Label == ConsoleHolder::GetConsole().GetName())
             GoToDrives();
         else if (m_Label == "OpenNeighborhood")
             GoToRoot();
@@ -48,16 +49,16 @@ void PathNode::OnClick()
             newXboxLocation += '\\';
     }
 
-    XBDM::Console &xbox = XboxManager::GetConsole();
+    XBDM::Console &console = ConsoleHolder::GetConsole();
     std::set<XBDM::File> files;
 
     // If the new location ends with ':', then it's a drive and we need to add '\' at the end
-    bool success = XboxManager::Try([&]() { files = xbox.GetDirectoryContents(newXboxLocation.back() == ':' ? newXboxLocation + '\\' : newXboxLocation); });
+    bool success = ConsoleHolder::Try([&]() { files = console.GetDirectoryContents(newXboxLocation.back() == ':' ? newXboxLocation + '\\' : newXboxLocation); });
 
     if (!success)
         return;
 
-    XboxManager::SetCurrentLocation(newXboxLocation);
+    LocationMover::SetCurrentLocation(newXboxLocation);
 
     auto fileElements = std::vector<Ref<Element>>();
     fileElements.reserve(files.size());
@@ -71,15 +72,15 @@ void PathNode::OnClick()
 
 void PathNode::GoToDrives()
 {
-    XBDM::Console &xbox = XboxManager::GetConsole();
+    XBDM::Console &console = ConsoleHolder::GetConsole();
     std::vector<XBDM::Drive> drives;
 
-    bool success = XboxManager::Try([&]() { drives = xbox.GetDrives(); });
+    bool success = ConsoleHolder::Try([&]() { drives = console.GetDrives(); });
 
     if (!success)
         return;
 
-    XboxManager::SetCurrentPosition(XboxManager::Position::DriveList);
+    LocationMover::SetCurrentPosition(LocationMover::Position::DriveList);
 
     auto driveElements = std::vector<Ref<Element>>();
     driveElements.reserve(drives.size());
@@ -99,11 +100,11 @@ void PathNode::GoToRoot()
 
     ConfigManager::Config config = ConfigManager::GetConfig();
 
-    for (auto &[consoleName, _] : config)
-        if (config.get(consoleName).has("ip_address"))
-            elements.emplace_back(CreateRef<Xbox>(consoleName, config.get(consoleName).get("ip_address")));
+    for (auto &[xboxName, _] : config)
+        if (config.get(xboxName).has("ip_address"))
+            elements.emplace_back(CreateRef<Xbox>(xboxName, config.get(xboxName).get("ip_address")));
 
-    XboxManager::SetCurrentPosition(XboxManager::Position::Root);
+    LocationMover::SetCurrentPosition(LocationMover::Position::Root);
 
     ContentsChangeEvent event(elements);
     m_EventCallback(event);
