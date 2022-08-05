@@ -15,7 +15,7 @@ public:
         DriveContents,
     };
 
-    inline static const std::string &GetCurrentConsoleLocation() { return s_CurrentConsoleLocation; }
+    static std::string GetCurrentConsoleLocation();
 
     inline static void SetCurrentConsoleLocation(const std::string &location) { s_CurrentConsoleLocation = location; }
 

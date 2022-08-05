@@ -108,17 +108,17 @@ void PathPanel::UpdateDirectories()
     if (LocationMover::GetCurrentAppLocation() < LocationMover::AppLocation::DriveContents)
         return;
 
-    std::string consoleLocationCopy = LocationMover::GetCurrentConsoleLocation() + '\\';
+    std::string consoleLocation = LocationMover::GetCurrentConsoleLocation() + '\\';
     size_t pos = 0;
 
     // Split the current location with '\' and create a PathNode for each directory
-    while ((pos = consoleLocationCopy.find('\\')) != std::string::npos)
+    while ((pos = consoleLocation.find('\\')) != std::string::npos)
     {
-        std::string directory = consoleLocationCopy.substr(0, pos);
+        std::string directory = consoleLocation.substr(0, pos);
 
         if (!directory.empty())
             m_PathNodes.emplace_back(directory, m_PathNodes.size(), this);
 
-        consoleLocationCopy.erase(0, pos + 1);
+        consoleLocation.erase(0, pos + 1);
     }
 }

@@ -30,7 +30,7 @@ void GoToParentButton::OnRender()
 
 void GoToParentButton::OnClick()
 {
-    const std::string &currentConsoleLocation = LocationMover::GetCurrentConsoleLocation();
+    std::string currentConsoleLocation = LocationMover::GetCurrentConsoleLocation();
     std::string parentConsoleLocation = LocationMover::GetParent();
 
     if (parentConsoleLocation == "\\")

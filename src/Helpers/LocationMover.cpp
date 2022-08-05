@@ -4,6 +4,14 @@
 std::string LocationMover::s_CurrentConsoleLocation = "\\";
 LocationMover::AppLocation LocationMover::s_CurrentAppLocation = LocationMover::AppLocation::Root;
 
+std::string LocationMover::GetCurrentConsoleLocation()
+{
+    // XBDM expects paths to have the following format:  <drive>:\Path\To\File
+    // but s_CurrentConsoleLocation is like so:         \<drive>:\Path\To\File
+    // so we need to remove the first backslash
+    return s_CurrentConsoleLocation.substr(1);
+}
+
 const std::string &LocationMover::GoToDirectory(const std::string &directory)
 {
     // If the directory doesn't already start with '\' and if we are not at the root,

@@ -117,7 +117,7 @@ void ContentsPanel::UpdateContents()
 {
     XBDM::Console &console = ConsoleStore::GetConsole();
     std::set<XBDM::File> files;
-    const std::string &consoleLocation = LocationMover::GetCurrentConsoleLocation();
+    std::string consoleLocation = LocationMover::GetCurrentConsoleLocation();
 
     // If the current location is a drive (e.g hdd:), we need to append '\' to it
     bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(consoleLocation.back() == ':' ? consoleLocation + '\\' : consoleLocation); });
