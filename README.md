@@ -17,6 +17,13 @@ Home | Root of Hdd
 **There are no prebuilt binaries for any platform at the moment, the only way to use OpenNeighborhood is to compile it from source.**
 
 
+## Downloading the repository
+
+This repository has submodules so make sure to clone with the `--recursive` flag like so:
+```
+git clone --recursive git@github.com:ClementDreptin/OpenNeighborhood.git
+```
+
 ## Compiling
 
 ### Generating the project files / Makefiles
