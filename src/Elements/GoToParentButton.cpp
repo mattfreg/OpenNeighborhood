@@ -43,15 +43,10 @@ void GoToParentButton::OnClick()
         std::vector<Ref<Element>> elements;
 
         LocationMover::AppLocation currentAppLocation = LocationMover::GetCurrentAppLocation();
-        switch (currentAppLocation)
-        {
-        case LocationMover::AppLocation::DriveContents:
+        if (currentAppLocation == LocationMover::AppLocation::DriveContents)
             elements = UI::CreateDriveElements();
-            break;
-        case LocationMover::AppLocation::DriveList:
+        else if (currentAppLocation == LocationMover::AppLocation::DriveList)
             elements = UI::CreateRootElements();
-            break;
-        }
 
         if (elements.empty())
             return;

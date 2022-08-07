@@ -10,8 +10,7 @@
 #include "Render/UI.h"
 
 File::File(const XBDM::File &data)
-    : m_Data(data), Element(data.Name, data.IsDirectory ? "directory" : data.IsXex ? "xex"
-                                                                                   : "file")
+    : Element(data.Name, data.IsDirectory ? "directory" : data.IsXex ? "xex" : "file"), m_Data(data)
 {
 }
 

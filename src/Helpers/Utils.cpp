@@ -16,7 +16,7 @@ std::filesystem::path GetExecDir()
 #else
     size_t read = readlink("/proc/self/exe", path, MAX_SIZE);
     (void)read;
-    ASSERT(read != -1, "Couldn't get the execution directory!");
+    ASSERT(static_cast<int>(read) != -1, "Couldn't get the execution directory!");
 #endif
 
     std::filesystem::path execFilePath(path);

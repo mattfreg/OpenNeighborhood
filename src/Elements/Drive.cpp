@@ -8,7 +8,7 @@
 #include "Render/UI.h"
 
 Drive::Drive(const XBDM::Drive &data)
-    : m_Data(data), Element(data.FriendlyName, "drive")
+    : Element(data.FriendlyName, "drive"), m_Data(data)
 {
 }
 

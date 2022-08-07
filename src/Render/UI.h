@@ -43,7 +43,7 @@ public:
 
     inline static void SetInputTextCallback(const InputTextCallbackFn &callback) { s_InputTextCallback = callback; }
 
-    inline static void SetInputTextDefaultValue(const std::string &defaultValue) { strncpy(s_InputTextBuffer, defaultValue.c_str(), sizeof(s_InputTextBuffer)); }
+    inline static void SetInputTextDefaultValue(const std::string &defaultValue) { strncpy(s_InputTextBuffer, defaultValue.c_str(), sizeof(s_InputTextBuffer) - 1); }
 
     inline static ImFont *GetBoldFont() { return s_OpenSansBold; }
 

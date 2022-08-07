@@ -12,7 +12,7 @@
 #include "Render/UI.h"
 
 PathNode::PathNode(const std::string &label, size_t posInPath, PathPanel *pathPanel)
-    : m_PosInPath(posInPath), m_PathPanel(pathPanel), Element(label, "")
+    : Element(label, ""), m_PosInPath(posInPath), m_PathPanel(pathPanel)
 {
 }
 

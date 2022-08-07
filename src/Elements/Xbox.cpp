@@ -8,7 +8,7 @@
 #include "Render/UI.h"
 
 Xbox::Xbox(const std::string &label, const std::string &ipAddress)
-    : m_IpAddress(ipAddress), Element(label, "xbox")
+    : Element(label, "xbox"), m_IpAddress(ipAddress)
 {
 }
 
