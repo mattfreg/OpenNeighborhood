@@ -38,6 +38,9 @@ workspace "OpenNeighborhood"
   targetdir "%{wks.location}/bin/%{cfg.buildcfg}"
   objdir "%{wks.location}/obj"
 
+  warnings "Extra"
+  flags "FatalWarnings"
+
   architecture "x86_64"
 
   configurations {

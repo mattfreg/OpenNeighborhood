@@ -15,6 +15,7 @@ std::filesystem::path GetExecDir()
     GetModuleFileNameA(NULL, path, MAX_SIZE);
 #else
     size_t read = readlink("/proc/self/exe", path, MAX_SIZE);
+    (void)read;
     ASSERT(read != -1, "Couldn't get the execution directory!");
 #endif
 

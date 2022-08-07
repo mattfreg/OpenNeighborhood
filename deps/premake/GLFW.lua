@@ -20,6 +20,8 @@ function GLFW:project()
   kind "StaticLib"
   language "C"
 
+  warnings "Default"
+
   files {
     path.join(includedir, "GLFW", "glfw3.h"),
     path.join(includedir, "GLFW", "glfw3native.h"),

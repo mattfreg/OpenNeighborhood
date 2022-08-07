@@ -3,6 +3,7 @@
 
 #include <nfd.hpp>
 
+#include "Core/PlatformDetector.h"
 #include "Helpers/ConsoleStore.h"
 #include "Helpers/LocationMover.h"
 #include "Events/AppEvent.h"
@@ -59,7 +60,11 @@ void File::Download()
     auto &filterName = extension;
 
     // Convert the filter name to lower case
-    std::transform(filterName.begin(), filterName.end(), filterName.begin(), [](auto c) { return std::toupper(c); });
+#ifdef PLATFORM_WINDOWS
+    std::for_each(filterName.begin(), filterName.end(), [](wchar_t c) { c = static_cast<wchar_t>(std::toupper(c)); });
+#else
+    std::for_each(filterName.begin(), filterName.end(), [](char c) { c = static_cast<char>(std::toupper(c)); });
+#endif
 
     // Oven the save dialog that will get a path to where to save the current file
     NFD::UniquePathN outPath;

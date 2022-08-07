@@ -15,7 +15,7 @@ Drive::Drive(const XBDM::Drive &data)
 void Drive::OnClick()
 {
     // Convert the drive name to lower case
-    std::transform(m_Data.Name.begin(), m_Data.Name.end(), m_Data.Name.begin(), [](unsigned char c) { return std::tolower(c); });
+    std::for_each(m_Data.Name.begin(), m_Data.Name.end(), [](unsigned char c) { c = static_cast<unsigned char>(std::tolower(c)); });
 
     XBDM::Console &console = ConsoleStore::GetConsole();
     std::set<XBDM::File> files;

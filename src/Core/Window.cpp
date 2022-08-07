@@ -46,6 +46,7 @@ void Window::Init(const WindowProps &props)
     if (!s_GLFWInitialized)
     {
         int success = glfwInit();
+        (void)success;
         ASSERT(success, "Could not initialize GLFW!");
 
         // Creating this object initializes the whole library
@@ -61,6 +62,7 @@ void Window::Init(const WindowProps &props)
     glfwMakeContextCurrent(m_Window);
 
     int status = gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress));
+    (void)status;
     ASSERT(status, "Failed to initialize Glad!");
 
     glfwSetWindowUserPointer(m_Window, &m_Data);
