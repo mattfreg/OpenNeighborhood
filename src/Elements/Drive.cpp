@@ -39,3 +39,53 @@ void Drive::OnClick()
     ContentsChangeEvent event(fileElements);
     m_EventCallback(event);
 }
+
+void Drive::DisplayProperties()
+{
+    ImGuiWindowFlags windowFlags =
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoCollapse;
+
+    ImGui::SetNextWindowSize(ImVec2(300, 450));
+
+    ImGui::Begin("Drive properties", &m_ShowPropertiesWindow, windowFlags);
+
+    ImGui::TextUnformatted(m_Data.FriendlyName.c_str());
+    ImGui::NewLine();
+
+    const char *usedSpaceText = "Used space";
+    const char *freeSpaceText = "Free space";
+    ImVec2 usedSpaceTextSize = ImGui::CalcTextSize(usedSpaceText);
+    ImVec2 freeSpaceTextSize = ImGui::CalcTextSize(freeSpaceText);
+    float offset = std::max<float>(usedSpaceTextSize.x, freeSpaceTextSize.x) + ImGui::GetStyle().ItemSpacing.x * 2.0f;
+
+    ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.52f, 0.52f, 0.52f, 1.0f));
+    ImGui::TextUnformatted(usedSpaceText);
+    ImGui::SameLine(offset);
+    ImGui::ProgressBar(static_cast<float>(m_Data.TotalUsedBytes) / static_cast<float>(m_Data.TotalBytes), ImVec2(0.0f, 0.0f));
+
+    ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.18f, 0.63f, 0.10f, 1.0f));
+    ImGui::TextUnformatted(freeSpaceText);
+    ImGui::SameLine(offset);
+    ImGui::ProgressBar(static_cast<float>(m_Data.TotalFreeBytes) / static_cast<float>(m_Data.TotalBytes), ImVec2(0.0f, 0.0f));
+
+    ImGui::PopStyleColor(2);
+    ImGui::End();
+}
+
+void Drive::DisplayContextMenu()
+{
+    if (ImGui::BeginPopupContextItem())
+    {
+        if (ImGui::Button("Properties"))
+        {
+            m_ShowPropertiesWindow = true;
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
+
+    if (m_ShowPropertiesWindow)
+        DisplayProperties();
+}
