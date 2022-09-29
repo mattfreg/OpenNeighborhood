@@ -5,7 +5,7 @@ build/
 .vscode/
 
 # premake binaries
-tools/premake/premake*
+tools/premake/*
 
 # OpenNeighborhood generated files
 imgui.ini

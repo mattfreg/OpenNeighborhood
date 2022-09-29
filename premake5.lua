@@ -36,7 +36,7 @@ workspace "OpenNeighborhood"
   startproject "OpenNeighborhood"
   location (path.join(".", "build"))
   targetdir "%{wks.location}/bin/%{cfg.buildcfg}"
-  objdir "%{wks.location}/obj"
+  objdir "%{wks.location}/obj/%{cfg.buildcfg}"
 
   warnings "Extra"
   flags "FatalWarnings"

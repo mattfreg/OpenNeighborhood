@@ -8,4 +8,4 @@ IF NOT EXIST "%PremakeExecutablePath%" (
     CALL "%~dp0download-premake-win.bat"
 )
 
-CALL "%PremakeExecutablePath%" --file="%RootDir%\premake5.lua" vs2019
+CALL "%PremakeExecutablePath%" --file="%RootDir%\premake5.lua" vs2022
