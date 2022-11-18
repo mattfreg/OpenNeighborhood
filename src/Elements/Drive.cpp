@@ -47,22 +47,25 @@ void Drive::DisplayProperties()
         ImGuiWindowFlags_NoResize |
         ImGuiWindowFlags_NoCollapse;
 
-    ImGui::SetNextWindowSize(ImVec2(380, 450));
+    ImGui::SetNextWindowSize(ImVec2(380, 400));
 
     ImGui::Begin("Drive properties", &m_ShowPropertiesWindow, windowFlags);
 
+    // Drive friendly name
     ImGui::TextUnformatted(m_Data.FriendlyName.c_str());
 
     ImGui::NewLine();
     ImGui::Separator();
     ImGui::NewLine();
 
+    // Progress bars
     const char usedSpaceText[] = "Used space";
     const char freeSpaceText[] = "Free space";
     ImVec2 usedSpaceTextSize = ImGui::CalcTextSize(usedSpaceText);
     ImVec2 freeSpaceTextSize = ImGui::CalcTextSize(freeSpaceText);
     float offset = std::max<float>(usedSpaceTextSize.x, freeSpaceTextSize.x) + ImGui::GetStyle().ItemSpacing.x * 2.0f;
 
+    // Used space progress bar
     ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.52f, 0.52f, 0.52f, 1.0f));
     ImGui::TextUnformatted(usedSpaceText);
     ImGui::SameLine(offset);
@@ -76,6 +79,7 @@ void Drive::DisplayProperties()
         ImGui::EndTooltip();
     }
 
+    // Free space progress bar
     ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.18f, 0.63f, 0.10f, 1.0f));
     ImGui::TextUnformatted(freeSpaceText);
     ImGui::SameLine(offset);
@@ -90,6 +94,13 @@ void Drive::DisplayProperties()
     }
 
     ImGui::PopStyleColor(2);
+
+    ImGui::NewLine();
+    ImGui::Separator();
+    ImGui::NewLine();
+
+    // Total capacity
+    ImGui::Text("Total capacity:\t%s", NumberFormatter::FileSize(m_Data.TotalBytes).c_str());
 
     ImGui::End();
 }
