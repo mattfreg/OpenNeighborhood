@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Helpers/NumberFormatter.h"
 
-std::string NumberFormatter::FileSize(uint64_t number)
+std::string NumberFormatter::FileSize(uint64_t fileSize)
 {
     std::stringstream result;
     std::string unit;
@@ -13,25 +13,24 @@ std::string NumberFormatter::FileSize(uint64_t number)
     result.setf(std::ios::fixed);
     result.precision(2);
 
-    if (number < oneKiloByte)
+    if (fileSize < oneKiloByte)
     {
-        result << number;
-        return result.str();
+        result << fileSize;
+        unit = "B";
     }
-
-    if (number >= oneKiloByte && number < oneMegaByte)
+    else if (fileSize >= oneKiloByte && fileSize < oneMegaByte)
     {
-        result << (static_cast<float>(number) / oneKiloByte);
+        result << (static_cast<float>(fileSize) / oneKiloByte);
         unit = "KB";
     }
-    else if (number >= oneMegaByte && number < oneGigaByte)
+    else if (fileSize >= oneMegaByte && fileSize < oneGigaByte)
     {
-        result << (static_cast<float>(number) / oneMegaByte);
+        result << (static_cast<float>(fileSize) / oneMegaByte);
         unit = "MB";
     }
-    else if (number >= oneGigaByte)
+    else if (fileSize >= oneGigaByte)
     {
-        result << (static_cast<float>(number) / oneGigaByte);
+        result << (static_cast<float>(fileSize) / oneGigaByte);
         unit = "GB";
     }
 
