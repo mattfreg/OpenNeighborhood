@@ -137,6 +137,7 @@ project "OpenNeighborhood"
       "-framework Cocoa",
       "-framework IOKit",
       "-framework CoreFoundation",
+      "-framework UniformTypeIdentifiers",
     }
 
   filter { "configurations:debug", "system:windows" }
