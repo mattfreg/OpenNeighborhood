@@ -3,29 +3,27 @@ Glad = {
 }
 
 function Glad:import()
-  links { "Glad" }
+  links "Glad"
 
   self:includes()
 end
 
 function Glad:includes()
-  includedirs {
-    path.join(self.root, "include"),
-  }
+  includedirs (path.join(self.root, "include"))
 end
 
 function Glad:project()
   project "Glad"
-  kind "StaticLib"
-  language "C"
+    kind "StaticLib"
+    language "C"
 
-  files {
-    path.join(self.root, "include", "glad", "glad.h"),
-    path.join(self.root, "include", "KHR", "khrplatform.h"),
-    path.join(self.root, "src", "glad.c"),
-  }
+    files {
+      path.join(self.root, "include", "glad", "glad.h"),
+      path.join(self.root, "include", "KHR", "khrplatform.h"),
+      path.join(self.root, "src", "glad.c"),
+    }
 
-  self:includes()
+    self:includes()
 end
 
 table.insert(Dependencies, Glad)

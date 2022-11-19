@@ -3,7 +3,7 @@ mINI = {
 }
 
 function mINI:import()
-  links { "mINI" }
+  links "mINI"
 
   self:includes()
 end

@@ -3,7 +3,7 @@ stb_image = {
 }
 
 function stb_image:import()
-  links { "stb_image" }
+  links "stb_image"
 
   self:includes()
 end

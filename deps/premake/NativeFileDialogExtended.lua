@@ -3,15 +3,13 @@ NativeFileDialogExtended = {
 }
 
 function NativeFileDialogExtended:import()
-  links { "NativeFileDialogExtended" }
+  links "NativeFileDialogExtended"
 
   self:includes()
 end
 
 function NativeFileDialogExtended:includes()
-  includedirs {
-    path.join(self.root, "src", "include"),
-  }
+  includedirs (path.join(self.root, "src", "include"))
 end
 
 function NativeFileDialogExtended:project()
@@ -31,21 +29,15 @@ function NativeFileDialogExtended:project()
   self:includes()
 
   filter "system:windows"
-    files {
-      path.join(srcdir, "nfd_win.cpp"),
-    }
+    files (path.join(srcdir, "nfd_win.cpp"))
 
   filter "system:linux"
-    files {
-      path.join(srcdir, "nfd_gtk.cpp"),
-    }
+    files (path.join(srcdir, "nfd_gtk.cpp"))
 
     buildoptions "`pkg-config --cflags gtk+-3.0`"
 
   filter "system:macosx"
-    files {
-      path.join(srcdir, "nfd_cocoa.m"),
-    }
+    files (path.join(srcdir, "nfd_cocoa.m"))
 end
 
 table.insert(Dependencies, NativeFileDialogExtended)

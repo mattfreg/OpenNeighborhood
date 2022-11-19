@@ -3,7 +3,7 @@ XBDM = {
 }
 
 function XBDM:import()
-  links { "XBDM" }
+  links "XBDM"
 
   self:includes()
 end
@@ -16,13 +16,13 @@ function XBDM:includes()
 end
 
 function XBDM:project()
+  local includedir = path.join(self.root, "include")
+  local srcdir = path.join(self.root, "src")
+
   project "XBDM"
     kind "StaticLib"
     language "C++"
     cppdialect "C++17"
-
-    local includedir = path.join(self.root, "include")
-    local srcdir = path.join(self.root, "src")
 
     pchheader "pch.h"
     pchsource (path.join(srcdir, "pch.cpp"))
