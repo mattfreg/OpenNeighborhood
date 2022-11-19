@@ -100,7 +100,15 @@ void Drive::DisplayProperties()
     ImGui::NewLine();
 
     // Total capacity
-    ImGui::Text("Total capacity:\t%s", NumberFormatter::FileSize(m_Data.TotalBytes).c_str());
+    ImGui::TextUnformatted("Total capacity:\t");
+    ImGui::SameLine();
+    ImGui::TextUnformatted(NumberFormatter::FileSize(m_Data.TotalBytes).c_str());
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::BeginTooltip();
+        ImGui::Text("%s bytes", NumberFormatter::Decimal(m_Data.TotalBytes).c_str());
+        ImGui::EndTooltip();
+    }
 
     ImGui::End();
 }
