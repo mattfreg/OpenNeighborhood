@@ -27,7 +27,7 @@ void Log::Error(const char *message, ...)
 
 void Log::Print(const char *format, va_list argList, std::ostream &outputStream)
 {
-    const int MAX_SIZE = 2048;
+    const size_t MAX_SIZE = 2048;
 
     char buffer[MAX_SIZE] = { 0 };
     vsnprintf(buffer, MAX_SIZE, format, argList);
