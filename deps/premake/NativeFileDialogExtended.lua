@@ -47,7 +47,10 @@ function NativeFileDialogExtended:project()
       path.join(srcdir, "nfd_cocoa.m"),
     }
 
-    linkoptions "-framework AppKit"
+    linkoptions {
+      "-framework AppKit",
+      "-framework UniformTypeIdentifiers",
+    }
 end
 
 table.insert(Dependencies, NativeFileDialogExtended)
