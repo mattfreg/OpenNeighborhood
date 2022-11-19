@@ -3,6 +3,7 @@
 
 #include "Helpers/ConsoleStore.h"
 #include "Helpers/LocationMover.h"
+#include "Helpers/NumberFormatter.h"
 #include "Events/AppEvent.h"
 #include "Elements/File.h"
 #include "Render/UI.h"
@@ -38,4 +39,93 @@ void Drive::OnClick()
 
     ContentsChangeEvent event(fileElements);
     m_EventCallback(event);
+}
+
+void Drive::DisplayProperties()
+{
+    ImGuiWindowFlags windowFlags =
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoCollapse;
+
+    ImGui::SetNextWindowSize(ImVec2(380, 400));
+
+    ImGui::Begin("Drive properties", &m_ShowPropertiesWindow, windowFlags);
+
+    // Drive friendly name
+    ImGui::TextUnformatted(m_Data.FriendlyName.c_str());
+
+    ImGui::NewLine();
+    ImGui::Separator();
+    ImGui::NewLine();
+
+    // Progress bars
+    const char usedSpaceText[] = "Used space";
+    const char freeSpaceText[] = "Free space";
+    ImVec2 usedSpaceTextSize = ImGui::CalcTextSize(usedSpaceText);
+    ImVec2 freeSpaceTextSize = ImGui::CalcTextSize(freeSpaceText);
+    float offset = std::max<float>(usedSpaceTextSize.x, freeSpaceTextSize.x) + ImGui::GetStyle().ItemSpacing.x * 2.0f;
+
+    // Used space progress bar
+    ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.52f, 0.52f, 0.52f, 1.0f));
+    ImGui::TextUnformatted(usedSpaceText);
+    ImGui::SameLine(offset);
+    ImGui::ProgressBar(static_cast<float>(m_Data.TotalUsedBytes) / static_cast<float>(m_Data.TotalBytes), ImVec2(200.0f, 0.0f));
+    ImGui::SameLine();
+    ImGui::TextUnformatted(NumberFormatter::FileSize(m_Data.TotalUsedBytes).c_str());
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::BeginTooltip();
+        ImGui::Text("%s bytes", NumberFormatter::Decimal(m_Data.TotalUsedBytes).c_str());
+        ImGui::EndTooltip();
+    }
+
+    // Free space progress bar
+    ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.18f, 0.63f, 0.10f, 1.0f));
+    ImGui::TextUnformatted(freeSpaceText);
+    ImGui::SameLine(offset);
+    ImGui::ProgressBar(static_cast<float>(m_Data.TotalFreeBytes) / static_cast<float>(m_Data.TotalBytes), ImVec2(200.0f, 0.0f));
+    ImGui::SameLine();
+    ImGui::TextUnformatted(NumberFormatter::FileSize(m_Data.TotalFreeBytes).c_str());
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::BeginTooltip();
+        ImGui::Text("%s bytes", NumberFormatter::Decimal(m_Data.TotalFreeBytes).c_str());
+        ImGui::EndTooltip();
+    }
+
+    ImGui::PopStyleColor(2);
+
+    ImGui::NewLine();
+    ImGui::Separator();
+    ImGui::NewLine();
+
+    // Total capacity
+    ImGui::TextUnformatted("Total capacity:\t");
+    ImGui::SameLine();
+    ImGui::TextUnformatted(NumberFormatter::FileSize(m_Data.TotalBytes).c_str());
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::BeginTooltip();
+        ImGui::Text("%s bytes", NumberFormatter::Decimal(m_Data.TotalBytes).c_str());
+        ImGui::EndTooltip();
+    }
+
+    ImGui::End();
+}
+
+void Drive::DisplayContextMenu()
+{
+    if (ImGui::BeginPopupContextItem())
+    {
+        if (ImGui::Button("Properties"))
+        {
+            m_ShowPropertiesWindow = true;
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
+
+    if (m_ShowPropertiesWindow)
+        DisplayProperties();
 }

@@ -13,4 +13,9 @@ public:
 
 private:
     XBDM::Drive m_Data;
+    bool m_ShowPropertiesWindow = false;
+
+    void DisplayProperties();
+
+    virtual void DisplayContextMenu() override;
 };
