@@ -60,6 +60,10 @@ void GoToParentButton::OnClick()
     XBDM::Console &console = ConsoleStore::GetConsole();
     std::set<XBDM::File> files;
 
+    // At this stage, the parent console location has the format "\<drive>:\Path\To\File" so we need to remove the
+    // first backslash before using it with XBDM
+    parentConsoleLocation = parentConsoleLocation.substr(1);
+
     // If the parent location ends with ':', then it's a drive and we need to add '\' at the end
     bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(parentConsoleLocation.back() == ':' ? parentConsoleLocation + '\\' : parentConsoleLocation); });
 

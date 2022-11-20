@@ -17,7 +17,7 @@ public:
 
     static std::string GetCurrentConsoleLocation();
 
-    inline static void SetCurrentConsoleLocation(const std::string &location) { s_CurrentConsoleLocation = location; }
+    static void SetCurrentConsoleLocation(const std::string &location);
 
     static const std::string &GoToDirectory(const std::string &directory);
     static std::string GetParent();
