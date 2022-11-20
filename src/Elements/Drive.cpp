@@ -49,13 +49,23 @@ void Drive::DisplayProperties()
 
     ImGui::SetNextWindowSize(ImVec2(380, 400));
 
-    static std::string driveNameWithoutColon = m_Data.Name.substr(0, m_Data.Name.size() - 1);
-    static std::string windowTitle = "Properties of " + driveNameWithoutColon;
+    std::string driveNameWithoutColon = m_Data.Name.substr(0, m_Data.Name.size() - 1);
+    std::string windowTitle = "Properties of " + driveNameWithoutColon;
     ImGui::Begin(windowTitle.c_str(), &m_ShowPropertiesWindow, windowFlags);
 
     // Drive name and friendly name
-    ImGui::Text("Drive:\t%s", driveNameWithoutColon.c_str());
-    ImGui::Text("Type:\t%s", m_Data.FriendlyName.c_str());
+    const char driveNameText[] = "Drive:\t";
+    const char driveTypeText[] = "Type:\t";
+    ImVec2 driveNameTextSize = ImGui::CalcTextSize(driveNameText);
+    ImVec2 driveTypeTextSize = ImGui::CalcTextSize(driveTypeText);
+    float driveNamesOffset = std::max<float>(driveNameTextSize.x, driveTypeTextSize.x) + ImGui::GetStyle().ItemSpacing.x * 2.0f;
+
+    ImGui::TextUnformatted(driveNameText);
+    ImGui::SameLine(driveNamesOffset);
+    ImGui::TextUnformatted(driveNameWithoutColon.c_str());
+    ImGui::TextUnformatted(driveTypeText);
+    ImGui::SameLine(driveNamesOffset);
+    ImGui::TextUnformatted(m_Data.FriendlyName.c_str());
 
     ImGui::NewLine();
     ImGui::Separator();
@@ -64,43 +74,35 @@ void Drive::DisplayProperties()
     // Progress bars
     const char usedSpaceText[] = "Used space";
     const char freeSpaceText[] = "Free space";
-    static ImVec2 usedSpaceTextSize = ImGui::CalcTextSize(usedSpaceText);
-    static ImVec2 freeSpaceTextSize = ImGui::CalcTextSize(freeSpaceText);
-    static float offset = std::max<float>(usedSpaceTextSize.x, freeSpaceTextSize.x) + ImGui::GetStyle().ItemSpacing.x * 2.0f;
-    static float usedBytesFraction = static_cast<float>(m_Data.TotalUsedBytes) / static_cast<float>(m_Data.TotalBytes);
-    static float freeBytesFraction = static_cast<float>(m_Data.TotalFreeBytes) / static_cast<float>(m_Data.TotalBytes);
-    static std::string usedBytesCompactLabel = NumberFormatter::FileSize(m_Data.TotalUsedBytes);
-    static std::string usedBytesCompleteLabel = NumberFormatter::Decimal(m_Data.TotalUsedBytes);
-    static std::string freeBytesCompactLabel = NumberFormatter::FileSize(m_Data.TotalFreeBytes);
-    static std::string freeBytesCompleteLabel = NumberFormatter::Decimal(m_Data.TotalFreeBytes);
-    static std::string totalBytesCompactLabel = NumberFormatter::FileSize(m_Data.TotalBytes);
-    static std::string totalBytesCompleteLabel = NumberFormatter::Decimal(m_Data.TotalBytes);
+    ImVec2 usedSpaceTextSize = ImGui::CalcTextSize(usedSpaceText);
+    ImVec2 freeSpaceTextSize = ImGui::CalcTextSize(freeSpaceText);
+    float progressBarsOffset = std::max<float>(usedSpaceTextSize.x, freeSpaceTextSize.x) + ImGui::GetStyle().ItemSpacing.x * 2.0f;
 
     // Used space progress bar
     ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.52f, 0.52f, 0.52f, 1.0f));
     ImGui::TextUnformatted(usedSpaceText);
-    ImGui::SameLine(offset);
-    ImGui::ProgressBar(usedBytesFraction, ImVec2(200.0f, 0.0f));
+    ImGui::SameLine(progressBarsOffset);
+    ImGui::ProgressBar(static_cast<float>(m_Data.TotalUsedBytes) / static_cast<float>(m_Data.TotalBytes), ImVec2(200.0f, 0.0f));
     ImGui::SameLine();
-    ImGui::TextUnformatted(usedBytesCompactLabel.c_str());
+    ImGui::TextUnformatted(NumberFormatter::FileSize(m_Data.TotalUsedBytes).c_str());
     if (ImGui::IsItemHovered())
     {
         ImGui::BeginTooltip();
-        ImGui::Text("%s bytes", usedBytesCompleteLabel.c_str());
+        ImGui::Text("%s bytes", NumberFormatter::Decimal(m_Data.TotalUsedBytes).c_str());
         ImGui::EndTooltip();
     }
 
     // Free space progress bar
     ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.18f, 0.63f, 0.10f, 1.0f));
     ImGui::TextUnformatted(freeSpaceText);
-    ImGui::SameLine(offset);
-    ImGui::ProgressBar(freeBytesFraction, ImVec2(200.0f, 0.0f));
+    ImGui::SameLine(progressBarsOffset);
+    ImGui::ProgressBar(static_cast<float>(m_Data.TotalFreeBytes) / static_cast<float>(m_Data.TotalBytes), ImVec2(200.0f, 0.0f));
     ImGui::SameLine();
-    ImGui::TextUnformatted(freeBytesCompactLabel.c_str());
+    ImGui::TextUnformatted(NumberFormatter::FileSize(m_Data.TotalFreeBytes).c_str());
     if (ImGui::IsItemHovered())
     {
         ImGui::BeginTooltip();
-        ImGui::Text("%s bytes", freeBytesCompleteLabel.c_str());
+        ImGui::Text("%s bytes", NumberFormatter::Decimal(m_Data.TotalFreeBytes).c_str());
         ImGui::EndTooltip();
     }
 
@@ -113,11 +115,11 @@ void Drive::DisplayProperties()
     // Total capacity
     ImGui::TextUnformatted("Total capacity:\t");
     ImGui::SameLine();
-    ImGui::TextUnformatted(totalBytesCompactLabel.c_str());
+    ImGui::TextUnformatted(NumberFormatter::FileSize(m_Data.TotalBytes).c_str());
     if (ImGui::IsItemHovered())
     {
         ImGui::BeginTooltip();
-        ImGui::Text("%s bytes", totalBytesCompleteLabel.c_str());
+        ImGui::Text("%s bytes", NumberFormatter::Decimal(m_Data.TotalBytes).c_str());
         ImGui::EndTooltip();
     }
 
