@@ -12,6 +12,14 @@ std::string LocationMover::GetCurrentConsoleLocation()
     return s_CurrentConsoleLocation.substr(1);
 }
 
+void LocationMover::SetCurrentConsoleLocation(const std::string &location)
+{
+    if (location.front() != '\\')
+        s_CurrentConsoleLocation = "\\" + location;
+    else
+        s_CurrentConsoleLocation = location;
+}
+
 const std::string &LocationMover::GoToDirectory(const std::string &directory)
 {
     // If the directory doesn't already start with '\' and if we are not at the root,
