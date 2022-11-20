@@ -165,10 +165,15 @@ void File::DisplayProperties()
     std::string fileType;
     if (!m_Data.IsDirectory)
     {
-        // File extension without the "." and converted to uppercase
-        std::string fileExtension = std::filesystem::path(m_Data.Name).extension().string().substr(1);
-        std::transform(fileExtension.begin(), fileExtension.end(), fileExtension.begin(), ::toupper);
-        fileType = fileExtension + " file";
+        std::string fileExtension = std::filesystem::path(m_Data.Name).extension().string();
+        if (!fileExtension.empty())
+        {
+            fileExtension = fileExtension.substr(1);
+            std::transform(fileExtension.begin(), fileExtension.end(), fileExtension.begin(), ::toupper);
+            fileType = fileExtension + " file";
+        }
+        else
+            fileType = "File";
     }
     else
         fileType = "Folder";
