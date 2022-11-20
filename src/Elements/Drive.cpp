@@ -9,7 +9,7 @@
 #include "Render/UI.h"
 
 Drive::Drive(const XBDM::Drive &data)
-    : Element(data.FriendlyName, "drive"), m_Data(data)
+    : Element(data.FriendlyName + " (" + data.Name + ")", "drive"), m_Data(data)
 {
 }
 
@@ -49,10 +49,13 @@ void Drive::DisplayProperties()
 
     ImGui::SetNextWindowSize(ImVec2(380, 400));
 
-    ImGui::Begin("Drive properties", &m_ShowPropertiesWindow, windowFlags);
+    static std::string driveNameWithoutColon = m_Data.Name.substr(0, m_Data.Name.size() - 1);
+    static std::string windowTitle = "Properties of " + driveNameWithoutColon;
+    ImGui::Begin(windowTitle.c_str(), &m_ShowPropertiesWindow, windowFlags);
 
-    // Drive friendly name
-    ImGui::TextUnformatted(m_Data.FriendlyName.c_str());
+    // Drive name and friendly name
+    ImGui::Text("Drive:\t%s", driveNameWithoutColon.c_str());
+    ImGui::Text("Type:\t%s", m_Data.FriendlyName.c_str());
 
     ImGui::NewLine();
     ImGui::Separator();
