@@ -13,6 +13,7 @@ public:
 
 private:
     XBDM::File m_Data;
+    bool m_ShowPropertiesWindow = false;
 
     void OpenDirectory();
     void LaunchXex();
@@ -20,6 +21,8 @@ private:
     void Delete();
     void Rename();
     void UpdateContents();
+
+    void DisplayProperties();
 
     virtual void DisplayContextMenu() override;
 };

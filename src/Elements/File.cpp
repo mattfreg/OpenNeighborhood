@@ -143,6 +143,38 @@ void File::UpdateContents()
     m_EventCallback(event);
 }
 
+void File::DisplayProperties()
+{
+    ImGuiWindowFlags windowFlags =
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoCollapse;
+
+    ImGui::SetNextWindowSize(ImVec2(380, 400));
+
+    std::string windowTitle = "Properties of " + m_Data.Name;
+    ImGui::Begin(windowTitle.c_str(), &m_ShowPropertiesWindow, windowFlags);
+
+    // File name and type
+    const char fileNameText[] = "Name:\t";
+    const char fileTypeText[] = "Type:\t";
+    ImVec2 fileNameTextSize = ImGui::CalcTextSize(fileNameText);
+    ImVec2 fileTypeTextSize = ImGui::CalcTextSize(fileTypeText);
+    float fileNameAndTypeOffset = std::max<float>(fileNameTextSize.x, fileTypeTextSize.x) + ImGui::GetStyle().ItemSpacing.x * 2.0f;
+
+    // File extension without the "." and converted to uppercase
+    std::string fileExtension = std::filesystem::path(m_Data.Name).extension().string().substr(1);
+    std::transform(fileExtension.begin(), fileExtension.end(), fileExtension.begin(), ::toupper);
+
+    ImGui::TextUnformatted(fileNameText);
+    ImGui::SameLine(fileNameAndTypeOffset);
+    ImGui::TextUnformatted(m_Data.Name.c_str());
+    ImGui::TextUnformatted(fileTypeText);
+    ImGui::SameLine(fileNameAndTypeOffset);
+    ImGui::TextUnformatted(std::string(fileExtension + " file").c_str());
+
+    ImGui::End();
+}
+
 void File::DisplayContextMenu()
 {
     if (ImGui::BeginPopupContextItem())
@@ -168,6 +200,17 @@ void File::DisplayContextMenu()
             ImGui::CloseCurrentPopup();
         }
 
+        ImGui::Separator();
+
+        if (ImGui::Button("Properties"))
+        {
+            m_ShowPropertiesWindow = true;
+            ImGui::CloseCurrentPopup();
+        }
+
         ImGui::EndPopup();
     }
+
+    if (m_ShowPropertiesWindow)
+        DisplayProperties();
 }
