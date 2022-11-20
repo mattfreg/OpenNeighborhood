@@ -6,6 +6,7 @@
 #include "Core/PlatformDetector.h"
 #include "Helpers/ConsoleStore.h"
 #include "Helpers/LocationMover.h"
+#include "Helpers/NumberFormatter.h"
 #include "Events/AppEvent.h"
 #include "Render/UI.h"
 
@@ -171,6 +172,24 @@ void File::DisplayProperties()
     ImGui::TextUnformatted(fileTypeText);
     ImGui::SameLine(fileNameAndTypeOffset);
     ImGui::TextUnformatted(std::string(fileExtension + " file").c_str());
+
+    ImGui::NewLine();
+    ImGui::Separator();
+    ImGui::NewLine();
+
+    // Location and size
+    const char locationText[] = "Location:\t";
+    const char sizeText[] = "Size:\t";
+    ImVec2 locationTextSize = ImGui::CalcTextSize(locationText);
+    ImVec2 sizeTextSize = ImGui::CalcTextSize(sizeText);
+    float locationAndSizeOffset = std::max<float>(locationTextSize.x, sizeTextSize.x) + ImGui::GetStyle().ItemSpacing.x * 2.0f;
+
+    ImGui::TextUnformatted(locationText);
+    ImGui::SameLine(locationAndSizeOffset);
+    ImGui::TextUnformatted(LocationMover::GetCurrentConsoleLocation().c_str());
+    ImGui::TextUnformatted(sizeText);
+    ImGui::SameLine(locationAndSizeOffset);
+    ImGui::TextUnformatted(NumberFormatter::FileSize(m_Data.Size).c_str());
 
     ImGui::End();
 }
