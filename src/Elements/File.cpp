@@ -162,16 +162,24 @@ void File::DisplayProperties()
     ImVec2 fileTypeTextSize = ImGui::CalcTextSize(fileTypeText);
     float fileNameAndTypeOffset = std::max<float>(fileNameTextSize.x, fileTypeTextSize.x) + ImGui::GetStyle().ItemSpacing.x * 2.0f;
 
-    // File extension without the "." and converted to uppercase
-    std::string fileExtension = std::filesystem::path(m_Data.Name).extension().string().substr(1);
-    std::transform(fileExtension.begin(), fileExtension.end(), fileExtension.begin(), ::toupper);
+    std::string fileType;
+    if (!m_Data.IsDirectory)
+    {
+        // File extension without the "." and converted to uppercase
+        std::string fileExtension = std::filesystem::path(m_Data.Name).extension().string().substr(1);
+        std::transform(fileExtension.begin(), fileExtension.end(), fileExtension.begin(), ::toupper);
+        fileType = fileExtension + " file";
+    }
+    else
+        fileType = "Folder";
+
 
     ImGui::TextUnformatted(fileNameText);
     ImGui::SameLine(fileNameAndTypeOffset);
     ImGui::TextUnformatted(m_Data.Name.c_str());
     ImGui::TextUnformatted(fileTypeText);
     ImGui::SameLine(fileNameAndTypeOffset);
-    ImGui::TextUnformatted(std::string(fileExtension + " file").c_str());
+    ImGui::TextUnformatted(fileType.c_str());
 
     ImGui::NewLine();
     ImGui::Separator();
@@ -187,9 +195,12 @@ void File::DisplayProperties()
     ImGui::TextUnformatted(locationText);
     ImGui::SameLine(locationAndSizeOffset);
     ImGui::TextUnformatted(LocationMover::GetCurrentConsoleLocation().c_str());
-    ImGui::TextUnformatted(sizeText);
-    ImGui::SameLine(locationAndSizeOffset);
-    ImGui::TextUnformatted(NumberFormatter::FileSize(m_Data.Size).c_str());
+    if (!m_Data.IsDirectory)
+    {
+        ImGui::TextUnformatted(sizeText);
+        ImGui::SameLine(locationAndSizeOffset);
+        ImGui::TextUnformatted(NumberFormatter::FileSize(m_Data.Size).c_str());
+    }
 
     ImGui::End();
 }
