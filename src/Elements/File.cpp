@@ -54,21 +54,27 @@ void File::Download()
 {
     // Depending on the system, std::filesystem::path::native can return either
     // std::wstring or std::string. Since we don't know, we are just using auto.
-    auto filename = std::filesystem::path(m_Data.Name);
-    auto extension = filename.extension().native().substr(1);
-    auto &filterName = extension;
-
-    // Convert the filter name to lower case
-#ifdef PLATFORM_WINDOWS
-    std::for_each(filterName.begin(), filterName.end(), [](wchar_t c) { c = static_cast<wchar_t>(std::toupper(c)); });
-#else
-    std::for_each(filterName.begin(), filterName.end(), [](char c) { c = static_cast<char>(std::toupper(c)); });
-#endif
+    auto fileName = std::filesystem::path(m_Data.Name);
+    auto extension = fileName.extension().native();
 
     // Oven the save dialog that will get a path to where to save the current file
     NFD::UniquePathN outPath;
-    nfdnfilteritem_t filterItem[] = { { filterName.c_str(), extension.c_str() } };
-    nfdresult_t result = NFD::SaveDialog(outPath, filterItem, 1, nullptr, filename.native().c_str());
+    nfdresult_t result = NFD_ERROR;
+
+    if (!extension.empty())
+    {
+        // Remove the "." from the extension
+        extension = extension.substr(1);
+
+        // The filter name is the extension but uppercase
+        auto filterName = extension;
+        std::transform(filterName.begin(), filterName.end(), filterName.begin(), ::toupper);
+
+        nfdnfilteritem_t filterItem[] = { { filterName.c_str(), extension.c_str() } };
+        result = NFD::SaveDialog(outPath, filterItem, 1, nullptr, fileName.native().c_str());
+    }
+    else
+        result = NFD::SaveDialog(outPath, nullptr, 0, nullptr, fileName.native().c_str());
 
     if (result == NFD_ERROR)
     {
