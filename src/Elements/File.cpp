@@ -6,6 +6,7 @@
 #include "Core/PlatformDetector.h"
 #include "Helpers/ConsoleStore.h"
 #include "Helpers/LocationMover.h"
+#include "Helpers/NumberFormatter.h"
 #include "Events/AppEvent.h"
 #include "Render/UI.h"
 
@@ -149,6 +150,97 @@ void File::UpdateContents()
     m_EventCallback(event);
 }
 
+void File::DisplayProperties()
+{
+    ImGuiWindowFlags windowFlags =
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoCollapse;
+
+    ImGui::SetNextWindowSize(ImVec2(380, 400));
+
+    std::string windowTitle = "Properties of " + m_Data.Name;
+    ImGui::Begin(windowTitle.c_str(), &m_ShowPropertiesWindow, windowFlags);
+
+    // File name and type
+    const char fileNameText[] = "Name:\t";
+    const char fileTypeText[] = "Type:\t";
+    ImVec2 fileNameTextSize = ImGui::CalcTextSize(fileNameText);
+    ImVec2 fileTypeTextSize = ImGui::CalcTextSize(fileTypeText);
+    float fileNameAndTypeOffset = std::max<float>(fileNameTextSize.x, fileTypeTextSize.x) + ImGui::GetStyle().ItemSpacing.x * 2.0f;
+
+    std::string fileType;
+    if (!m_Data.IsDirectory)
+    {
+        std::string fileExtension = std::filesystem::path(m_Data.Name).extension().string();
+        if (!fileExtension.empty())
+        {
+            fileExtension = fileExtension.substr(1);
+            std::transform(fileExtension.begin(), fileExtension.end(), fileExtension.begin(), ::toupper);
+            fileType = fileExtension + " file";
+        }
+        else
+            fileType = "File";
+    }
+    else
+        fileType = "Folder";
+
+
+    ImGui::TextUnformatted(fileNameText);
+    ImGui::SameLine(fileNameAndTypeOffset);
+    ImGui::TextUnformatted(m_Data.Name.c_str());
+    ImGui::TextUnformatted(fileTypeText);
+    ImGui::SameLine(fileNameAndTypeOffset);
+    ImGui::TextUnformatted(fileType.c_str());
+
+    ImGui::NewLine();
+    ImGui::Separator();
+    ImGui::NewLine();
+
+    // Location and size
+    const char locationText[] = "Location:\t";
+    const char sizeText[] = "Size:\t";
+    ImVec2 locationTextSize = ImGui::CalcTextSize(locationText);
+    ImVec2 sizeTextSize = ImGui::CalcTextSize(sizeText);
+    float locationAndSizeOffset = std::max<float>(locationTextSize.x, sizeTextSize.x) + ImGui::GetStyle().ItemSpacing.x * 2.0f;
+
+    ImGui::TextUnformatted(locationText);
+    ImGui::SameLine(locationAndSizeOffset);
+    ImGui::TextUnformatted(LocationMover::GetCurrentConsoleLocation().c_str());
+    if (!m_Data.IsDirectory)
+    {
+        ImGui::TextUnformatted(sizeText);
+        ImGui::SameLine(locationAndSizeOffset);
+        ImGui::TextUnformatted(NumberFormatter::FileSize(m_Data.Size).c_str());
+    }
+
+    ImGui::NewLine();
+    ImGui::Separator();
+    ImGui::NewLine();
+
+    // Creation and modification dates
+    const char creationDateText[] = "Created:\t";
+    const char modificationDateText[] = "Modified:\t";
+    ImVec2 creationDateTextSize = ImGui::CalcTextSize(creationDateText);
+    ImVec2 modificationDateTextSize = ImGui::CalcTextSize(modificationDateText);
+    float datesOffset = std::max<float>(creationDateTextSize.x, modificationDateTextSize.x) + ImGui::GetStyle().ItemSpacing.x * 2.0f;
+
+    char creationDateString[50] = { 0 };
+    std::tm *pCreationDateTime = std::localtime(&m_Data.CreationDate);
+    std::strftime(creationDateString, sizeof(creationDateString), "%A, %B %d, %Y %H:%M:%S", pCreationDateTime);
+    ImGui::TextUnformatted(creationDateText);
+    ImGui::SameLine(datesOffset);
+    ImGui::TextUnformatted(creationDateString);
+
+    char modificationDateString[50] = { 0 };
+    std::tm *pModificationDateTime = std::localtime(&m_Data.ModificationDate);
+    std::strftime(modificationDateString, sizeof(modificationDateString), "%A, %B %d, %Y %H:%M:%S", pModificationDateTime);
+    ImGui::TextUnformatted(modificationDateText);
+    ImGui::SameLine(datesOffset);
+    ImGui::TextUnformatted(modificationDateString);
+
+    ImGui::End();
+}
+
 void File::DisplayContextMenu()
 {
     if (ImGui::BeginPopupContextItem())
@@ -174,6 +266,17 @@ void File::DisplayContextMenu()
             ImGui::CloseCurrentPopup();
         }
 
+        ImGui::Separator();
+
+        if (ImGui::Button("Properties"))
+        {
+            m_ShowPropertiesWindow = true;
+            ImGui::CloseCurrentPopup();
+        }
+
         ImGui::EndPopup();
     }
+
+    if (m_ShowPropertiesWindow)
+        DisplayProperties();
 }

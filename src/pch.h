@@ -21,6 +21,7 @@
 #include <set>
 #include <string.h>
 #include <stdarg.h>
+#include <ctime>
 
 #ifdef DEBUG
     #include "Core/Log.h"
