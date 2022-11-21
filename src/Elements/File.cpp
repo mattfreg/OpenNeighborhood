@@ -213,6 +213,31 @@ void File::DisplayProperties()
         ImGui::TextUnformatted(NumberFormatter::FileSize(m_Data.Size).c_str());
     }
 
+    ImGui::NewLine();
+    ImGui::Separator();
+    ImGui::NewLine();
+
+    // Creation and modification dates
+    const char creationDateText[] = "Created:\t";
+    const char modificationDateText[] = "Modified:\t";
+    ImVec2 creationDateTextSize = ImGui::CalcTextSize(creationDateText);
+    ImVec2 modificationDateTextSize = ImGui::CalcTextSize(modificationDateText);
+    float datesOffset = std::max<float>(creationDateTextSize.x, modificationDateTextSize.x) + ImGui::GetStyle().ItemSpacing.x * 2.0f;
+
+    char creationDateString[50] = { 0 };
+    std::tm *pCreationDateTime = std::localtime(&m_Data.CreationDate);
+    std::strftime(creationDateString, sizeof(creationDateString), "%A, %B %d, %Y %H:%M:%S", pCreationDateTime);
+    ImGui::TextUnformatted(creationDateText);
+    ImGui::SameLine(datesOffset);
+    ImGui::TextUnformatted(creationDateString);
+
+    char modificationDateString[50] = { 0 };
+    std::tm *pModificationDateTime = std::localtime(&m_Data.ModificationDate);
+    std::strftime(modificationDateString, sizeof(modificationDateString), "%A, %B %d, %Y %H:%M:%S", pModificationDateTime);
+    ImGui::TextUnformatted(modificationDateText);
+    ImGui::SameLine(datesOffset);
+    ImGui::TextUnformatted(modificationDateString);
+
     ImGui::End();
 }
 
