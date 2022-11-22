@@ -13,4 +13,13 @@ public:
 
 private:
     std::string m_IpAddress;
+    std::string m_ActiveTitle;
+    std::string m_ConsoleType;
+    bool m_ShowPropertiesWindow = false;
+
+    bool FetchConsoleInfo();
+
+    void DisplayProperties();
+
+    virtual void DisplayContextMenu() override;
 };

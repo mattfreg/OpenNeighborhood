@@ -37,3 +37,100 @@ void Xbox::OnClick()
     ContentsChangeEvent event(driveElements);
     m_EventCallback(event);
 }
+
+bool Xbox::FetchConsoleInfo()
+{
+    XBDM::Console &console = ConsoleStore::GetConsole();
+
+    // Connect to the console if it's not already connected
+    if (!console.IsConnected())
+    {
+        UI::SetSuccess(ConsoleStore::CreateConsole(m_IpAddress));
+
+        if (!UI::IsGood())
+        {
+            UI::SetErrorMessage("Couldn't find console");
+            return false;
+        }
+    }
+
+    bool success = ConsoleStore::Try([&]() { m_ActiveTitle = console.GetActiveTitle(); });
+
+    if (!success)
+        return false;
+
+    return ConsoleStore::Try([&]() { m_ConsoleType = console.GetType(); });
+}
+
+void Xbox::DisplayProperties()
+{
+    ImGuiWindowFlags windowFlags =
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoCollapse;
+
+    ImGui::SetNextWindowSize(ImVec2(380, 400));
+
+    // The console name is cached by XBDM so it is completely fine to request the console name each frame,
+    // a packet will be sent over the network only the first time
+    const std::string &consoleName = ConsoleStore::GetConsole().GetName();
+    std::string windowTitle = "Properties of " + consoleName;
+    ImGui::Begin(windowTitle.c_str(), &m_ShowPropertiesWindow, windowFlags);
+
+    // Console name and type
+    const char consoleNameText[] = "Name:\t";
+    const char consoleTypeText[] = "Type:\t";
+    ImVec2 consoleNameTextSize = ImGui::CalcTextSize(consoleNameText);
+    ImVec2 consoleTypeTextSize = ImGui::CalcTextSize(consoleTypeText);
+    float consoleNameAndTypeOffset = std::max<float>(consoleNameTextSize.x, consoleTypeTextSize.x) + ImGui::GetStyle().ItemSpacing.x * 2.0f;
+
+    ImGui::TextUnformatted(consoleNameText);
+    ImGui::SameLine(consoleNameAndTypeOffset);
+    ImGui::TextUnformatted(consoleName.c_str());
+    ImGui::TextUnformatted(consoleTypeText);
+    ImGui::SameLine(consoleNameAndTypeOffset);
+    ImGui::TextUnformatted(m_ConsoleType.c_str());
+
+    ImGui::NewLine();
+    ImGui::Separator();
+    ImGui::NewLine();
+
+    // IP address
+    ImGui::Text("IP address:\t%s", m_IpAddress.c_str());
+
+    ImGui::NewLine();
+    ImGui::Separator();
+    ImGui::NewLine();
+
+    // Active title
+    ImGuiWindowFlags childWindowFlags = ImGuiWindowFlags_NoScrollbar;
+    float childWindowHeight = ImGui::GetTextLineHeight() + ImGui::GetStyle().WindowPadding.y * 2.0f;
+    ImGui::TextUnformatted("Active title:\t");
+    ImGui::SameLine();
+
+    // Invisible window around the active title path to make the path horizontally scrollable
+    ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0.0f);
+    ImGui::BeginChild("Active title", ImVec2(0.0f, childWindowHeight), false, childWindowFlags);
+    ImGui::TextUnformatted(m_ActiveTitle.c_str());
+    ImGui::EndChild();
+    ImGui::PopStyleVar();
+
+    ImGui::End();
+}
+
+void Xbox::DisplayContextMenu()
+{
+    if (ImGui::BeginPopupContextItem())
+    {
+        if (ImGui::Button("Properties"))
+        {
+            // Show the properties window only if fetching the active title succeeds
+            m_ShowPropertiesWindow = FetchConsoleInfo();
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
+
+    if (m_ShowPropertiesWindow)
+        DisplayProperties();
+}
