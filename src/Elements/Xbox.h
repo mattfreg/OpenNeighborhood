@@ -17,7 +17,10 @@ private:
     std::string m_ConsoleType;
     bool m_ShowPropertiesWindow = false;
 
+    void SynchronizeTime();
+
     bool FetchConsoleInfo();
+    void ConnectToConsole();
 
     void DisplayProperties();
 

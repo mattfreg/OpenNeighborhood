@@ -22,10 +22,12 @@ std::string UI::s_ConfirmMessage;
 UI::ConfirmCallbackFn UI::s_ConfirmCallback;
 bool UI::s_Success = true;
 std::string UI::s_ErrorMessage;
-bool UI::s_InputText;
+bool UI::s_InputText = false;
 std::string UI::s_InputTextHeader;
 UI::InputTextCallbackFn UI::s_InputTextCallback;
 char UI::s_InputTextBuffer[50] = { 0 };
+bool UI::s_DisplaySuccessModal = false;
+std::string UI::s_SuccessMessage;
 
 void UI::Init()
 {
@@ -163,6 +165,30 @@ void UI::DisplayErrorModal()
         if (ImGui::Button("OK", ImVec2(120.0f, 0.0f)))
         {
             s_Success = true;
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
+}
+
+void UI::DisplaySuccessModal()
+{
+    if (s_DisplaySuccessModal)
+    {
+        ImGui::OpenPopup("Success");
+
+        ImVec2 center(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
+        ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+    }
+
+    if (ImGui::BeginPopupModal("Success", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+    {
+        ImGui::TextUnformatted(s_SuccessMessage.c_str());
+
+        if (ImGui::Button("OK", ImVec2(120.0f, 0.0f)))
+        {
+            s_DisplaySuccessModal = false;
             ImGui::CloseCurrentPopup();
         }
 

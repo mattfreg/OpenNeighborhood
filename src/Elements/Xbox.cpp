@@ -15,19 +15,8 @@ Xbox::Xbox(const std::string &label, const std::string &ipAddress)
 void Xbox::OnClick()
 {
     XBDM::Console &console = ConsoleStore::GetConsole();
-
-    // If the current console was created by clicking on the AddXboxButton, the connection is
-    // already open so no need to recreate it
     if (!console.IsConnected())
-    {
-        UI::SetSuccess(ConsoleStore::CreateConsole(m_IpAddress));
-
-        if (!UI::IsGood())
-        {
-            UI::SetErrorMessage("Couldn't find console");
-            return;
-        }
-    }
+        ConnectToConsole();
 
     auto driveElements = UI::CreateDriveElements();
 
@@ -38,21 +27,26 @@ void Xbox::OnClick()
     m_EventCallback(event);
 }
 
+void Xbox::SynchronizeTime()
+{
+    XBDM::Console &console = ConsoleStore::GetConsole();
+    if (!console.IsConnected())
+        ConnectToConsole();
+
+    bool success = ConsoleStore::Try([&]() { ConsoleStore::GetConsole().SynchronizeTime(); });
+
+    if (!success)
+        return;
+
+    UI::SetSuccessMessage("Successfully synchronized the console time with PC time.");
+    UI::SetDisplaySuccessModal(true);
+}
+
 bool Xbox::FetchConsoleInfo()
 {
     XBDM::Console &console = ConsoleStore::GetConsole();
-
-    // Connect to the console if it's not already connected
     if (!console.IsConnected())
-    {
-        UI::SetSuccess(ConsoleStore::CreateConsole(m_IpAddress));
-
-        if (!UI::IsGood())
-        {
-            UI::SetErrorMessage("Couldn't find console");
-            return false;
-        }
-    }
+        ConnectToConsole();
 
     bool success = ConsoleStore::Try([&]() { m_ActiveTitle = console.GetActiveTitle(); });
 
@@ -60,6 +54,14 @@ bool Xbox::FetchConsoleInfo()
         return false;
 
     return ConsoleStore::Try([&]() { m_ConsoleType = console.GetType(); });
+}
+
+void Xbox::ConnectToConsole()
+{
+    UI::SetSuccess(ConsoleStore::CreateConsole(m_IpAddress));
+
+    if (!UI::IsGood())
+        UI::SetErrorMessage("Couldn't find console");
 }
 
 void Xbox::DisplayProperties()
@@ -121,6 +123,14 @@ void Xbox::DisplayContextMenu()
 {
     if (ImGui::BeginPopupContextItem())
     {
+        if (ImGui::Button("Synchronize Time"))
+        {
+            SynchronizeTime();
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::Separator();
+
         if (ImGui::Button("Properties"))
         {
             // Show the properties window only if fetching the active title succeeds

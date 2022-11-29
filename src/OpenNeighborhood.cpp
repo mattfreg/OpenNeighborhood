@@ -48,6 +48,7 @@ void OpenNeighborhood::OnUpdate()
     UI::DisplayConfirmModal();
     UI::DisplayInputTextModal();
     UI::DisplayErrorModal();
+    UI::DisplaySuccessModal();
 
     UI::EndFrame();
 }

@@ -21,6 +21,7 @@ public:
     static void DisplayConfirmModal();
     static void DisplayInputTextModal();
     static void DisplayErrorModal();
+    static void DisplaySuccessModal();
 
     static std::vector<Ref<Element>> CreateDriveElements();
     static std::vector<Ref<Element>> CreateRootElements();
@@ -45,6 +46,10 @@ public:
 
     inline static void SetInputTextDefaultValue(const std::string &defaultValue) { strncpy(s_InputTextBuffer, defaultValue.c_str(), sizeof(s_InputTextBuffer) - 1); }
 
+    inline static void SetDisplaySuccessModal(bool displaySuccessModal) { s_DisplaySuccessModal = displaySuccessModal; }
+
+    inline static void SetSuccessMessage(const std::string &successMessage) { s_SuccessMessage = successMessage; }
+
     inline static ImFont *GetBoldFont() { return s_OpenSansBold; }
 
     inline static ImFont *GetRegularFont() { return s_OpenSansRegular; }
@@ -65,6 +70,9 @@ private:
     static std::string s_InputTextHeader;
     static InputTextCallbackFn s_InputTextCallback;
     static char s_InputTextBuffer[50];
+
+    static bool s_DisplaySuccessModal;
+    static std::string s_SuccessMessage;
 
     static ImFont *s_OpenSansBold;
     static ImFont *s_OpenSansRegular;
