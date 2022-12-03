@@ -245,7 +245,31 @@ void File::DisplayContextMenu()
 {
     if (ImGui::BeginPopupContextItem())
     {
-        if (!m_Data.IsDirectory)
+        if (m_Data.IsDirectory)
+        {
+            ImGui::PushFont(UI::GetBoldFont());
+            if (ImGui::Button("Open"))
+            {
+                OpenDirectory();
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::PopFont();
+
+            ImGui::Separator();
+        }
+        else if (m_Data.IsXex)
+        {
+            ImGui::PushFont(UI::GetBoldFont());
+            if (ImGui::Button("Launch"))
+            {
+                LaunchXex();
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::PopFont();
+
+            ImGui::Separator();
+        }
+        else
         {
             if (ImGui::Button("Download"))
             {
