@@ -123,6 +123,14 @@ void Xbox::DisplayContextMenu()
 {
     if (ImGui::BeginPopupContextItem())
     {
+        ImGui::PushFont(UI::GetBoldFont());
+        if (ImGui::Button("Open"))
+        {
+            OnClick();
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::PopFont();
+
         if (ImGui::Button("Synchronize Time"))
         {
             SynchronizeTime();
