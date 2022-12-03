@@ -127,6 +127,16 @@ void Drive::DisplayContextMenu()
 {
     if (ImGui::BeginPopupContextItem())
     {
+        ImGui::PushFont(UI::GetBoldFont());
+        if (ImGui::Button("Open"))
+        {
+            OnClick();
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::PopFont();
+
+        ImGui::Separator();
+
         if (ImGui::Button("Properties"))
         {
             m_ShowPropertiesWindow = true;
