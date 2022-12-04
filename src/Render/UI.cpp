@@ -121,7 +121,7 @@ void UI::DisplayInputTextModal()
 
     if (ImGui::BeginPopupModal(s_InputTextHeader.c_str(), nullptr, ImGuiWindowFlags_AlwaysAutoResize))
     {
-        ImGui::InputText("", s_InputTextBuffer, sizeof(s_InputTextBuffer));
+        ImGui::InputText("##TextInput", s_InputTextBuffer, sizeof(s_InputTextBuffer));
 
         if (!ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(ImGuiMouseButton_Left))
             ImGui::SetKeyboardFocusHere(-1);
