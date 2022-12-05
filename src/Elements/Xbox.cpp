@@ -123,15 +123,20 @@ void Xbox::DisplayContextMenu()
 {
     if (ImGui::BeginPopupContextItem())
     {
+        ImVec2 buttonSize = { ImGui::GetWindowSize().x - ImGui::GetStyle().WindowPadding.x * 2.0f, 0.0f };
+        ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.0f));
+
         ImGui::PushFont(UI::GetBoldFont());
-        if (ImGui::Button("Open"))
+        if (ImGui::Button("Open", buttonSize))
         {
             OnClick();
             ImGui::CloseCurrentPopup();
         }
         ImGui::PopFont();
 
-        if (ImGui::Button("Synchronize Time"))
+        ImGui::Separator();
+
+        if (ImGui::Button("Synchronize Time", buttonSize))
         {
             SynchronizeTime();
             ImGui::CloseCurrentPopup();
@@ -139,13 +144,14 @@ void Xbox::DisplayContextMenu()
 
         ImGui::Separator();
 
-        if (ImGui::Button("Properties"))
+        if (ImGui::Button("Properties", buttonSize))
         {
             // Show the properties window only if fetching the active title succeeds
             m_ShowPropertiesWindow = FetchConsoleInfo();
             ImGui::CloseCurrentPopup();
         }
 
+        ImGui::PopStyleVar();
         ImGui::EndPopup();
     }
 

@@ -97,18 +97,22 @@ void ContentsPanel::DisplayContextMenu()
 
     if (ImGui::BeginPopupContextWindow())
     {
-        if (ImGui::Button("Upload Here"))
+        ImVec2 buttonSize = { ImGui::GetWindowSize().x - ImGui::GetStyle().WindowPadding.x * 2.0f, 0.0f };
+        ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.0f));
+
+        if (ImGui::Button("Upload Here", buttonSize))
         {
             Upload();
             ImGui::CloseCurrentPopup();
         }
 
-        if (ImGui::Button("Create Directory"))
+        if (ImGui::Button("Create Directory", buttonSize))
         {
             CreateDirectory();
             ImGui::CloseCurrentPopup();
         }
 
+        ImGui::PopStyleVar();
         ImGui::EndPopup();
     }
 }

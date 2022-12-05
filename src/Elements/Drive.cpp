@@ -127,8 +127,11 @@ void Drive::DisplayContextMenu()
 {
     if (ImGui::BeginPopupContextItem())
     {
+        ImVec2 buttonSize = { ImGui::GetWindowSize().x - ImGui::GetStyle().WindowPadding.x * 2.0f, 0.0f };
+        ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.0f));
+
         ImGui::PushFont(UI::GetBoldFont());
-        if (ImGui::Button("Open"))
+        if (ImGui::Button("Open", buttonSize))
         {
             OnClick();
             ImGui::CloseCurrentPopup();
@@ -137,12 +140,13 @@ void Drive::DisplayContextMenu()
 
         ImGui::Separator();
 
-        if (ImGui::Button("Properties"))
+        if (ImGui::Button("Properties", buttonSize))
         {
             m_ShowPropertiesWindow = true;
             ImGui::CloseCurrentPopup();
         }
 
+        ImGui::PopStyleVar();
         ImGui::EndPopup();
     }
 
