@@ -27,13 +27,64 @@ void Xbox::OnClick()
     m_EventCallback(event);
 }
 
+void Xbox::GoToDashboard()
+{
+    bool success = false;
+    XBDM::Console &console = ConsoleStore::GetConsole();
+
+    if (!console.IsConnected())
+    {
+        success = ConnectToConsole();
+        if (!success)
+            return;
+    }
+
+    ConsoleStore::Try([&]() { console.GoToDashboard(); });
+}
+
+void Xbox::RestartActiveTitle()
+{
+    bool success = false;
+    XBDM::Console &console = ConsoleStore::GetConsole();
+
+    if (!console.IsConnected())
+    {
+        success = ConnectToConsole();
+        if (!success)
+            return;
+    }
+
+    ConsoleStore::Try([&]() { console.RestartActiveTitle(); });
+}
+
+void Xbox::Reboot()
+{
+    bool success = false;
+    XBDM::Console &console = ConsoleStore::GetConsole();
+
+    if (!console.IsConnected())
+    {
+        success = ConnectToConsole();
+        if (!success)
+            return;
+    }
+
+    ConsoleStore::Try([&]() { console.Reboot(); });
+}
+
 void Xbox::SynchronizeTime()
 {
+    bool success = false;
     XBDM::Console &console = ConsoleStore::GetConsole();
-    if (!console.IsConnected())
-        ConnectToConsole();
 
-    bool success = ConsoleStore::Try([&]() { ConsoleStore::GetConsole().SynchronizeTime(); });
+    if (!console.IsConnected())
+    {
+        success = ConnectToConsole();
+        if (!success)
+            return;
+    }
+
+    success = ConsoleStore::Try([&]() { ConsoleStore::GetConsole().SynchronizeTime(); });
 
     if (!success)
         return;
@@ -44,11 +95,17 @@ void Xbox::SynchronizeTime()
 
 bool Xbox::FetchConsoleInfo()
 {
+    bool success = false;
     XBDM::Console &console = ConsoleStore::GetConsole();
-    if (!console.IsConnected())
-        ConnectToConsole();
 
-    bool success = ConsoleStore::Try([&]() { m_ActiveTitle = console.GetActiveTitle(); });
+    if (!console.IsConnected())
+    {
+        success = ConnectToConsole();
+        if (!success)
+            return false;
+    }
+
+    success = ConsoleStore::Try([&]() { m_ActiveTitle = console.GetActiveTitle(); });
 
     if (!success)
         return false;
@@ -56,12 +113,17 @@ bool Xbox::FetchConsoleInfo()
     return ConsoleStore::Try([&]() { m_ConsoleType = console.GetType(); });
 }
 
-void Xbox::ConnectToConsole()
+bool Xbox::ConnectToConsole()
 {
     UI::SetSuccess(ConsoleStore::CreateConsole(m_IpAddress));
 
     if (!UI::IsGood())
+    {
         UI::SetErrorMessage("Couldn't find console");
+        return false;
+    }
+
+    return true;
 }
 
 void Xbox::DisplayProperties()
@@ -133,6 +195,26 @@ void Xbox::DisplayContextMenu()
             ImGui::CloseCurrentPopup();
         }
         ImGui::PopFont();
+
+        ImGui::Separator();
+
+        if (ImGui::Button("Go To Dashboard"))
+        {
+            GoToDashboard();
+            ImGui::CloseCurrentPopup();
+        }
+
+        if (ImGui::Button("Restart Active Title"))
+        {
+            RestartActiveTitle();
+            ImGui::CloseCurrentPopup();
+        }
+
+        if (ImGui::Button("Reboot"))
+        {
+            Reboot();
+            ImGui::CloseCurrentPopup();
+        }
 
         ImGui::Separator();
 

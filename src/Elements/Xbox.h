@@ -17,10 +17,14 @@ private:
     std::string m_ConsoleType;
     bool m_ShowPropertiesWindow = false;
 
+    void GoToDashboard();
+    void RestartActiveTitle();
+    void Reboot();
+
     void SynchronizeTime();
 
     bool FetchConsoleInfo();
-    void ConnectToConsole();
+    bool ConnectToConsole();
 
     void DisplayProperties();
 
