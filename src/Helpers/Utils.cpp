@@ -24,4 +24,26 @@ std::filesystem::path GetExecDir()
     return execFilePath.parent_path();
 }
 
+std::string DirName(const std::string &fullPath)
+{
+    size_t lastSeparatorIndex = fullPath.find_last_of('\\');
+
+    if (lastSeparatorIndex == std::string::npos || lastSeparatorIndex == 0)
+        return "\\";
+
+    // Only keep what was before the last '\', so the parent directory
+    return fullPath.substr(0, lastSeparatorIndex);
+}
+
+std::string BaseName(const std::string &fullPath)
+{
+    size_t lastSeparatorIndex = fullPath.find_last_of('\\');
+
+    if (lastSeparatorIndex == std::string::npos)
+        return fullPath;
+
+    // Only keep what is after the last '\', so the file name
+    return fullPath.substr(lastSeparatorIndex + 1, fullPath.size() - lastSeparatorIndex);
+}
+
 }

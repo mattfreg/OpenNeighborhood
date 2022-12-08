@@ -17,11 +17,12 @@ private:
 
     void OpenDirectory();
     void LaunchXex();
+    void Cut();
     void Download();
     void Delete();
     void Rename();
-    void UpdateContents();
 
+    void UpdateContents();
     void DisplayProperties();
 
     virtual void DisplayContextMenu() override;

@@ -8,6 +8,7 @@
 #include "Helpers/ConsoleStore.h"
 #include "Helpers/LocationMover.h"
 #include "Helpers/ConfigManager.h"
+#include "Helpers/Utils.h"
 #include "Elements/File.h"
 #include "Render/UI.h"
 
@@ -100,6 +101,19 @@ void ContentsPanel::DisplayContextMenu()
         ImVec2 buttonSize = { ImGui::GetWindowSize().x - ImGui::GetStyle().WindowPadding.x * 2.0f, 0.0f };
         ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.0f));
 
+        // We can't paste if nothing has been cut of if we are trying to paste in the directory we copied from
+        const std::string &copiedPath = ConsoleStore::GetCopiedPath();
+        bool cannotPaste = copiedPath.empty() || Utils::DirName(copiedPath) == LocationMover::GetCurrentConsoleLocation();
+        ImGui::BeginDisabled(cannotPaste);
+        if (ImGui::Button("Paste", buttonSize))
+        {
+            Paste();
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndDisabled();
+
+        ImGui::Separator();
+
         if (ImGui::Button("Upload Here", buttonSize))
         {
             Upload();
@@ -137,6 +151,22 @@ void ContentsPanel::UpdateContents()
 
     ContentsChangeEvent event(fileElements);
     OnContentsChange(event);
+}
+
+void ContentsPanel::Paste()
+{
+    const std::string &copiedPath = ConsoleStore::GetCopiedPath();
+    if (copiedPath.empty())
+        return;
+
+    XBDM::Console &console = ConsoleStore::GetConsole();
+    std::string consoleLocation = LocationMover::GetCurrentConsoleLocation();
+    std::string copiedFileName = Utils::BaseName(copiedPath);
+
+    bool success = ConsoleStore::Try([&]() { console.RenameFile(copiedPath, consoleLocation + '\\' + copiedFileName); });
+
+    if (success)
+        UpdateContents();
 }
 
 void ContentsPanel::Upload()

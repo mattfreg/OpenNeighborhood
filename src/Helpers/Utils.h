@@ -16,4 +16,8 @@ namespace Utils
 
 std::filesystem::path GetExecDir();
 
+std::string DirName(const std::string &fullPath);
+
+std::string BaseName(const std::string &fullPath);
+
 }

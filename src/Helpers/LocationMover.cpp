@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Helpers/LocationMover.h"
 
+#include "Helpers/Utils.h"
+
 std::string LocationMover::s_CurrentConsoleLocation = "\\";
 LocationMover::AppLocation LocationMover::s_CurrentAppLocation = LocationMover::AppLocation::Root;
 
@@ -34,13 +36,7 @@ const std::string &LocationMover::GoToDirectory(const std::string &directory)
 
 std::string LocationMover::GetParent()
 {
-    size_t lastSeparatorIndex = s_CurrentConsoleLocation.find_last_of('\\');
-
-    if (lastSeparatorIndex == 0)
-        return "\\";
-
-    // Only keep what was before the last '\', so the parent directory
-    return s_CurrentConsoleLocation.substr(0, lastSeparatorIndex);
+    return Utils::DirName(s_CurrentConsoleLocation);
 }
 
 const std::string &LocationMover::GoToParent()

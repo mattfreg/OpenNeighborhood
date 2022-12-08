@@ -22,6 +22,7 @@ private:
     void DisplayContextMenu();
     void UpdateContents();
 
+    void Paste();
     void Upload();
     void CreateDirectory();
 };

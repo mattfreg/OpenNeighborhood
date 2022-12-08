@@ -51,6 +51,11 @@ void File::LaunchXex()
     console.LaunchXex(LocationMover::GetCurrentConsoleLocation() + '\\' + m_Data.Name);
 }
 
+void File::Cut()
+{
+    ConsoleStore::SetCopiedPath(LocationMover::GetCurrentConsoleLocation() + '\\' + m_Data.Name);
+}
+
 void File::Download()
 {
     // Depending on the system, std::filesystem::path::native can return either
@@ -272,7 +277,16 @@ void File::DisplayContextMenu()
 
             ImGui::Separator();
         }
-        else
+
+        if (ImGui::Button("Cut", buttonSize))
+        {
+            Cut();
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::Separator();
+
+        if (!m_Data.IsDirectory)
         {
             if (ImGui::Button("Download", buttonSize))
             {
