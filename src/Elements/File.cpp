@@ -56,14 +56,13 @@ void File::Cut()
     ConsoleStore::SetCopiedPath(LocationMover::GetCurrentConsoleLocation() + '\\' + m_Data.Name);
 }
 
-void File::Download()
+void File::DownloadFile()
 {
     // Depending on the system, std::filesystem::path::native can return either
     // std::wstring or std::string. Since we don't know, we are just using auto.
     auto fileName = std::filesystem::path(m_Data.Name);
     auto extension = fileName.extension().native();
 
-    // Oven the save dialog that will get a path to where to save the current file
     NFD::UniquePathN outPath;
     nfdresult_t result = NFD_ERROR;
 
@@ -93,10 +92,31 @@ void File::Download()
         return;
 
     std::filesystem::path localPath = outPath.get();
-
     XBDM::Console &console = ConsoleStore::GetConsole();
 
     ConsoleStore::Try([&]() { console.ReceiveFile(LocationMover::GetCurrentConsoleLocation() + '\\' + m_Data.Name, localPath.string()); });
+}
+
+void File::DownloadDirectory()
+{
+    NFD::UniquePathN outPath;
+    std::filesystem::path defaultName = m_Data.Name;
+    nfdresult_t result = NFD::SaveDialog(outPath, nullptr, 0, nullptr, defaultName.native().c_str());
+
+    if (result == NFD_ERROR)
+    {
+        UI::SetErrorMessage(NFD::GetError());
+        UI::SetSuccess(false);
+        return;
+    }
+
+    if (result == NFD_CANCEL)
+        return;
+
+    std::filesystem::path localPath = outPath.get();
+    XBDM::Console &console = ConsoleStore::GetConsole();
+
+    ConsoleStore::Try([&]() { console.ReceiveDirectory(LocationMover::GetCurrentConsoleLocation() + '\\' + m_Data.Name, localPath.string()); });
 }
 
 void File::Delete()
@@ -286,13 +306,14 @@ void File::DisplayContextMenu()
 
         ImGui::Separator();
 
-        if (!m_Data.IsDirectory)
+        if (ImGui::Button("Download", buttonSize))
         {
-            if (ImGui::Button("Download", buttonSize))
-            {
-                Download();
-                ImGui::CloseCurrentPopup();
-            }
+            if (m_Data.IsDirectory)
+                DownloadDirectory();
+            else
+                DownloadFile();
+
+            ImGui::CloseCurrentPopup();
         }
 
         if (ImGui::Button("Delete", buttonSize))

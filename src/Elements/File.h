@@ -18,7 +18,8 @@ private:
     void OpenDirectory();
     void LaunchXex();
     void Cut();
-    void Download();
+    void DownloadFile();
+    void DownloadDirectory();
     void Delete();
     void Rename();
 
