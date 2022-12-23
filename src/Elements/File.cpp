@@ -94,7 +94,7 @@ void File::DownloadFile()
     std::filesystem::path localPath = outPath.get();
     XBDM::Console &console = ConsoleStore::GetConsole();
 
-    ConsoleStore::Try([&]() { console.ReceiveFile(LocationMover::GetCurrentConsoleLocation() / m_Data.Name, localPath.string()); });
+    ConsoleStore::Try([&]() { console.ReceiveFile(LocationMover::GetCurrentConsoleLocation() / m_Data.Name, localPath); });
 }
 
 void File::DownloadDirectory()
@@ -116,7 +116,7 @@ void File::DownloadDirectory()
     std::filesystem::path localPath = outPath.get();
     XBDM::Console &console = ConsoleStore::GetConsole();
 
-    ConsoleStore::Try([&]() { console.ReceiveDirectory(LocationMover::GetCurrentConsoleLocation() / m_Data.Name, localPath.string()); });
+    ConsoleStore::Try([&]() { console.ReceiveDirectory(LocationMover::GetCurrentConsoleLocation() / m_Data.Name, localPath); });
 }
 
 void File::Delete()

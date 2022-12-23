@@ -114,9 +114,15 @@ void ContentsPanel::DisplayContextMenu()
 
         ImGui::Separator();
 
-        if (ImGui::Button("Upload Here", buttonSize))
+        if (ImGui::Button("Upload File", buttonSize))
         {
-            Upload();
+            UploadFile();
+            ImGui::CloseCurrentPopup();
+        }
+
+        if (ImGui::Button("Upload Directory", buttonSize))
+        {
+            UploadDirectory();
             ImGui::CloseCurrentPopup();
         }
 
@@ -168,7 +174,7 @@ void ContentsPanel::Paste()
         UpdateContents();
 }
 
-void ContentsPanel::Upload()
+void ContentsPanel::UploadFile()
 {
     NFD::UniquePathN outPath;
     nfdresult_t result = NFD::OpenDialog(outPath);
@@ -178,7 +184,7 @@ void ContentsPanel::Upload()
 
     std::filesystem::path localPath = outPath.get();
     std::string fileName = localPath.filename().string();
-    std::string remotePath = LocationMover::GetCurrentConsoleLocation() + '\\' + fileName;
+    XBDM::XboxPath remotePath = LocationMover::GetCurrentConsoleLocation() / fileName;
 
     // It's important to capture remotePath and localPath by copy because they will
     // be destroyed by the time upload is called if it's called as the confirm
@@ -186,7 +192,7 @@ void ContentsPanel::Upload()
     auto upload = [this, remotePath, localPath]() {
         XBDM::Console &console = ConsoleStore::GetConsole();
 
-        bool success = ConsoleStore::Try([&]() { console.SendFile(remotePath, localPath.string()); });
+        bool success = ConsoleStore::Try([&]() { console.SendFile(remotePath, localPath); });
 
         if (success)
             UpdateContents();
@@ -206,6 +212,26 @@ void ContentsPanel::Upload()
     }
 
     upload();
+}
+
+void ContentsPanel::UploadDirectory()
+{
+    NFD::UniquePath outPath;
+    nfdresult_t result = NFD::PickFolder(outPath);
+
+    if (result == NFD_CANCEL || result == NFD_ERROR)
+        return;
+
+    std::filesystem::path localPath = outPath.get();
+    std::string fileName = localPath.filename().string();
+    XBDM::XboxPath remotePath = LocationMover::GetCurrentConsoleLocation() / fileName;
+
+    XBDM::Console &console = ConsoleStore::GetConsole();
+
+    bool success = ConsoleStore::Try([&]() { console.SendDirectory(remotePath, localPath); });
+
+    if (success)
+        UpdateContents();
 }
 
 void ContentsPanel::CreateDirectory()

@@ -23,6 +23,7 @@ private:
     void UpdateContents();
 
     void Paste();
-    void Upload();
+    void UploadFile();
+    void UploadDirectory();
     void CreateDirectory();
 };
