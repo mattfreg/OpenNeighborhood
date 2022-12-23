@@ -13,11 +13,11 @@ public:
 
     static bool Try(const TryCallbackFn &function);
 
-    inline static const std::string &GetCopiedPath() { return s_CopiedPath; }
+    inline static const XBDM::XboxPath &GetCopiedPath() { return s_CopiedPath; }
 
-    static void SetCopiedPath(const std::string &path) { s_CopiedPath = path; }
+    static void SetCopiedPath(const XBDM::XboxPath &path) { s_CopiedPath = path; }
 
 private:
     static XBDM::Console s_Console;
-    static std::string s_CopiedPath;
+    static XBDM::XboxPath s_CopiedPath;
 };

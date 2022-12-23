@@ -30,16 +30,13 @@ void GoToParentButton::OnRender()
 
 void GoToParentButton::OnClick()
 {
-    std::string currentConsoleLocation = LocationMover::GetCurrentConsoleLocation();
-    std::string parentConsoleLocation = LocationMover::GetParent();
+    const XBDM::XboxPath &currentConsoleLocation = LocationMover::GetCurrentConsoleLocation();
+    XBDM::XboxPath parentConsoleLocation = currentConsoleLocation.Parent();
 
-    if (parentConsoleLocation == "\\")
+    // If parentConsoleLocation is the same as currentConsoleLocation, it means we are already at the drive root
+    // and can't go further
+    if (parentConsoleLocation == currentConsoleLocation)
     {
-        // If currentLocation is not the drive root yet we need to call GoToParent to set it to the current
-        // drive root but we don't want to do it the next times we click on the GoToParentButton
-        if (currentConsoleLocation != "\\")
-            LocationMover::GoToParent();
-
         std::vector<Ref<Element>> elements;
 
         LocationMover::AppLocation currentAppLocation = LocationMover::GetCurrentAppLocation();
@@ -60,12 +57,7 @@ void GoToParentButton::OnClick()
     XBDM::Console &console = ConsoleStore::GetConsole();
     std::set<XBDM::File> files;
 
-    // At this stage, the parent console location has the format "\<drive>:\Path\To\File" so we need to remove the
-    // first backslash before using it with XBDM
-    parentConsoleLocation = parentConsoleLocation.substr(1);
-
-    // If the parent location ends with ':', then it's a drive and we need to add '\' at the end
-    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(parentConsoleLocation.back() == ':' ? parentConsoleLocation + '\\' : parentConsoleLocation); });
+    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(parentConsoleLocation); });
 
     if (!success)
         return;

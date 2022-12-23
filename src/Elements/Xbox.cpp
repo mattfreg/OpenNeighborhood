@@ -174,7 +174,7 @@ void Xbox::DisplayProperties()
     // Invisible window around the active title path to make the path horizontally scrollable
     ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0.0f);
     ImGui::BeginChild("Active title", ImVec2(0.0f, childWindowHeight), false, childWindowFlags);
-    ImGui::TextUnformatted(m_ActiveTitle.c_str());
+    ImGui::TextUnformatted(m_ActiveTitle.String().c_str());
     ImGui::EndChild();
     ImGui::PopStyleVar();
 

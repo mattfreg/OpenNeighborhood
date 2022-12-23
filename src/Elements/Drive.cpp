@@ -18,13 +18,13 @@ void Drive::OnClick()
     XBDM::Console &console = ConsoleStore::GetConsole();
     std::set<XBDM::File> files;
 
-    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(LocationMover::GetCurrentConsoleLocation() + m_Data.Name + '\\'); });
+    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(m_Data.Name); });
 
     if (!success)
         return;
 
     // Set the current location in the console to be the root of the current drive
-    LocationMover::GoToDirectory(m_Data.Name);
+    LocationMover::SetCurrentConsoleLocation(m_Data.Name);
 
     LocationMover::SetCurrentAppLocation(LocationMover::AppLocation::DriveContents);
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <XBDM.h>
+
 #include "Elements/Element.h"
 
 class Xbox : public Element
@@ -13,7 +15,7 @@ public:
 
 private:
     std::string m_IpAddress;
-    std::string m_ActiveTitle;
+    XBDM::XboxPath m_ActiveTitle;
     std::string m_ConsoleType;
     bool m_ShowPropertiesWindow = false;
 

@@ -28,7 +28,7 @@ void PathNode::OnClick()
     // but the console itself or the App root (OpenNeighborhood)
     if (m_PosInPath == std::string::npos)
     {
-        LocationMover::SetCurrentConsoleLocation("\\");
+        LocationMover::SetCurrentConsoleLocation("");
 
         std::vector<Ref<Element>> elements;
 
@@ -46,22 +46,17 @@ void PathNode::OnClick()
         return;
     }
 
-    std::string newConsoleLocation;
+    XBDM::XboxPath newConsoleLocation;
 
     // We start at index 2 because the first 2 PathNodes are "OpenNeighborhood" and the console name
     for (size_t i = 2; i <= m_PosInPath; i++)
-    {
-        newConsoleLocation += m_PathPanel->m_PathNodes[i].GetLabel();
-
-        if (i < m_PosInPath)
-            newConsoleLocation += '\\';
-    }
+        newConsoleLocation /= m_PathPanel->m_PathNodes[i].GetLabel();
 
     XBDM::Console &console = ConsoleStore::GetConsole();
     std::set<XBDM::File> files;
 
     // If the new location ends with ':', then it's a drive and we need to add '\' at the end
-    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(newConsoleLocation.back() == ':' ? newConsoleLocation + '\\' : newConsoleLocation); });
+    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(newConsoleLocation); });
 
     if (!success)
         return;

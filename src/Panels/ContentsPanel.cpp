@@ -102,8 +102,8 @@ void ContentsPanel::DisplayContextMenu()
         ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.0f));
 
         // We can't paste if nothing has been cut of if we are trying to paste in the directory we copied from
-        const std::string &copiedPath = ConsoleStore::GetCopiedPath();
-        bool cannotPaste = copiedPath.empty() || Utils::DirName(copiedPath) == LocationMover::GetCurrentConsoleLocation();
+        const XBDM::XboxPath &copiedPath = ConsoleStore::GetCopiedPath();
+        bool cannotPaste = copiedPath.String().empty() || copiedPath.Parent() == LocationMover::GetCurrentConsoleLocation();
         ImGui::BeginDisabled(cannotPaste);
         if (ImGui::Button("Paste", buttonSize))
         {
@@ -135,10 +135,10 @@ void ContentsPanel::UpdateContents()
 {
     XBDM::Console &console = ConsoleStore::GetConsole();
     std::set<XBDM::File> files;
-    std::string consoleLocation = LocationMover::GetCurrentConsoleLocation();
+    const XBDM::XboxPath &consoleLocation = LocationMover::GetCurrentConsoleLocation();
 
     // If the current location is a drive (e.g hdd:), we need to append '\' to it
-    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(consoleLocation.back() == ':' ? consoleLocation + '\\' : consoleLocation); });
+    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(consoleLocation); });
 
     if (!success)
         return;
@@ -155,15 +155,15 @@ void ContentsPanel::UpdateContents()
 
 void ContentsPanel::Paste()
 {
-    const std::string &copiedPath = ConsoleStore::GetCopiedPath();
-    if (copiedPath.empty())
+    const XBDM::XboxPath &copiedPath = ConsoleStore::GetCopiedPath();
+    if (copiedPath.String().empty())
         return;
 
     XBDM::Console &console = ConsoleStore::GetConsole();
-    std::string consoleLocation = LocationMover::GetCurrentConsoleLocation();
-    std::string copiedFileName = Utils::BaseName(copiedPath);
+    const XBDM::XboxPath &consoleLocation = LocationMover::GetCurrentConsoleLocation();
+    XBDM::XboxPath copiedFileName = copiedPath.FileName();
 
-    bool success = ConsoleStore::Try([&]() { console.RenameFile(copiedPath, consoleLocation + '\\' + copiedFileName); });
+    bool success = ConsoleStore::Try([&]() { console.RenameFile(copiedPath, consoleLocation / copiedFileName); });
 
     if (success)
         UpdateContents();
@@ -214,7 +214,7 @@ void ContentsPanel::CreateDirectory()
     auto createDirectory = [this](const std::string &name) {
         XBDM::Console &console = ConsoleStore::GetConsole();
 
-        bool success = ConsoleStore::Try([&]() { console.CreateDirectory(LocationMover::GetCurrentConsoleLocation() + '\\' + name); });
+        bool success = ConsoleStore::Try([&]() { console.CreateDirectory(LocationMover::GetCurrentConsoleLocation() / name); });
 
         if (success)
             UpdateContents();

@@ -16,8 +16,6 @@ namespace Utils
 
 std::filesystem::path GetExecDir();
 
-std::string DirName(const std::string &fullPath);
-
-std::string BaseName(const std::string &fullPath);
+std::vector<std::string> StringSplit(const std::string &string, const std::string &separator);
 
 }

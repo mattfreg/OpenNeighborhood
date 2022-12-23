@@ -28,7 +28,7 @@ void File::OpenDirectory()
     XBDM::Console &console = ConsoleStore::GetConsole();
     std::set<XBDM::File> files;
 
-    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(LocationMover::GetCurrentConsoleLocation() + '\\' + m_Data.Name); });
+    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(LocationMover::GetCurrentConsoleLocation() / m_Data.Name); });
 
     if (!success)
         return;
@@ -48,12 +48,12 @@ void File::OpenDirectory()
 void File::LaunchXex()
 {
     XBDM::Console &console = ConsoleStore::GetConsole();
-    console.LaunchXex(LocationMover::GetCurrentConsoleLocation() + '\\' + m_Data.Name);
+    console.LaunchXex(LocationMover::GetCurrentConsoleLocation() / m_Data.Name);
 }
 
 void File::Cut()
 {
-    ConsoleStore::SetCopiedPath(LocationMover::GetCurrentConsoleLocation() + '\\' + m_Data.Name);
+    ConsoleStore::SetCopiedPath(LocationMover::GetCurrentConsoleLocation() / m_Data.Name);
 }
 
 void File::DownloadFile()
@@ -94,7 +94,7 @@ void File::DownloadFile()
     std::filesystem::path localPath = outPath.get();
     XBDM::Console &console = ConsoleStore::GetConsole();
 
-    ConsoleStore::Try([&]() { console.ReceiveFile(LocationMover::GetCurrentConsoleLocation() + '\\' + m_Data.Name, localPath.string()); });
+    ConsoleStore::Try([&]() { console.ReceiveFile(LocationMover::GetCurrentConsoleLocation() / m_Data.Name, localPath.string()); });
 }
 
 void File::DownloadDirectory()
@@ -116,7 +116,7 @@ void File::DownloadDirectory()
     std::filesystem::path localPath = outPath.get();
     XBDM::Console &console = ConsoleStore::GetConsole();
 
-    ConsoleStore::Try([&]() { console.ReceiveDirectory(LocationMover::GetCurrentConsoleLocation() + '\\' + m_Data.Name, localPath.string()); });
+    ConsoleStore::Try([&]() { console.ReceiveDirectory(LocationMover::GetCurrentConsoleLocation() / m_Data.Name, localPath.string()); });
 }
 
 void File::Delete()
@@ -124,7 +124,7 @@ void File::Delete()
     auto Delete = [&]() {
         XBDM::Console &console = ConsoleStore::GetConsole();
 
-        bool success = ConsoleStore::Try([&]() { console.DeleteFile(LocationMover::GetCurrentConsoleLocation() + '\\' + m_Data.Name, m_Data.IsDirectory); });
+        bool success = ConsoleStore::Try([&]() { console.DeleteFile(LocationMover::GetCurrentConsoleLocation() / m_Data.Name, m_Data.IsDirectory); });
 
         if (success)
             UpdateContents();
@@ -139,9 +139,9 @@ void File::Rename()
 {
     auto rename = [&](const std::string &name) {
         XBDM::Console &console = ConsoleStore::GetConsole();
-        std::string consoleLocation = LocationMover::GetCurrentConsoleLocation();
+        const XBDM::XboxPath &consoleLocation = LocationMover::GetCurrentConsoleLocation();
 
-        bool success = ConsoleStore::Try([&]() { console.RenameFile(consoleLocation + '\\' + m_Data.Name, consoleLocation + '\\' + name); });
+        bool success = ConsoleStore::Try([&]() { console.RenameFile(consoleLocation / m_Data.Name, consoleLocation / name); });
 
         if (success)
             UpdateContents();
@@ -157,10 +157,10 @@ void File::UpdateContents()
 {
     XBDM::Console &console = ConsoleStore::GetConsole();
     std::set<XBDM::File> files;
-    std::string consoleLocation = LocationMover::GetCurrentConsoleLocation();
+    const XBDM::XboxPath &consoleLocation = LocationMover::GetCurrentConsoleLocation();
 
     // If the current location is a drive (e.g hdd:), we need to append '\' to it
-    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(consoleLocation.back() == ':' ? consoleLocation + '\\' : consoleLocation); });
+    bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(consoleLocation); });
 
     if (!success)
         return;
@@ -230,7 +230,7 @@ void File::DisplayProperties()
 
     ImGui::TextUnformatted(locationText);
     ImGui::SameLine(locationAndSizeOffset);
-    ImGui::TextUnformatted(LocationMover::GetCurrentConsoleLocation().c_str());
+    ImGui::TextUnformatted(LocationMover::GetCurrentConsoleLocation().String().c_str());
     if (!m_Data.IsDirectory)
     {
         ImGui::TextUnformatted(sizeText);

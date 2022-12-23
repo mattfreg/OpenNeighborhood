@@ -3,6 +3,7 @@
 
 #include "Helpers/ConsoleStore.h"
 #include "Helpers/LocationMover.h"
+#include "Helpers/Utils.h"
 #include "Render/UI.h"
 #include "Render/TextureMap.h"
 
@@ -108,17 +109,9 @@ void PathPanel::UpdateDirectories()
     if (LocationMover::GetCurrentAppLocation() < LocationMover::AppLocation::DriveContents)
         return;
 
-    std::string consoleLocation = LocationMover::GetCurrentConsoleLocation() + '\\';
-    size_t pos = 0;
+    const XBDM::XboxPath &consoleLocation = LocationMover::GetCurrentConsoleLocation();
 
-    // Split the current location with '\' and create a PathNode for each directory
-    while ((pos = consoleLocation.find('\\')) != std::string::npos)
-    {
-        std::string directory = consoleLocation.substr(0, pos);
-
-        if (!directory.empty())
-            m_PathNodes.emplace_back(directory, m_PathNodes.size(), this);
-
-        consoleLocation.erase(0, pos + 1);
-    }
+    std::vector<std::string> directories = Utils::StringSplit(consoleLocation.String(), "\\");
+    for (auto &directory : directories)
+        m_PathNodes.emplace_back(directory, m_PathNodes.size(), this);
 }

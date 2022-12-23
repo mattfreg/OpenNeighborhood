@@ -4,7 +4,7 @@
 #include "Render/UI.h"
 
 XBDM::Console ConsoleStore::s_Console;
-std::string ConsoleStore::s_CopiedPath;
+XBDM::XboxPath ConsoleStore::s_CopiedPath;
 
 bool ConsoleStore::CreateConsole(const std::string &ipAddress)
 {
