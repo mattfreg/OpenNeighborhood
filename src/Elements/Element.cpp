@@ -14,7 +14,7 @@ Element::Element(const std::string &label, const std::string &textureName)
         return;
 
     if (!TextureMap::TextureExists(textureName))
-        TextureMap::AddTexture(textureName, Utils::GetExecDir().append("assets").append("icons").append(textureName + ".png"));
+        TextureMap::AddTexture(textureName, Utils::GetExecDir() / "assets" / "icons" / (textureName + ".png"));
 
     auto texture = TextureMap::GetTexture(textureName);
     m_Width = texture->GetWidth() * 3;

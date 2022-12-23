@@ -37,11 +37,11 @@ void UI::Init()
     (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
-    std::string openSansBoldPath = Utils::GetExecDir().append("assets").append("fonts").append("opensans").append("OpenSans-Bold.ttf").string();
-    std::string openSansRegularPath = Utils::GetExecDir().append("assets").append("fonts").append("opensans").append("OpenSans-Regular.ttf").string();
-    s_OpenSansBold = io.Fonts->AddFontFromFileTTF(openSansBoldPath.c_str(), 20.0f);
-    s_OpenSansRegular = io.Fonts->AddFontFromFileTTF(openSansRegularPath.c_str(), 20.0f);
-    s_OpenSansRegularBig = io.Fonts->AddFontFromFileTTF(openSansRegularPath.c_str(), 24.0f);
+    std::filesystem::path openSansBoldPath = Utils::GetExecDir() / "assets" / "fonts" / "opensans" / "OpenSans-Bold.ttf";
+    std::filesystem::path openSansRegularPath = Utils::GetExecDir() / "assets" / "fonts" / "opensans" / "OpenSans-Regular.ttf";
+    s_OpenSansBold = io.Fonts->AddFontFromFileTTF(openSansBoldPath.string().c_str(), 20.0f);
+    s_OpenSansRegular = io.Fonts->AddFontFromFileTTF(openSansRegularPath.string().c_str(), 20.0f);
+    s_OpenSansRegularBig = io.Fonts->AddFontFromFileTTF(openSansRegularPath.string().c_str(), 24.0f);
     io.FontDefault = s_OpenSansRegular;
 
     SetDarkThemeColors();

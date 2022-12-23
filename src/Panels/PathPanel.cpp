@@ -12,7 +12,7 @@ PathPanel::PathPanel()
     std::string textureName = "leftArrow";
 
     if (!TextureMap::TextureExists(textureName))
-        TextureMap::AddTexture(textureName, Utils::GetExecDir().append("assets").append("icons").append(textureName + ".png"));
+        TextureMap::AddTexture(textureName, Utils::GetExecDir() / "assets" / "icons" / (textureName + ".png"));
 
     m_PathNodes.emplace_back("OpenNeighborhood", std::string::npos, this);
 }

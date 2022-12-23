@@ -137,7 +137,6 @@ void ContentsPanel::UpdateContents()
     std::set<XBDM::File> files;
     const XBDM::XboxPath &consoleLocation = LocationMover::GetCurrentConsoleLocation();
 
-    // If the current location is a drive (e.g hdd:), we need to append '\' to it
     bool success = ConsoleStore::Try([&]() { files = console.GetDirectoryContents(consoleLocation); });
 
     if (!success)
