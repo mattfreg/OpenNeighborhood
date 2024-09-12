@@ -22,6 +22,7 @@
 #include <string.h>
 #include <stdarg.h>
 #include <ctime>
+#include <algorithm>
 
 #ifdef DEBUG
     #include "Core/Log.h"
