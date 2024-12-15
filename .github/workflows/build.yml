@@ -9,7 +9,7 @@ on:
     branches: 
       - master
       - feature/my-branch   # Add your branch name here
-  workflow_dispatch:        # Add this to enable manual trigger
+  workflow_dispatch:        # Allows manual trigger
 
 jobs:
   windows:
@@ -32,6 +32,15 @@ jobs:
       - name: Build ${{ matrix.config }} binaries
         run: cd build && msbuild /p:Configuration=${{ matrix.config }} OpenNeighborhood.sln
 
+      - name: List build files
+        run: dir build /s
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Windows-${{ matrix.config }}-Build
+          path: build/
+
   linux:
     runs-on: ubuntu-latest
     strategy:
@@ -52,6 +61,15 @@ jobs:
       - name: Build ${{ matrix.config }} binaries
         run: cd build && make config=${{ matrix.config }}
 
+      - name: List build files
+        run: ls -R build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Linux-${{ matrix.config }}-Build
+          path: build/
+
   macos:
     runs-on: macos-latest
     strategy:
@@ -68,3 +86,12 @@ jobs:
 
       - name: Build ${{ matrix.config }} binaries
         run: cd build && make config=${{ matrix.config }}
+
+      - name: List build files
+        run: ls -R build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: MacOS-${{ matrix.config }}-Build
+          path: build/
